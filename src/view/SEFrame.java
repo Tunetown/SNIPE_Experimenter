@@ -1,10 +1,7 @@
 package view;
 
 import javax.swing.JFrame;
-
 import main.SENetwork;
-
-import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SEFrame extends JFrame {
 	private static final long serialVersionUID = 1L;

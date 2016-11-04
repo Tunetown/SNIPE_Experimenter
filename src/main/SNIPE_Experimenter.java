@@ -12,8 +12,14 @@ public class SNIPE_Experimenter {
 			@Override
 			public void run() {
 				SENetwork net = new SENetwork();
+				
+				DataLoader dl = new DataLoader(net);
+				dl.loadParams();
+				dl.addShutdownHook();
+				
 				SEFrame appl = new SEFrame("SNIPE Playground", net);
 				appl.init();
+				
 			}
 		});	
 	}

@@ -37,14 +37,14 @@ public class SESynapsesView {
 	public void paintLegend(Graphics g, int x, int y, int w, int h) {
 		for(int i=0; i<w; i++) {
 			double we = (double)i/w * 2.0 - 1.0;
-			g.setColor(getWeightColor(zeroColor, negativeColor, positiveColor, we));
+			g.setColor(getDataColor(zeroColor, negativeColor, positiveColor, we));
 			g.drawLine(x+i, y, x+i, y+h);
 		}
 	}
 
 	private void paintSynapse(Graphics g, int n1, int n2) {
 		double w = net.getNetwork().getWeight(n1, n2);
-		g.setColor(getWeightColor(zeroColor, negativeColor, positiveColor, w));
+		g.setColor(getDataColor(zeroColor, negativeColor, positiveColor, w));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(getWeightThickness(w, maxStrokeWidth), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
@@ -85,7 +85,7 @@ public class SESynapsesView {
 	}
 
 	// TODO static not good
-	public static Color getWeightColor(Color colorZero, Color colorNeg, Color colorPos, double weight) { 
+	public static Color getDataColor(Color colorZero, Color colorNeg, Color colorPos, double weight) { 
 		double percent;
 		Color target;
 		
