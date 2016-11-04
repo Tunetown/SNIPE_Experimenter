@@ -8,23 +8,32 @@ import com.dkriesel.snipe.core.NeuralNetwork;
 public class SENeuron extends JComponent {
 	private static final long serialVersionUID = 1L;
 
+	private Color inputColor = Color.CYAN;
+	private Color hiddenColor = Color.orange;
+	
 	private int neuronDia = 20;
-	private int gridSize = 40;
 	
 	private NeuralNetwork net;
+	private SENetView view;
 	
 	private int num;
 	private int x;
 	private int y;
 	
-	public SENeuron(NeuralNetwork net, int num) {
+	public SENeuron(SENetView view, NeuralNetwork net, int num) {
 		this.net = net;
 		this.num = num;
-		this.x = gridSize + net.getLayerOfNeuron(num) * gridSize * 2;
-		this.y = gridSize + (num - net.getNeuronFirstInLayer(net.getLayerOfNeuron(num))) * gridSize * 2;
+		this.view = view;
+		updateCoords();
+	}
+
+	public void updateCoords() {
+		this.x = view.getGridSize() + net.getLayerOfNeuron(num) * view.getGridSize() * 2;
+		this.y = view.getGridSize() + (num - net.getNeuronFirstInLayer(net.getLayerOfNeuron(num))) * view.getGridSize() * 2;
 		this.setBounds(x - neuronDia / 2, y - neuronDia / 2, neuronDia, neuronDia);
 	}
 
+	
 	public int getOutX() {
 		return x;
 	}
@@ -34,14 +43,20 @@ public class SENeuron extends JComponent {
 	}
 	
 	/**
-	 * Paints one neuron by its absolute index (neuron number)
+	 * Paints one neuron 
 	 * 
 	 * @param g
 	 * @param net
 	 * @param index
 	 */
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.ORANGE); 
+		updateCoords();
+		
+		if (net.getLayerOfNeuron(num) == 0) {
+			g.setColor(inputColor); 
+		} else {
+			g.setColor(hiddenColor); 
+		}
 		
 		g.fillOval(0, 0, neuronDia, neuronDia);
 	}

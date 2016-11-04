@@ -28,13 +28,14 @@ public class SNIPE_Experimenter {
 		 * to choose synaptic weight values out of [-0.1;0.1] when initializing
 		 * synapse weights randomly.
 		 */
-		int[] layers = {2,4,4,2};
+		int[] layers = {2,4,4,1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
-		//desc.setInitializeAllowedSynapses(false);
-		//desc.setSynapseInitialRange(0.1);
- 
+		desc.setInitializeAllowedSynapses(false);
+		desc.setSynapseInitialRange(1);
+		desc.setFrequency(1);
+		
 		NeuralNetwork net = desc.createNeuralNetwork();
- 
+
 		/*
 		 * Step 0: We now have 10000 neural networks with 2 input neurons
 		 * (numbered 1,2), one hidden neuron (3) and two output neurons (4
