@@ -22,13 +22,14 @@ public class SEFrame extends JFrame {
 		// which will be embedded in a major JFrame in the following lines) by creating
 		// the main GUI instance
 		mainPanel = new SEPanel(this);
+		add(mainPanel);
 		
 		// Add this main GUI instance to the main frame (this contains all elements)
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(mainPanel);
 
 		// Do some size and location stuff
-		pack();
+		//pack();
 		setLocationByPlatform(true);
 		setMinimumSize(new Dimension(1000, 500));
 		setVisible(true);

@@ -10,95 +10,86 @@ import com.dkriesel.snipe.core.NeuralNetwork;
 public class SEPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	private int gridSize = 30;
-	private int neuronDia = 20;
-	
+	private SENeuron[] neurons;
 	private SEFrame frame;
 	private NeuralNetwork net;
 	
 	public SEPanel(SEFrame frame) {
 		this.frame = frame;
 		net = frame.getNetwork();
+		
+		// Set up all neurons and synapses
+		init();
 	}
 
+	private void init() {
+		this.setLayout(null);
+		
+		int nc = net.countNeurons() + 1;
+		neurons = new SENeuron[nc];
+		
+		for(int n = 1; n<nc; n++) {
+			neurons[n] = new SENeuron(net, n);
+			add(neurons[n]);
+		}
+	}
+	
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.WHITE);
+		g.setColor(Color.red);
 		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 		
 		paintSynapses(g);
-		paintNeurons(g);
+		
+		paintLegend(g, 0, 0, 100, 20);
 	}
 	
+	private void paintLegend(Graphics g, int x, int y, int w, int h) {
+		for(int i=0; i<w; i++) {
+			double we = (double)i/w * 2.0 - 1.0;
+			g.setColor(this.getWeightColor(Color.white, Color.GREEN, Color.ORANGE, we));
+			g.drawLine(x+i, y, x+i, y+h);
+		}
+	}
+
 	private void paintSynapses(Graphics g) {
-		
-		int nc = net.countNeurons();
-		
-		for(int n = 0; n<nc; n++) {
-			for(int n2 = 0; n2<nc; n2++) {
+		for(int n = 1; n<neurons.length; n++) {
+			for(int n2 = 1; n2<neurons.length; n2++) {
 				if (net.isSynapseExistent(n, n2)) {
 					paintSynapse(g, n, n2);
 				}
 			}
 		}
-		
-		
-		/*int layerbase = 0;
-		for(int layer = 0; layer<net.countLayers(); layer++) {
-			for(int neuron = 0; neuron<net.countNeuronsInLayer(layer); neuron++) {
-				int index = layerbase + neuron;
-				int x = gridSize + layer * gridSize * 2;
-				int y = gridSize + neuron * gridSize * 2;
-				int t = 0;
-				if (layer == 0) t = 1; 
-				
-				paintNeutron(g, index, x, y, t);
-			}
-			layerbase += net.countNeuronsInLayer(layer);
-		}*/
+	}
+
+	private void paintSynapse(Graphics g, int n1, int n2) {
+		g.setColor(getWeightColor(Color.white, Color.GREEN, Color.ORANGE, net.getWeight(n1, n2)));
+		SENeuron ne1 = neurons[n1];
+		SENeuron ne2 = neurons[n2];
+		g.drawLine(ne1.getOutX(), ne1.getOutY(), ne2.getOutX(), ne2.getOutY());
 	}
 	
-	private void paintSynapse(Graphics g, int n, int n2) {
-		g.setColor(Color.RED);
-		int[] coord1 = getNeuronCoords(n);
-		int[] coord2 = getNeuronCoords(n2);
-		g.drawLine(coord1[0], coord1[1], coord2[0], coord2[1]);
+	private double normalize(double weight) {
+		if (weight > 1.0) return 1.0;
+		if (weight < -1.0) return -1.0;
+		return weight;
 	}
 
-	private int[] getNeuronCoords(int n) {
-		int[] ret = new int[2];
+	public Color getWeightColor(Color colorZero, Color colorNeg, Color colorPos, double weight) { 
+		double percent;
+		Color target;
 		
-		return ret;
-	}
-
-	private void paintNeurons(Graphics g) {
-		int layerbase = 0;
-		for(int layer = 0; layer<net.countLayers(); layer++) {
-			for(int neuron = 0; neuron<net.countNeuronsInLayer(layer); neuron++) {
-				int index = layerbase + neuron;
-				int x = gridSize + layer * gridSize * 2;
-				int y = gridSize + neuron * gridSize * 2;
-				int t = 0;
-				if (layer == 0) t = 1; 
-				
-				paintNeutron(g, index, x, y, t);
-			}
-			layerbase += net.countNeuronsInLayer(layer);
+		if(weight > 0) {
+			percent = normalize(weight);
+			target = colorPos;
+		} else {
+			percent = normalize(-weight);
+			target = colorNeg;
 		}
-	}
-
-	/**
-	 * Paints one neuron by its absolute index (neuron number)
-	 * 
-	 * @param g
-	 * @param net
-	 * @param index
-	 */
-	private void paintNeutron(Graphics g, int index, int x, int y, int type) {
-		switch(type) {
-		case 1: g.setColor(Color.CYAN); break;
-		default: g.setColor(Color.ORANGE); break;
-		}
+		double inverse_percent = 1.0 - percent;
 		
-		g.fillOval(x, y, neuronDia, neuronDia);
-	}
+		int redPart = (int)(target.getRed()*percent + colorZero.getRed()*inverse_percent);
+		int greenPart = (int)(target.getGreen()*percent + colorZero.getGreen()*inverse_percent);
+		int bluePart = (int)(target.getBlue()*percent + colorZero.getBlue()*inverse_percent);
+		return new Color(redPart, greenPart, bluePart);
+		}
 }
