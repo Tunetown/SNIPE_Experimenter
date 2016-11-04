@@ -3,20 +3,16 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
 import javax.swing.JPanel;
-
 import main.SENetwork;
-
-import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SENetView extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
-	public SENeuron[] neurons;
+	public SENeuronView[] neurons;
 	private SEFrame frame;
 	private SENetwork net;
-	private SESynapses synapsePainter; 
+	private SESynapsesView synapsePainter; 
 	
 	public SENetView(SEFrame frame) {
 		this.frame = frame;
@@ -58,14 +54,14 @@ public class SENetView extends JPanel {
 		this.setLayout(null);
 		
 		int nc = net.getNetwork().countNeurons() + 1;
-		neurons = new SENeuron[nc];
+		neurons = new SENeuronView[nc];
 		
 		for(int n = 1; n<nc; n++) {
-			neurons[n] = new SENeuron(this, n);
+			neurons[n] = new SENeuronView(this, n);
 			add(neurons[n]);
 		}
 		
-		synapsePainter = new SESynapses(this);
+		synapsePainter = new SESynapsesView(this);
 	}
 	
 	public void paintComponent(Graphics g) {

@@ -42,7 +42,7 @@ public class SENetwork {
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setInitializeAllowedSynapses(false);
 		desc.setSynapseInitialRange(1);
-		desc.setFrequency(1);
+		desc.setFrequency(layers.length - 1);
 		
 		NeuralNetwork net = desc.createNeuralNetwork();
 

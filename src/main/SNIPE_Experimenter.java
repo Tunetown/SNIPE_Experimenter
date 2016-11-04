@@ -4,10 +4,6 @@ import view.SEFrame;
 
 import javax.swing.SwingUtilities;
 
-import com.dkriesel.snipe.core.NeuralNetwork;
-import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
-import com.dkriesel.snipe.training.TrainingSampleLesson;
-
 public class SNIPE_Experimenter {
 
 	public static void main(String[] args) {

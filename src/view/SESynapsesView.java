@@ -5,12 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-
 import main.SENetwork;
 
-import com.dkriesel.snipe.core.NeuralNetwork;
-
-public class SESynapses {
+public class SESynapsesView {
 
 	private final Color negativeColor = Color.green;
 	private final Color positiveColor = Color.red;
@@ -22,7 +19,7 @@ public class SESynapses {
 	private SENetwork net;
 	private SENetView view;
 	
-	public SESynapses(SENetView view) {
+	public SESynapsesView(SENetView view) {
 		this.net = view.getNetwork();
 		this.view = view;
 	}
@@ -51,8 +48,8 @@ public class SESynapses {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(getWeightThickness(w, maxStrokeWidth), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
-		SENeuron ne1 = view.neurons[n1];
-		SENeuron ne2 = view.neurons[n2];
+		SENeuronView ne1 = view.neurons[n1];
+		SENeuronView ne2 = view.neurons[n2];
 		
 		double as = getWeightThickness(w, arrowMaxSize);
 		if (as < arrowMinSize) as = arrowMinSize;

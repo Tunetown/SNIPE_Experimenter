@@ -2,14 +2,10 @@ package view;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
 import javax.swing.JComponent;
-
 import main.SENetwork;
 
-import com.dkriesel.snipe.core.NeuralNetwork;
-
-public class SENeuron extends JComponent {
+public class SENeuronView extends JComponent {
 	private static final long serialVersionUID = 1L;
 
 	private Color inputColor = Color.CYAN;
@@ -24,7 +20,7 @@ public class SENeuron extends JComponent {
 	private int x;
 	private int y;
 	
-	public SENeuron(SENetView view, int num) {
+	public SENeuronView(SENetView view, int num) {
 		this.net = view.getNetwork();
 		this.num = num;
 		this.view = view;
