@@ -1,15 +1,18 @@
 package view;
 
 import javax.swing.JFrame;
+
+import main.SENetwork;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SEFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private SEMainPanel mainPanel;
-	private NeuralNetwork net;
+	private SENetwork net;
 
-	public SEFrame(String title, NeuralNetwork net) {
+	public SEFrame(String title, SENetwork net) {
 		super(title);
 		this.net = net;
 	}
@@ -27,7 +30,7 @@ public class SEFrame extends JFrame {
 		setVisible(true);
 	}
 	
-	public NeuralNetwork getNetwork() {
+	public SENetwork getNetwork() {
 		return net;
 	}
 }

@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import main.SENetwork;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SEOutputView extends JPanel {
@@ -14,7 +16,7 @@ public class SEOutputView extends JPanel {
 	private int defaultSize = 400;
 	private int resolution = 4;
 	
-	private NeuralNetwork net;
+	private SENetwork net;
 	private SEFrame frame;
 	
 	public SEOutputView(SEFrame frame) {
@@ -57,7 +59,7 @@ public class SEOutputView extends JPanel {
 	 */
 	private Color getOutColor(double x, double y) {
 		double[] in = {x, y};
-		double[] out = net.propagate(in);
+		double[] out = net.getNetwork().propagate(in);
 		return SESynapses.getWeightColor(Color.LIGHT_GRAY, Color.green, Color.red, out[0]);
 	}
 }

@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
+import main.SENetwork;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SESynapses {
@@ -17,18 +19,18 @@ public class SESynapses {
 	private final int arrowMinSize = 4;
 	private final int arrowMaxSize = 8;
 	
-	private NeuralNetwork net;
-	private SENetView panel;
+	private SENetwork net;
+	private SENetView view;
 	
-	public SESynapses(SENetView panel, NeuralNetwork net) {
-		this.net = net;
-		this.panel = panel;
+	public SESynapses(SENetView view) {
+		this.net = view.getNetwork();
+		this.view = view;
 	}
 	
 	public void paint(Graphics g) {
-		for(int n = 1; n<panel.neurons.length; n++) {
-			for(int n2 = 1; n2<panel.neurons.length; n2++) {
-				if (net.isSynapseExistent(n, n2)) {
+		for(int n = 1; n<view.neurons.length; n++) {
+			for(int n2 = 1; n2<view.neurons.length; n2++) {
+				if (net.getNetwork().isSynapseExistent(n, n2)) {
 					paintSynapse(g, n, n2);
 				}
 			}
@@ -44,13 +46,13 @@ public class SESynapses {
 	}
 
 	private void paintSynapse(Graphics g, int n1, int n2) {
-		double w = net.getWeight(n1, n2);
+		double w = net.getNetwork().getWeight(n1, n2);
 		g.setColor(getWeightColor(zeroColor, negativeColor, positiveColor, w));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(getWeightThickness(w, maxStrokeWidth), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
-		SENeuron ne1 = panel.neurons[n1];
-		SENeuron ne2 = panel.neurons[n2];
+		SENeuron ne1 = view.neurons[n1];
+		SENeuron ne2 = view.neurons[n2];
 		
 		double as = getWeightThickness(w, arrowMaxSize);
 		if (as < arrowMinSize) as = arrowMinSize;

@@ -6,6 +6,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import main.SENetwork;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 
 public class SENetView extends JPanel {
@@ -13,7 +15,7 @@ public class SENetView extends JPanel {
 	
 	public SENeuron[] neurons;
 	private SEFrame frame;
-	private NeuralNetwork net;
+	private SENetwork net;
 	private SESynapses synapsePainter; 
 	
 	public SENetView(SEFrame frame) {
@@ -29,6 +31,7 @@ public class SENetView extends JPanel {
 		init();
 	}
 	
+	// TODO algorithm is not flexible enough (just try)
 	public int getGridSize() {
 		int minDim = 0;
 		if (this.getWidth() > this.getHeight()) {
@@ -36,17 +39,17 @@ public class SENetView extends JPanel {
 		} else {
 			minDim = this.getWidth();
 		}
-		if (getMaxNeuronsInLayer() > net.countLayers()) {
+		if (getMaxNeuronsInLayer() > net.getNetwork().countLayers()) {
 			return (int)(minDim / (getMaxNeuronsInLayer()) / 2);
 		} else {
-			return (int)(minDim / (net.countLayers()) / 2);
-		}
+			return (int)(minDim / (net.getNetwork().countLayers()) / 2);
+		} 
 	}
 
 	private int getMaxNeuronsInLayer() {
 		int max = 0;
-		for(int i=0; i<net.countLayers(); i++) {
-			if (net.countNeuronsInLayer(i) > max) max = net.countNeuronsInLayer(i);
+		for(int i=0; i<net.getNetwork().countLayers(); i++) {
+			if (net.getNetwork().countNeuronsInLayer(i) > max) max = net.getNetwork().countNeuronsInLayer(i);
 		}
 		return max;
 	}
@@ -54,15 +57,15 @@ public class SENetView extends JPanel {
 	private void init() {
 		this.setLayout(null);
 		
-		int nc = net.countNeurons() + 1;
+		int nc = net.getNetwork().countNeurons() + 1;
 		neurons = new SENeuron[nc];
 		
 		for(int n = 1; n<nc; n++) {
-			neurons[n] = new SENeuron(this, net, n);
+			neurons[n] = new SENeuron(this, n);
 			add(neurons[n]);
 		}
 		
-		synapsePainter = new SESynapses(this, net);
+		synapsePainter = new SESynapses(this);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -72,5 +75,9 @@ public class SENetView extends JPanel {
 		synapsePainter.paint(g);
 		synapsePainter.paintLegend(g, this.getWidth() - 100, this.getHeight() - 10, 100, 10);
 		
+	}
+	
+	public SENetwork getNetwork() {
+		return net;
 	}
 }
