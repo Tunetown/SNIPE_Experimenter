@@ -51,7 +51,7 @@ public class SEControlPanel extends JPanel {
 	
 	private void trainData() {
 		if(trainWorker != null) {
-			trainWorker.kill(); 
+			trainWorker.kill(); // TODO clean properly, change button text etc
 		} else {
 			trainWorker = new SETrainingWorker(frame);
 			trainWorker.execute();

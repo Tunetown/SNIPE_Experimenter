@@ -57,6 +57,7 @@ public class SESynapsesView {
 	}
 	
 	private float getWeightThickness(double weight, int max) {
+		if (Double.isNaN(weight)) return 1; // TODO 
 		return (float)(Math.abs(normalize(weight) * max));
 	}
 
@@ -85,7 +86,8 @@ public class SESynapsesView {
 	}
 
 	// TODO static not good
-	public static Color getDataColor(Color colorZero, Color colorNeg, Color colorPos, double weight) { 
+	public static Color getDataColor(Color colorZero, Color colorNeg, Color colorPos, double weight) {
+		if (Double.isNaN(weight)) return Color.BLUE; // TODO 
 		double percent;
 		Color target;
 		
@@ -96,6 +98,7 @@ public class SESynapsesView {
 			percent = normalize(-weight);
 			target = colorNeg;
 		}
+		
 		double inverse_percent = 1.0 - percent;
 		
 		int redPart = (int)(target.getRed()*percent + colorZero.getRed()*inverse_percent);
