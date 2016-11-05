@@ -27,7 +27,6 @@ public class SENetView extends JPanel {
 		init();
 	}
 	
-	// TODO algorithm is not flexible enough (just try)
 	public int getGridSize() {
 		int minDim = 0;
 		if (this.getWidth() > this.getHeight()) {

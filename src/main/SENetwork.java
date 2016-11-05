@@ -52,17 +52,16 @@ public class SENetwork {
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setInitializeAllowedSynapses(false);
 		desc.setSynapseInitialRange(1);
-		
+		desc.setSettingsTopologyFeedForward();
 		NeuralNetwork net = desc.createNeuralNetwork();
-
+		desc.setFrequency(0);//layers.length - 1);
+		
 		net.createSynapsesFromLayerToLayer(0, 1);
 		net.createSynapsesFromLayerToLayer(1, 2);
 		net.createSynapsesFromLayerToLayer(2, 3);
 		//net.createSynapsesFromLayerToLayer(3, 4);
 		//net.createSynapsesFromLayerToLayer(4, 5);
  
-		desc.setFrequency(layers.length - 1);
-		
 		return net;
 	}
 
@@ -133,4 +132,4 @@ public class SENetwork {
 
 
 
-// TODO
+// TODO xxx

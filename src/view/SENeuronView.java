@@ -59,5 +59,7 @@ public class SENeuronView extends JComponent {
 		}
 		
 		g.fillOval(0, 0, neuronDia, neuronDia);
+		
+		// TODO visualize bias weight to this neuron somehow
 	}
 }
