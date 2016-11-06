@@ -17,10 +17,11 @@ public class SETrainingWorker extends SwingWorker {
 		try {
 			while (!isKilled()) {
 				System.out.println("Train");
-				frame.getNetwork().getNetwork().trainBackpropagationOfError(frame.getNetwork().getLesson(), 1, 0.03);
+				frame.getNetwork().getLesson().optimizeDesiredOutputsForClassificationProblem(frame.getNetwork().getNetwork());
+				frame.getNetwork().getNetwork().trainBackpropagationOfError(frame.getNetwork().getLesson(), 10, 0.03);
 				publish();
 				
-				Thread.sleep(100);
+				Thread.sleep(5);
 			};
 			
 		} catch(Throwable t) {

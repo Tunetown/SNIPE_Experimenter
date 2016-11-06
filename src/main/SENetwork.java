@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Arrays;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
@@ -17,7 +19,7 @@ public class SENetwork {
 		return net;
 	}
 	
-	private TrainingSampleLesson createSamples(double x, double y, double value) {
+	private void createSamples(double x, double y, double value) {
 		/*
 		double[][] in = {{0.5, -0.5},
 				         {-0.7, 0.3},
@@ -37,8 +39,7 @@ public class SENetwork {
 		double[][] in = {{x, y}};
 		double[][] teach = {{value}};
 		TrainingSampleLesson lesson = new TrainingSampleLesson(in, teach);
-		lesson.optimizeDesiredOutputsForClassificationProblem(net);
-		return lesson;
+		setLesson(lesson);
 	}
 	
 	public TrainingSampleLesson getLesson() {
@@ -51,10 +52,10 @@ public class SENetwork {
 		int[] layers = {2,4,4, 1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setInitializeAllowedSynapses(false);
-		desc.setSynapseInitialRange(1);
+		desc.setSynapseInitialRange(0.1);
 		desc.setSettingsTopologyFeedForward();
 		NeuralNetwork net = desc.createNeuralNetwork();
-		desc.setFrequency(0);//layers.length - 1);
+		desc.setFrequency(0); //layers.length - 1);
 		
 		net.createSynapsesFromLayerToLayer(0, 1);
 		net.createSynapsesFromLayerToLayer(1, 2);
@@ -69,7 +70,7 @@ public class SENetwork {
 		System.out.println("Adding data: "+x+", "+y+" -> "+value);
 		
 		if(samples == null) {
-			samples = createSamples(x, y, value);
+			createSamples(x, y, value);
 			return;
 		}
 		
@@ -89,11 +90,22 @@ public class SENetwork {
 		double[] ntl = {value};
 		nteach[in.length] = ntl;
 		
-		samples = new TrainingSampleLesson(nin, nteach);
+		setLesson(new TrainingSampleLesson(nin, nteach));		
 	}
 
 	public void setLesson(TrainingSampleLesson trainingSampleLesson) {
 		samples = trainingSampleLesson;
+		if(samples == null) return;
+		
+		//samples.optimizeDesiredOutputsForClassificationProblem(net);
+		
+		for(int i=0; i<samples.getDesiredOutputs().length; i++){
+			//System.out.println(Arrays.toString(samples.getDesiredOutputs()[i]));
+		}
+		for(int i=0; i<samples.getInputs().length; i++){
+			//System.out.println(Arrays.toString(samples.getInputs()[i]));
+		}
+		
 	}
 
 }

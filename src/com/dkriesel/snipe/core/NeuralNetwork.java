@@ -1024,7 +1024,6 @@ public class NeuralNetwork implements Serializable {
 			}
 
 		}
-
 		// write output
 		for (int i = countNeurons(); i >= getNeuronFirstInLayer(countLayers() - 1); i--) {
 			output[mapOutputNeuronToOutputNumber(i)] = activations[i];
@@ -1597,11 +1596,14 @@ public class NeuralNetwork implements Serializable {
 				delta[i] = 0;
 				// first part of delta
 				delta[i] = neuronBehaviors[i].computeDerivative(netInputs[i]);
+				
 				// second part of delta depending on kind of neuron
 				if (isNeuronOutput(i)) {
 					// Propagate Sample
 					double[] outputs = propagate(inputs[chosenSample]);
-					delta[i] *= (desiredOutputs[chosenSample][mapOutputNeuronToOutputNumber(i)] - outputs[mapOutputNeuronToOutputNumber(i)]);
+					delta[i] *= (desiredOutputs[chosenSample][mapOutputNeuronToOutputNumber(i)] 
+							- outputs[mapOutputNeuronToOutputNumber(i)]);
+					
 					delta[i] *= eta;// multiplication with eta is done here and
 					// can therefore be ommited when calculating
 					// the weight changes
@@ -1623,6 +1625,7 @@ public class NeuralNetwork implements Serializable {
 							* delta[i];
 					// multiplication with eta is ommited here because it is
 					// already done while calculating errors
+					
 				}
 			}
 		}
