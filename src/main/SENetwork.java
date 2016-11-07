@@ -1,15 +1,22 @@
 package main;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
+import com.dkriesel.snipe.neuronbehavior.Identity;
+import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicus;
+import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 public class SENetwork {
 
 	private NeuralNetwork net;
 	private TrainingSampleLesson samples;
+	
+	private int iterations = 0;
+	private List<Double> rmsError = new ArrayList<Double>(); 
 	
 	public SENetwork() {
 		net = createNetwork();
@@ -18,7 +25,22 @@ public class SENetwork {
 	public NeuralNetwork getNetwork() {
 		return net;
 	}
+
+	public void train() {
+		if (samples == null) return;
+		
+		rmsError.add(ErrorMeasurement.getErrorRootMeanSquareSum(net, samples));
+		
+		//samples.optimizeDesiredOutputsForClassificationProblem(frame.getNetwork().getNetwork());
+		net.trainBackpropagationOfError(samples, 100, 0.03);
+		
+		iterations++;
+	}
 	
+	public int getIterations() {
+		return iterations;
+	}
+
 	private void createSamples(double x, double y, double value) {
 		/*
 		double[][] in = {{0.5, -0.5},
@@ -47,16 +69,16 @@ public class SENetwork {
 	}
 	
 	private NeuralNetwork createNetwork() {
-		System.out.println("SNIPE Experiment");
-
 		int[] layers = {2,4,4, 1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setInitializeAllowedSynapses(false);
-		desc.setSynapseInitialRange(0.1);
+		desc.setSynapseInitialRange(0.4);
+		desc.setNeuronBehaviorInputNeurons(new Identity());
+		desc.setNeuronBehaviorHiddenNeurons(new TangensHyperbolicus());
+		desc.setNeuronBehaviorOutputNeurons(new TangensHyperbolicus());
 		desc.setSettingsTopologyFeedForward();
-		NeuralNetwork net = desc.createNeuralNetwork();
-		desc.setFrequency(0); //layers.length - 1);
 		
+		NeuralNetwork net = desc.createNeuralNetwork();
 		net.createSynapsesFromLayerToLayer(0, 1);
 		net.createSynapsesFromLayerToLayer(1, 2);
 		net.createSynapsesFromLayerToLayer(2, 3);
@@ -105,7 +127,14 @@ public class SENetwork {
 		for(int i=0; i<samples.getInputs().length; i++){
 			//System.out.println(Arrays.toString(samples.getInputs()[i]));
 		}
-		
+	}
+
+	public List<Double> getErrorList() {
+		return rmsError;
+	}
+
+	public double getRmsError() {
+		return rmsError.get(iterations - 1);
 	}
 
 }

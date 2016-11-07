@@ -30,4 +30,8 @@ public class SEMainPanel extends JPanel {
 		controlView = new SEControlPanel(frame);
 		add(controlView, BorderLayout.SOUTH);
 	}
+	
+	public SEControlPanel getControlPanel() {
+		return controlView;
+	}
 }

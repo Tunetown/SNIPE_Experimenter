@@ -12,11 +12,13 @@ public class SEOutputView extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private int defaultSize = 400;
-	private int resolution = 10;
+	private int resolution = 4;
 	private int sampleDia = 6;
 	
 	private SENetwork net;
 	private SEFrame frame;
+	
+	private double samplesRange = 10.0;
 	
 	public SEOutputView(SEFrame frame) {
 		this.frame = frame;
@@ -26,7 +28,7 @@ public class SEOutputView extends JPanel {
 		this.setPreferredSize(dim);
 		this.setMinimumSize(dim);
 		
-		SEOutputView wrapper = this;
+		final SEOutputView wrapper = this;
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -89,11 +91,11 @@ public class SEOutputView extends JPanel {
 	}
 	
 	private double convertToModel(int in) {
-		return (2.0 * (double)in / (double)getDimension()) - 1.0;
+		return (samplesRange*2 * (double)in / (double)getDimension()) - samplesRange;
 	}
 	
 	private int convertToView(double in) {
-		return (int)((in + 1.0) / 2 * getDimension());
+		return (int)((in + samplesRange) / (samplesRange*2) * getDimension());
 	}
 
 	/**

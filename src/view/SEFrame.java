@@ -30,4 +30,8 @@ public class SEFrame extends JFrame {
 	public SENetwork getNetwork() {
 		return net;
 	}
+	
+	public SEMainPanel getMainPanel() {
+		return mainPanel;
+	}
 }
