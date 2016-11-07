@@ -2,15 +2,21 @@ package view;
 
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
-@SuppressWarnings("rawtypes")
-public class SETrainingWorker extends SwingWorker {
+import main.Main;
 
-	private SEFrame frame;
+@SuppressWarnings("rawtypes")
+public class TrainingWorker extends SwingWorker {
+
+	private Main main;
+	private JFrame frame;
+	
 	private boolean killed;
 	
-	public SETrainingWorker(SEFrame frame) {
+	public TrainingWorker(Main main, JFrame frame) {
+		this.main = main;
 		this.frame = frame;
 	}
 	
@@ -18,8 +24,8 @@ public class SETrainingWorker extends SwingWorker {
 	protected Object doInBackground() throws Exception {
 		try {
 			while (!isKilled()) {
-				frame.getNetwork().train();
-				frame.getMainPanel().getControlPanel().updateStats();
+				main.getNetwork().train(main.getData(), main.getTracker());
+				main.updateStats();
 				frame.repaint();
 				//publish();
 				
@@ -38,13 +44,13 @@ public class SETrainingWorker extends SwingWorker {
 
 	@Override
 	protected void process(List chunks) {
-		frame.getMainPanel().getControlPanel().updateStats();
+		main.updateStats();
 		frame.repaint();
 	}
 
 	@Override
 	protected void done() {
-		frame.getMainPanel().getControlPanel().trainingStopped();
+		main.setTrainingStopped();
 	}
 
 	public void kill() {

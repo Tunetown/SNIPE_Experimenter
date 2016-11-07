@@ -1,38 +1,38 @@
-package view;
+package view.data;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JPanel;
-import main.SENetwork;
 
-public class SEOutputView extends JPanel {
+import javax.swing.JPanel;
+
+import view.topology.SynapsePainter;
+import main.Main;
+
+public class DataPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private int defaultSize = 400;
 	private int resolution = 4;
 	private int sampleDia = 6;
-	
-	private SENetwork net;
-	private SEFrame frame;
-	
 	private double samplesRange = 10.0;
 	
-	public SEOutputView(SEFrame frame) {
-		this.frame = frame;
-		this.net = frame.getNetwork();
+	private Main main;
+	
+	public DataPanel(Main main) {
+		this.main = main;
 		
 		Dimension dim = new Dimension(defaultSize, defaultSize);
 		this.setPreferredSize(dim);
 		this.setMinimumSize(dim);
 		
-		final SEOutputView wrapper = this;
+		final DataPanel wrapper = this;
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				wrapper.net.addSample(
+				wrapper.main.getData().addSample(
 						wrapper.convertToModel(e.getPoint().x), 
 						wrapper.convertToModel(e.getPoint().y), 
 						(e.getButton() == 1) ? 1.0 : ((e.getButton() == 2) ? 0 : -1.0));
@@ -47,11 +47,11 @@ public class SEOutputView extends JPanel {
 	}
 
 	private void paintSamples(Graphics g) {
-		if(net.getLesson() == null) return;
+		if(main.getData().getNumOfSamples() == 0) return;
 		
-		for(int n=0; n<net.getLesson().getInputs().length; n++) {
-			double[][] in = net.getLesson().getInputs();
-			double[][] out = net.getLesson().getDesiredOutputs();
+		for(int n=0; n<main.getData().getInputs().length; n++) {
+			double[][] in = main.getData().getInputs();
+			double[][] out = main.getData().getDesiredOutputs();
 			paintSample(g, in[n][0], in[n][1], out[n][0]);
 		}
 	}
@@ -63,7 +63,7 @@ public class SEOutputView extends JPanel {
 	 * @param out
 	 */
 	private void paintSample(Graphics g, double x, double y, double out) {
-		g.setColor(SESynapsesView.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out));
+		g.setColor(SynapsePainter.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out));
 		g.fillOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
 		g.setColor(Color.BLACK);
 		g.drawOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
@@ -106,8 +106,8 @@ public class SEOutputView extends JPanel {
 	 */
 	private Color getOutColor(double x, double y) {
 		double[] in = {x, y};
-		double[] out = net.getNetwork().propagate(in);
+		double[] out = main.getNetwork().propagate(in);
 		//System.out.println(x+"                "+y+"     "+out[0]);
-		return SESynapsesView.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out[0]);
+		return SynapsePainter.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out[0]);
 	}
 }

@@ -1,8 +1,7 @@
-package main;
+package model;
 
 import java.io.File;
-
-import com.dkriesel.snipe.training.TrainingSampleLesson;
+import main.ParamFile;
 
 /**
  * Loads the application specific last used values from the temp file
@@ -14,10 +13,10 @@ public class DataLoader {
 
 	private static final File FILE = new File(System.getProperty("user.home") + File.separator + "SE.tmp");
 	
-	private SENetwork net;
+	private DataWrapper data;
 	
-	public DataLoader(SENetwork net) {
-		this.net = net;
+	public DataLoader(DataWrapper data) {
+		this.data = data;
 	}
 	
 	/**
@@ -32,7 +31,7 @@ public class DataLoader {
 	    		try {
 	    			ParamFile var = new ParamFile(FILE);
 
-	    			var.set("data", net.getLesson());
+	    			var.set("data", data.getSerializable());
 		    	
 	    			var.store();
 		    	
@@ -53,7 +52,7 @@ public class DataLoader {
 		try {
 			ParamFile vars = new ParamFile(FILE);
 
-			net.setLesson((TrainingSampleLesson)vars.get("data"));
+			data.setFromSerializable(vars.get("data"));
 
 		} catch (Throwable e) {
 			e.printStackTrace();

@@ -1,19 +1,19 @@
-package view;
+package view.control;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Collections;
-
 import javax.swing.JComponent;
+import main.Main;
 
-public class SEErrorGraph extends JComponent {
+public class ErrorGraphPanel extends JComponent {
 	private static final long serialVersionUID = 1L;
 
-	private SEFrame frame;
+	private Main main;
 	
-	public SEErrorGraph(SEFrame frame) {
-		this.frame = frame;
+	public ErrorGraphPanel(Main main) {
+		this.main = main;
 
 		Dimension dim = new Dimension(250, 100);
 		this.setPreferredSize(dim);
@@ -28,15 +28,15 @@ public class SEErrorGraph extends JComponent {
 		g.setColor(Color.black);
 		g.drawRect(0, 0, getWidth(), getHeight());
 		
-		if (frame.getNetwork().getErrorList().size() == 0) return;
+		if (main.getTracker().getRmsErrors().size() == 0) return;
 		
 		try {
-			double xstep = getWidth() / (double)frame.getNetwork().getErrorList().size();
-			double ystep = getHeight() / Collections.max(frame.getNetwork().getErrorList());
+			double xstep = getWidth() / (double)main.getTracker().getRmsErrors().size();
+			double ystep = getHeight() / Collections.max(main.getTracker().getRmsErrors());
 			
-			for (int i=1; i<frame.getNetwork().getErrorList().size(); i++) {
-				double err = frame.getNetwork().getErrorList().get(i);
-				double errm1 = frame.getNetwork().getErrorList().get(i-1);
+			for (int i=1; i<main.getTracker().getRmsErrors().size(); i++) {
+				double err = main.getTracker().getRmsErrors().get(i);
+				double errm1 = main.getTracker().getRmsErrors().get(i-1);
 				
 				g.drawLine((int)((i-1)*xstep), getHeight()-(int)(errm1*ystep),
 						(int)(i*xstep), getHeight()-(int)(err*ystep));

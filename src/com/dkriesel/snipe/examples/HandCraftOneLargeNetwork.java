@@ -2,7 +2,6 @@ package com.dkriesel.snipe.examples;
 
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
-import com.dkriesel.snipe.util.GraphVizEncoder;
 
 /**
  * Simple example program that shows how to hand-craft even large numbers of

@@ -1,13 +1,13 @@
-package view;
+package view.topology;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import main.SENetwork;
+import main.Main;
 
-public class SESynapsesView {
+public class SynapsePainter {
 
 	private final Color negativeColor = Color.green;
 	private final Color positiveColor = Color.red;
@@ -16,18 +16,18 @@ public class SESynapsesView {
 	private final int arrowMinSize = 4;
 	private final int arrowMaxSize = 8;
 	
-	private SENetwork net;
-	private SENetView view;
+	private Main main;
+	private TopologyPanel targetPanel;
 	
-	public SESynapsesView(SENetView view) {
-		this.net = view.getNetwork();
-		this.view = view;
+	public SynapsePainter(Main main, TopologyPanel targetPanel) {
+		this.main = main;
+		this.targetPanel = targetPanel;
 	}
 	
 	public void paint(Graphics g) {
-		for(int n = 1; n<view.neurons.length; n++) {
-			for(int n2 = 1; n2<view.neurons.length; n2++) {
-				if (net.getNetwork().isSynapseExistent(n, n2)) {
+		for(int n = 0; n<targetPanel.getNeurons().length; n++) {
+			for(int n2 = 1; n2<targetPanel.getNeurons().length; n2++) {
+				if (main.getNetwork().isSynapseExistent(n, n2)) {
 					paintSynapse(g, n, n2);
 				}
 			}
@@ -43,13 +43,13 @@ public class SESynapsesView {
 	}
 
 	private void paintSynapse(Graphics g, int n1, int n2) {
-		double w = net.getNetwork().getWeight(n1, n2);
+		double w = main.getNetwork().getWeight(n1, n2);
 		g.setColor(getDataColor(zeroColor, negativeColor, positiveColor, w));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(getWeightThickness(w, maxStrokeWidth), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
-		SENeuronView ne1 = view.neurons[n1];
-		SENeuronView ne2 = view.neurons[n2];
+		NeuronPanel ne1 = targetPanel.getNeurons()[n1];
+		NeuronPanel ne2 = targetPanel.getNeurons()[n2];
 		
 		double as = getWeightThickness(w, arrowMaxSize);
 		if (as < arrowMinSize) as = arrowMinSize;
