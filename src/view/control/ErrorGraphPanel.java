@@ -1,7 +1,6 @@
 package view.control;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Collections;
 import javax.swing.JComponent;
@@ -15,10 +14,10 @@ public class ErrorGraphPanel extends JComponent {
 	public ErrorGraphPanel(Main main) {
 		this.main = main;
 
-		Dimension dim = new Dimension(250, 100);
+/*		Dimension dim = this.getSize(); //new Dimension(250, 100);
 		this.setPreferredSize(dim);
 		this.setMinimumSize(dim);
-		this.setSize(dim);
+		this.setSize(dim);*/
 	}
 
 	@Override

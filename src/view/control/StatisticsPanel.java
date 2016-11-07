@@ -1,9 +1,15 @@
 package view.control;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.text.DecimalFormat;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import main.Main;
 
 public class StatisticsPanel extends JPanel {
@@ -18,12 +24,14 @@ public class StatisticsPanel extends JPanel {
 	public StatisticsPanel(Main main) {
 		this.main = main;
 		
+		setLayout(new BorderLayout(3,3));
+		
 		errorGraph = new ErrorGraphPanel(this.main);
-		add(errorGraph);
+		add(errorGraph, BorderLayout.CENTER);
 
 		JPanel statsR = new JPanel();
 		statsR.setLayout(new BoxLayout(statsR, BoxLayout.PAGE_AXIS));
-		add(statsR);
+		add(statsR,BorderLayout.EAST);
 		
 		iterations = new JLabel();
 		statsR.add(iterations);
@@ -32,6 +40,9 @@ public class StatisticsPanel extends JPanel {
 		rmsError = new JLabel();
 		statsR.add(rmsError);
 		setRmsError(1);
+		rmsError.setPreferredSize(new Dimension(100, rmsError.getPreferredSize().height));
+		
+		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
 	private void setIteration(int i) {

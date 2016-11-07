@@ -119,7 +119,9 @@ public class Main {
 	 * 
 	 */
 	public void stopTraining() {
-		trainWorker.kill();
+		if (trainWorker != null) {
+			trainWorker.kill();
+		}
 	}
 	
 	/**

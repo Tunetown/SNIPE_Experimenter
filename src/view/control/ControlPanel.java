@@ -1,8 +1,9 @@
 package view.control;
 
-import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import main.Main;
 
 public class ControlPanel extends JPanel {
@@ -16,18 +17,21 @@ public class ControlPanel extends JPanel {
 	private StatisticsPanel stats;
 	
 	public ControlPanel(Main main, JFrame frame) {
-		super(new BorderLayout(3,3));
+		super();
+		
+		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+		
 		this.main = main;
 		this.frame = frame;
 		
-		trainControls = new TrainControlPanel(this.main, this.frame);
-		add(trainControls, BorderLayout.EAST);
-		
-		dataControls = new DataControlPanel(this.main, this.frame);
-		add(dataControls, BorderLayout.CENTER);
-		
 		stats = new StatisticsPanel(this.main);
-		add(stats, BorderLayout.WEST);
+		add(stats);
+
+		dataControls = new DataControlPanel(this.main, this.frame);
+		add(dataControls);
+
+		trainControls = new TrainControlPanel(this.main, this.frame);
+		add(trainControls);
 	}
 	
 	public void updateStats() {
