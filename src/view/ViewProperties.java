@@ -15,7 +15,7 @@ public class ViewProperties {
 	public static final Color COLOR_NEURON_HIDDEN = Color.DARK_GRAY;
 
 	public Color getDataColor(double weight) {
-		if (Double.isNaN(weight)) return COLOR_NAN; // TODO 
+		if (Double.isNaN(weight)) return COLOR_NAN;  
 		double percent;
 		Color target;
 		
