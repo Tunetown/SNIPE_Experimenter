@@ -13,7 +13,7 @@ public class SEOutputView extends JPanel {
 
 	private int defaultSize = 400;
 	private int resolution = 10;
-	private int sampleDia = 4;
+	private int sampleDia = 6;
 	
 	private SENetwork net;
 	private SEFrame frame;
@@ -63,6 +63,9 @@ public class SEOutputView extends JPanel {
 	private void paintSample(Graphics g, double x, double y, double out) {
 		g.setColor(SESynapsesView.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out));
 		g.fillOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
+		g.setColor(Color.BLACK);
+		g.drawOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
+		
 	}
 
 	private int getDimension() {
