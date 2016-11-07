@@ -2,9 +2,7 @@ package main;
 
 import view.MainFrame;
 import view.TrainingWorker;
-
 import javax.swing.SwingUtilities;
-
 import model.DataLoader;
 import model.DataWrapper;
 import model.NetworkWrapper;

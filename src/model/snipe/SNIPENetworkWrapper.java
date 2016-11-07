@@ -87,7 +87,14 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	@Override
 	public double getRmsError(DataWrapper data) {
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
+		if (lesson == null || lesson.countSamples() == 0) return 0;
 		return ErrorMeasurement.getErrorRootMeanSquareSum(net, lesson);
+	}
+
+	@Override
+	public double getBiasWeight(int num) {
+		if (!net.isSynapseExistent(0, num + 1)) return Double.NaN;
+		return net.getWeight(0, num + 1);
 	}
 
 }

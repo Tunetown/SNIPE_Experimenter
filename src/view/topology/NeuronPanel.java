@@ -1,24 +1,26 @@
 package view.topology;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
+import view.ViewProperties;
 import main.Main;
 
 public class NeuronPanel extends JComponent {
 	private static final long serialVersionUID = 1L;
 
-	private Color inputColor = Color.CYAN;
-	private Color hiddenColor = Color.ORANGE;
-	private int neuronDiameter = 20;
+	// TODO scale with grid size
+	private int neuronDiameter = 20; // TODO all constants to ViewProperties class!
+	private int neuronBorder = 2;
 	
 	private Main main;
 	private TopologyPanel view;
 	private int num;
 	private int x;
 	private int y;
+	
+	private ViewProperties properties = new ViewProperties();
 	
 	public NeuronPanel(Main main, TopologyPanel view, int num) {
 		this.main = main;
@@ -53,13 +55,17 @@ public class NeuronPanel extends JComponent {
 		updateCoords();
 		
 		if (main.getNetwork().getLayerOfNeuron(num) == 0) {
-			g.setColor(inputColor); 
+			g.setColor(ViewProperties.COLOR_NEURON_INPUT); 
 		} else {
-			g.setColor(hiddenColor); 
+			g.setColor(ViewProperties.COLOR_NEURON_HIDDEN); 
 		}
 		
 		g.fillOval(0, 0, neuronDiameter, neuronDiameter);
 		
-		// TODO visualize bias weight to this neuron somehow
+		// Bias weight
+		if ((main.getNetwork().getBiasWeight(num)) != Double.NaN) { // TODO this does not recognize input neurons properly
+			g.setColor(properties.getDataColor(main.getNetwork().getBiasWeight(num)));
+			g.fillOval(neuronBorder, neuronBorder, neuronDiameter-2*neuronBorder, neuronDiameter-2*neuronBorder);
+		}
 	}
 }

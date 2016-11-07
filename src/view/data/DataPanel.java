@@ -5,10 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JPanel;
-
-import view.topology.SynapsePainter;
+import view.ViewProperties;
 import main.Main;
 
 public class DataPanel extends JPanel {
@@ -20,6 +18,7 @@ public class DataPanel extends JPanel {
 	private double samplesRange = 10.0;
 	
 	private Main main;
+	private ViewProperties properties = new ViewProperties();
 	
 	public DataPanel(Main main) {
 		this.main = main;
@@ -63,7 +62,7 @@ public class DataPanel extends JPanel {
 	 * @param out
 	 */
 	private void paintSample(Graphics g, double x, double y, double out) {
-		g.setColor(SynapsePainter.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out));
+		g.setColor(properties.getDataColor(out));
 		g.fillOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
 		g.setColor(Color.BLACK);
 		g.drawOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
@@ -108,6 +107,6 @@ public class DataPanel extends JPanel {
 		double[] in = {x, y};
 		double[] out = main.getNetwork().propagate(in);
 		//System.out.println(x+"                "+y+"     "+out[0]);
-		return SynapsePainter.getDataColor(Color.LIGHT_GRAY, Color.green, Color.red, out[0]);
+		return properties.getDataColor(out[0]);
 	}
 }

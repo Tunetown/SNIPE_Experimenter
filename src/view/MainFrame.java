@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.JFrame;
-
 import view.control.ControlPanel;
 import main.Main;
 
