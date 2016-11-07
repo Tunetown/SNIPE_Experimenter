@@ -26,7 +26,7 @@ public class TrainingWorker extends SwingWorker {
 			while (!isKilled()) {
 				main.getNetwork().train(main.getData(), main.getTracker());
 				main.updateStats();
-				frame.repaint();
+				frame.repaint(); // TODO optimize screen flickering and thread concept
 				//publish();
 				
 				Thread.sleep(50);
