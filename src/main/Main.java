@@ -24,8 +24,6 @@ import model.snipe.SNIPENetworkWrapper;
  * 
  * - TODO Store test data in file / load from file
  * 
- * - TODO document classes and methods
- * 
  * - TODO Multi-dimensional visualization
  *  
  * 
