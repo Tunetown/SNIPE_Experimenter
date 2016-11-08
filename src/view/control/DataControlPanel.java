@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -78,6 +79,11 @@ public class DataControlPanel extends JPanel {
 	}
 	
 	private void resetData() {
+		int dialogResult = JOptionPane.showConfirmDialog(null, "Really delete current training data?", "Delete Training Data", JOptionPane.YES_NO_OPTION); 
+		if (dialogResult == JOptionPane.NO_OPTION) {
+			return;
+		}
+
 		main.getData().initialize();
 		frame.repaint();
 	}

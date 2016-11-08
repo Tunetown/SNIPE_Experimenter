@@ -109,7 +109,7 @@ public class TrainControlPanel extends JPanel {
 		}
 		etaSlider.setLabelTable( labelTable );
 		etaSlider.setPaintLabels(true);
-		etaSlider.setMajorTickSpacing(20);
+		etaSlider.setMinorTickSpacing(20);
 		etaSlider.setPaintTicks(true);
 		
 		etaSlider.addChangeListener(new ChangeListener() {
@@ -134,7 +134,7 @@ public class TrainControlPanel extends JPanel {
 		}
 		batchSlider.setLabelTable( labelTable2 );
 		batchSlider.setPaintLabels(true);
-		batchSlider.setMajorTickSpacing(500);
+		batchSlider.setMinorTickSpacing(500);
 		batchSlider.setPaintTicks(true);
 		
 		batchSlider.addChangeListener(new ChangeListener() {
