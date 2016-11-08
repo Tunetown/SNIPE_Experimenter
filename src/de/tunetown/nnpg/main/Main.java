@@ -22,6 +22,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO Adaptive eta determination
  * 
  * - TODO Store test data in file / load from file
+ * - TODO Concept for splitting training and test data (also have to be edited separately!)
  * 
  * - TODO Multi-dimensional visualization
  * 
