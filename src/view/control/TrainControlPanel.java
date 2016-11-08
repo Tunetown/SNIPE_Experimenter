@@ -26,6 +26,7 @@ public class TrainControlPanel extends JPanel {
 	
 	public JButton trainData;
 	public JButton trainStop;
+	public JSlider etaSlider;
 
 	public TrainControlPanel(Main main, JFrame frame) {
 		this.main = main;
@@ -95,7 +96,7 @@ public class TrainControlPanel extends JPanel {
 		JLabel etaLabel = new JLabel("Learning Rate (eta):");
 		controls.add(etaLabel);
 		
-		JSlider etaSlider = new JSlider(JSlider.HORIZONTAL, 0, 120, convertModelToSlider(main.getNetwork().getEta()));
+		etaSlider = new JSlider(JSlider.HORIZONTAL, 0, 120, convertModelToSlider(main.getNetwork().getEta()));
 		Hashtable labelTable = new Hashtable();
 		DecimalFormat df = new DecimalFormat("#.##");
 		DecimalFormat df0 = new DecimalFormat(".###");
@@ -147,6 +148,10 @@ public class TrainControlPanel extends JPanel {
 		});
 		controls.add(batchSlider);
 
+	}
+	
+	public void setEtaSlider(double eta) {
+		etaSlider.setValue(convertModelToSlider(eta));
 	}
 	
 	private double convertSliderToModel(int i) {

@@ -13,8 +13,8 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
-	private double eta = 0.03;
-	private int batchSize = 1000;
+	private double eta = 0.002;
+	private int batchSize = 10000;
 
 	private NeuralNetwork net;
 	
@@ -23,7 +23,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 	
 	private NeuralNetwork createNetwork() {
-		int[] layers = {2,4,4, 1};
+		int[] layers = {2,8,8,8, 1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setSettingsTopologyFeedForward();
 		desc.setSynapseInitialRange(0.1);
