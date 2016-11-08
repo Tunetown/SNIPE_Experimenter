@@ -54,10 +54,13 @@ public class DataPanel extends JPanel {
 	protected void mousePressed(MouseEvent e) {
 		switch (tool) {
 		case TOOL_PAINT:
-			main.getData().addSample(
-					convertToModel(e.getPoint().x), 
-					convertToModel(e.getPoint().y), 
-					(e.getButton() == 1) ? 1.0 : ((e.getButton() == 2) ? 0 : -1.0));
+			if (Math.abs(convertToModel(e.getPoint().x)) <= ViewProperties.DATAPANEL_SAMPLES_RANGE &&
+				Math.abs(convertToModel(e.getPoint().y)) <= ViewProperties.DATAPANEL_SAMPLES_RANGE) {
+				main.getData().addSample(
+						convertToModel(e.getPoint().x), 
+						convertToModel(e.getPoint().y), 
+						(e.getButton() == 1) ? 1.0 : ((e.getButton() == 2) ? 0 : -1.0));
+			}
 			break;
 		case TOOL_ERASE:
 			main.getData().deleteSamplesAroundPoint(

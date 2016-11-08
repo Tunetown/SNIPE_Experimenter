@@ -1,11 +1,9 @@
 package de.tunetown.nnpg.model.snipe;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.dkriesel.snipe.training.TrainingSampleLesson;
-
+import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 
 /**
@@ -18,16 +16,6 @@ public class SNIPEDataWrapper extends DataWrapper{
 
 	private TrainingSampleLesson lesson;
 	
-	@Override
-	public Serializable getSerializable() {
-		return lesson;
-	}
-
-	@Override
-	public void setFromSerializable(Object object) {
-		setLesson((TrainingSampleLesson)object);
-	}
-
 	@Override
 	public void addSample(double x, double y, double value) {
 		if(lesson == null) {
@@ -151,5 +139,17 @@ public class SNIPEDataWrapper extends DataWrapper{
 	private void setLesson(TrainingSampleLesson lesson) {
 		this.lesson = lesson;
 		//this.lesson.optimizeDesiredOutputsForClassificationProblem(net);
+	}
+
+	@Override
+	public DataContainer getContainer() {
+		if (lesson == null) return null;
+		return new DataContainer(lesson.getInputs(), lesson.getDesiredOutputs());
+	}
+
+	@Override
+	public void setFromContainer(DataContainer c) {
+		if (c == null) return;
+		setLesson(new TrainingSampleLesson(c.getInputs(), c.getDesiredOutputs()));
 	}
 }

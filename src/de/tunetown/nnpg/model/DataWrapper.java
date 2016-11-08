@@ -1,7 +1,5 @@
 package de.tunetown.nnpg.model;
 
-import java.io.Serializable;
-
 /**
  * Facade wrapper for integration of data containers, which are then used against the defined
  * neural network.
@@ -10,20 +8,6 @@ import java.io.Serializable;
  *
  */
 public abstract class DataWrapper {
-
-	/**
-	 * Get a serializable object for storing the data.
-	 * 
-	 * @return
-	 */
-	public abstract Serializable getSerializable();
-
-	/**
-	 * Set the data from a serializable object, which has been created by getSerializable().
-	 * 
-	 * @param object
-	 */
-	public abstract void setFromSerializable(Object object);
 
 	/**
 	 * Add a new sample
@@ -73,4 +57,18 @@ public abstract class DataWrapper {
 	 * @param eraseRadius
 	 */
 	public abstract void deleteSamplesAroundPoint(double x, double y, double eraseRadius);
+
+	/**
+	 * Returns a DataContainer instance holding the data in a generalized form.
+	 * 
+	 * @return
+	 */
+	public abstract DataContainer getContainer();
+
+	/**
+	 * Set the data from a givend generalized data container
+	 * 
+	 * @param c
+	 */
+	public abstract void setFromContainer(DataContainer c);
 }

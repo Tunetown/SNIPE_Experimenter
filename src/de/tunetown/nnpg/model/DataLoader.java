@@ -12,8 +12,6 @@ import de.tunetown.nnpg.main.ParamFile;
  */
 public class DataLoader {
 
-	private static final File FILE = new File(System.getProperty("user.home") + File.separator + "SE.tmp");
-	
 	private DataWrapper data;
 	
 	public DataLoader(DataWrapper data) {
@@ -21,42 +19,53 @@ public class DataLoader {
 	}
 	
 	/**
-	 * Adds and defines the shutdown hook, which stores the data after exiting
+	 * Save data to a file
+	 * 
+	 * @param file
+	 */
+	public void saveToFile(File file) {
+		try {
+			ParamFile var = new ParamFile(file);
+
+			var.set("data", data.getContainer());
+    	
+			var.store();
+    	
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Load training data from a file
 	 * 
 	 */
-	public void addShutdownHook() {
+	public void loadFromFile(File file) {
+		try {
+			ParamFile vars = new ParamFile(file);
+
+			data.initialize();
+			data.setFromContainer((DataContainer)vars.get("data"));
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Adds and defines the shutdown hook, which stores the data after exiting.
+	 * 
+	 */
+	public void addShutdownHook(File file) {
+		final File tempFileWrapper = file;
+		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 		    @Override
 		    public void run() {
 	    		System.out.print("Shutting down, saving last used data...");
-	    		try {
-	    			ParamFile var = new ParamFile(FILE);
-
-	    			var.set("data", data.getSerializable());
-		    	
-	    			var.store();
-		    	
-	    		} catch (Throwable e) {
-	    			e.printStackTrace();
-	    		}
+	    		saveToFile(tempFileWrapper);
 		    	System.out.println("finished.");
 		    }
 		});
-	}
-	
-	/**
-	 * Load Parameters: Load the last opened path etc, stored in a temporary file in the user�s home directory.
-	 * After loading, this also applies the parameters (if existent) to the program.
-	 * 
-	 */
-	public void loadParams() {
-		try {
-			ParamFile vars = new ParamFile(FILE);
-
-			data.setFromSerializable(vars.get("data"));
-
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 	}
 }

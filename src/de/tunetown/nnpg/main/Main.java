@@ -1,6 +1,10 @@
 package de.tunetown.nnpg.main;
 
+import java.io.File;
+
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import de.tunetown.nnpg.model.DataLoader;
 import de.tunetown.nnpg.model.DataWrapper;
@@ -9,6 +13,7 @@ import de.tunetown.nnpg.model.TrainingTracker;
 import de.tunetown.nnpg.model.snipe.SNIPEDataWrapper;
 import de.tunetown.nnpg.model.snipe.SNIPENetworkWrapper;
 import de.tunetown.nnpg.view.MainFrame;
+import de.tunetown.nnpg.view.Menu;
 import de.tunetown.nnpg.view.TrainingWorker;
 
 /**
@@ -21,7 +26,6 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO Adaptive adding/removing of neurons
  * - TODO Adaptive eta determination
  * 
- * - TODO Store test data in file / load from file
  * - TODO Concept for splitting training and test data (also have to be edited separately!)
  * 
  * - TODO Multi-dimensional visualization
@@ -35,11 +39,15 @@ import de.tunetown.nnpg.view.TrainingWorker;
  */
 public class Main {
 
+	private static final File TEMP_FILE = new File(System.getProperty("user.home") + File.separator + "SE.tmp");
+	
 	private NetworkWrapper net;
 	private DataWrapper data;
 	private TrainingTracker tracker;
+	private DataLoader dataLoader;
 	
 	private MainFrame frame;
+	private Menu menu;
 	private TrainingWorker trainWorker;
 	
 	/**
@@ -49,16 +57,20 @@ public class Main {
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
 		data = new SNIPEDataWrapper();
+		dataLoader = new DataLoader(data);
 		
 		initNetwork();
 		
 		// Load data from temporary file and take care that it is being saved on exit
-		DataLoader dl = new DataLoader(data);
-		dl.loadParams();
-		dl.addShutdownHook();
 		
-		// Create application frame.
+		dataLoader.loadFromFile(TEMP_FILE);
+		dataLoader.addShutdownHook(TEMP_FILE);
+		
+		// Create application frame and menu.
 		frame = new MainFrame(this);
+		menu = new Menu(this, frame);
+		
+		menu.init();
 		frame.init();
 	}
 
@@ -90,6 +102,15 @@ public class Main {
 	}
 	
 	/**
+	 * Returns the data loader
+	 * 
+	 * @return
+	 */
+	public DataLoader getDataLoader() {
+		return dataLoader;
+	}
+	
+	/**
 	 * Update statistics on UI elements according to the network state
 	 * 
 	 */
@@ -114,21 +135,6 @@ public class Main {
 		frame.getDataPanel().setTool(tool);
 	}
 	
-	/**
-	 * Main method
-	 *  
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Main appl = new Main();
-				appl.init();
-			}
-		});	
-	}
-
 	/**
 	 * Starts the training Thread
 	 *  
@@ -170,6 +176,32 @@ public class Main {
 		tracker = new TrainingTracker();
 		
 		updateStats();
+	}
+
+	/**
+	 * Main method
+	 *  
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try {
+			// Use the native menu bar on mac os x
+			System.setProperty("apple.laf.useScreenMenuBar", "true"); //$NON-NLS-1$
+		
+			// Set native look and feel 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+		} catch (Throwable t) {
+			t.printStackTrace();
+		} 
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Main appl = new Main();
+				appl.init();
+			}
+		});	
 	}
 }
 
