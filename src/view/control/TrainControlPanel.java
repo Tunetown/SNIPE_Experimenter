@@ -126,9 +126,9 @@ public class TrainControlPanel extends JPanel {
 		JLabel batchLabel = new JLabel("Batch Size:");
 		controls.add(batchLabel);
 		
-		JSlider batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, main.getNetwork().getBatchSize());
+		JSlider batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 10000, main.getNetwork().getBatchSize());
 		Hashtable labelTable2 = new Hashtable();
-		for(int i=0; i<=1000; i+=500) {
+		for(int i=0; i<=10000; i+=5000) {
 			labelTable2.put( i, new JLabel(""+i));
 		}
 		batchSlider.setLabelTable( labelTable2 );
@@ -140,6 +140,7 @@ public class TrainControlPanel extends JPanel {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				int value = ((JSlider)e.getSource()).getValue();
+				if (value == 0) value = 1;
 				main.getNetwork().setBatchSize(value);
 				main.updateStats();
 			}

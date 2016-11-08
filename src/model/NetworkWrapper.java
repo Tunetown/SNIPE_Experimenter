@@ -20,7 +20,7 @@ public abstract class NetworkWrapper {
 
 	public abstract void train(DataWrapper data, TrainingTracker tracker);
 
-	public abstract double getRmsError(DataWrapper data);
+	public abstract double getError(DataWrapper data);
 
 	public abstract double getBiasWeight(int num);
 	

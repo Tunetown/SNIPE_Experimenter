@@ -138,8 +138,18 @@ public class Main {
 	 * 
 	 */
 	public void initNetwork() {
+		double eta = 0;
+		int batchSize = 0;
+		if (net != null) {
+			eta = net.getEta();
+			batchSize = net.getBatchSize();
+		}
+		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
 		net = new SNIPENetworkWrapper();
+		
+		if (eta != 0) net.setEta(eta);
+		if (batchSize != 0) net.setBatchSize(batchSize);
 		
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();

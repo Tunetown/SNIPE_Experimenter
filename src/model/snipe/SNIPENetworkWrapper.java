@@ -3,6 +3,7 @@ package model.snipe;
 import model.DataWrapper;
 import model.NetworkWrapper;
 import model.TrainingTracker;
+
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
 import com.dkriesel.snipe.neuronbehavior.Identity;
@@ -12,9 +13,10 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
-	private NeuralNetwork net;
 	private double eta = 0.03;
-	private int batchSize = 10;
+	private int batchSize = 1000;
+
+	private NeuralNetwork net;
 	
 	public SNIPENetworkWrapper() {
 		net = createNetwork();
@@ -24,7 +26,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		int[] layers = {2,4,4, 1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
 		desc.setSettingsTopologyFeedForward();
-		desc.setSynapseInitialRange(0.4);
+		desc.setSynapseInitialRange(0.1);
 		
 		desc.setNeuronBehaviorInputNeurons(new Identity());
 		desc.setNeuronBehaviorHiddenNeurons(new TangensHyperbolicus());
@@ -78,18 +80,21 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	@Override
 	public void train(DataWrapper data, TrainingTracker tracker) {
 		if (data.getNumOfSamples() == 0) return;
-		
-		tracker.addRecord(getRmsError(data));
+
+		tracker.addRecord(getError(data));
 		
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
+		
+		long start = System.nanoTime();
 		net.trainBackpropagationOfError(lesson, batchSize, eta);
+		tracker.addNanoTime(System.nanoTime() - start);
 	}
 
 	@Override
-	public double getRmsError(DataWrapper data) {
+	public double getError(DataWrapper data) {
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
 		if (lesson == null || lesson.countSamples() == 0) return 0;
-		return ErrorMeasurement.getErrorRootMeanSquareSum(net, lesson);
+		return ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
 	}
 
 	@Override

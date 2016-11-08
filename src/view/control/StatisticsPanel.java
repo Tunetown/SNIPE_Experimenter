@@ -20,7 +20,9 @@ public class StatisticsPanel extends JPanel {
 	private JLabel eta;
 	private JLabel batchSize;
 	private JLabel iterations;
-	private JLabel rmsError;
+	private JLabel error;
+	private JLabel procTime;
+	//private JLabel procPercentage;
 	private ErrorGraphPanel errorGraph;
 
 	public StatisticsPanel(Main main) {
@@ -44,10 +46,16 @@ public class StatisticsPanel extends JPanel {
 		iterations = new JLabel();
 		statsR.add(iterations);
 
-		rmsError = new JLabel();
-		statsR.add(rmsError);
-		rmsError.setPreferredSize(new Dimension(100, rmsError.getPreferredSize().height));
+		error = new JLabel();
+		statsR.add(error);
+		error.setPreferredSize(new Dimension(150, error.getPreferredSize().height));
 		
+		procTime = new JLabel();
+		statsR.add(procTime);
+
+		//procPercentage = new JLabel();
+		//statsR.add(procPercentage);
+
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		
 		update();
@@ -66,15 +74,31 @@ public class StatisticsPanel extends JPanel {
 		iterations.setText("Iterations: " + i);
 	}
 
-	private void setRmsError(double i) {
+	private void setError(double i) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		rmsError.setText("RMS Error: " + df.format(i));
+		error.setText("Training Error: " + df.format(i));
 	}
 
+	private void setProcTime(long t) {
+		if (t < 1000000000) {
+			procTime.setText("CPU: " + (t / 1000000) + "ms");
+		} else {
+			procTime.setText("CPU: " + (t / 1000000000) + "s");
+		}
+	}
+	
+	/*
+	private void setProcPercentage(double perc) {
+		DecimalFormat df = new DecimalFormat("#.#####");
+		procPercentage.setText("CPU: " + df.format(perc) + "%");
+	}*/
+	
 	public void update() {
 		setEta(main.getNetwork().getEta());
 		setBatchSize(main.getNetwork().getBatchSize());
 		setIteration(main.getTracker().getIterations());
-		setRmsError(main.getNetwork().getRmsError(main.getData()));
+		setError(main.getNetwork().getError(main.getData()));
+		setProcTime(main.getTracker().getProcessingTime());
+		//setProcPercentage(main.getTracker().getProcessingPercentage());
 	}
 }
