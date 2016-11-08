@@ -9,12 +9,9 @@ import main.Main;
 
 public class SynapsePainter {
 
-	private final int maxStrokeWidth = 4;
-	private final int arrowMinSize = 4;
-	private final int arrowMaxSize = 8;
-	
 	private Main main;
 	private TopologyPanel targetPanel;
+	
 	private ViewProperties properties = new ViewProperties();
 	
 	public SynapsePainter(Main main, TopologyPanel targetPanel) {
@@ -44,13 +41,13 @@ public class SynapsePainter {
 		double w = main.getNetwork().getWeight(n1, n2);
 		g.setColor(properties.getDataColor(w));
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setStroke(new BasicStroke(getWeightThickness(w, maxStrokeWidth), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
+		g2.setStroke(new BasicStroke(getWeightThickness(w, ViewProperties.TOPOLOGY_MAX_SYNAPSE_WIDTH), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
 		NeuronPanel ne1 = targetPanel.getNeurons()[n1];
 		NeuronPanel ne2 = targetPanel.getNeurons()[n2];
 		
-		double as = getWeightThickness(w, arrowMaxSize);
-		if (as < arrowMinSize) as = arrowMinSize;
+		double as = getWeightThickness(w, ViewProperties.TOPOLOGY_ARROW_MAX_SIZE);
+		if (as < ViewProperties.TOPOLOGY_ARROW_MIN_SIZE) as = ViewProperties.TOPOLOGY_ARROW_MIN_SIZE;
 		drawArrow(g, ne1.getOutX(), ne1.getOutY(), ne2.getOutX(), ne2.getOutY(), as);
 	}
 	

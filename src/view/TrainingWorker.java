@@ -33,7 +33,7 @@ public class TrainingWorker extends SwingWorker {
 				// Concept: Use cloned instance for display rendering. BEWARE: No instance cloning during repaint! 
 				//publish();
 				
-				Thread.sleep(5);
+				Thread.sleep(50);
 			};
 			
 		} catch(Throwable t) {

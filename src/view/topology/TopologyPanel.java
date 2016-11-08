@@ -47,20 +47,11 @@ public class TopologyPanel extends JPanel {
 		} else {
 			minDim = this.getWidth();
 		}
-		if (getMaxNeuronsInLayer() > main.getNetwork().countLayers()) {
-			return (int)(minDim / (getMaxNeuronsInLayer()) / 2);
+		if (main.getNetwork().getMaxNeuronsInLayers() > main.getNetwork().countLayers()) {
+			return (int)(minDim / (main.getNetwork().getMaxNeuronsInLayers()) / 2);
 		} else {
 			return (int)(minDim / (main.getNetwork().countLayers()) / 2);
 		} 
-	}
-
-	// TODO this can be done by the network also
-	private int getMaxNeuronsInLayer() {
-		int max = 0;
-		for(int i=0; i<main.getNetwork().countLayers(); i++) {
-			if (main.getNetwork().countNeuronsInLayer(i) > max) max = main.getNetwork().countNeuronsInLayer(i);
-		}
-		return max;
 	}
 
 	public void paintComponent(Graphics g) {

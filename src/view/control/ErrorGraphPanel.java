@@ -3,7 +3,10 @@ package view.control;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Collections;
+
 import javax.swing.JComponent;
+
+import view.ViewProperties;
 import main.Main;
 
 public class ErrorGraphPanel extends JComponent {
@@ -13,22 +16,18 @@ public class ErrorGraphPanel extends JComponent {
 	
 	public ErrorGraphPanel(Main main) {
 		this.main = main;
-
-/*		Dimension dim = this.getSize(); //new Dimension(250, 100);
-		this.setPreferredSize(dim);
-		this.setMinimumSize(dim);
-		this.setSize(dim);*/
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		g.setColor(Color.white);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.black);
+		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, getWidth(), getHeight());
 		
 		if (main.getTracker().getRmsErrors().size() == 0) return;
 		
+		g.setColor(ViewProperties.ERRORGRAPH_COLOR_TRAINING_ERROR);
 		try {
 			double xstep = getWidth() / (double)main.getTracker().getRmsErrors().size();
 			double ystep = getHeight() / Collections.max(main.getTracker().getRmsErrors());

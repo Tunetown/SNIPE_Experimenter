@@ -122,4 +122,14 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	public void setBatchSize(int size) {
 		batchSize = size;
 	}
+
+	@Override
+	public int getMaxNeuronsInLayers() {
+		int max = 0;
+		for(int i=0; i<countLayers(); i++) {
+			if (countNeuronsInLayer(i) > max) max = countNeuronsInLayer(i);
+		}
+		return max;
+	}
 }
+

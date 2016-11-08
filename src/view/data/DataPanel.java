@@ -14,12 +14,6 @@ public class DataPanel extends JPanel {
 	
 	public static final int TOOL_PAINT = 0;
 	public static final int TOOL_ERASE = 1;
-
-	private int defaultSize = 400;
-	private int resolution = 4;
-	private int sampleDia = 6;
-	private double samplesRange = 10.0;
-	private double eraseRadius = 0.5;
 	
 	private Main main;
 	private ViewProperties properties = new ViewProperties();
@@ -29,7 +23,7 @@ public class DataPanel extends JPanel {
 	public DataPanel(Main main) {
 		this.main = main;
 		
-		Dimension dim = new Dimension(defaultSize, defaultSize);
+		Dimension dim = new Dimension(ViewProperties.DATAPANEL_DEFAULT_SIZE, ViewProperties.DATAPANEL_DEFAULT_SIZE);
 		this.setPreferredSize(dim);
 		this.setMinimumSize(dim);
 		
@@ -55,7 +49,7 @@ public class DataPanel extends JPanel {
 			main.getData().deleteSamplesAroundPoint(
 					convertToModel(e.getPoint().x), 
 					convertToModel(e.getPoint().y), 
-					eraseRadius);
+					ViewProperties.DATAPANEL_ERASE_RADIUS);
 			break;
 		}
 	}
@@ -83,10 +77,17 @@ public class DataPanel extends JPanel {
 	 */
 	private void paintSample(Graphics g, double x, double y, double out) {
 		g.setColor(properties.getDataColor(out));
-		g.fillOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
+		g.fillOval(
+				convertToView(x) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+				convertToView(y) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+				ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+				ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
 		g.setColor(Color.BLACK);
-		g.drawOval(convertToView(x) - sampleDia/2, convertToView(y) - sampleDia/2, sampleDia, sampleDia);
-		
+		g.drawOval(
+				convertToView(x) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+				convertToView(y) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+				ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+				ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
 	}
 
 	private int getDimension() {
@@ -101,20 +102,20 @@ public class DataPanel extends JPanel {
 	
 	private void paintGraph(Graphics g) {
 		int minDim = getDimension();
-		for(int x = 0; x<minDim; x+=resolution) {
-			for(int y = 0; y<minDim; y+=resolution) {
+		for(int x = 0; x<minDim; x+=ViewProperties.DATAPANEL_RESOLUTION) {
+			for(int y = 0; y<minDim; y+=ViewProperties.DATAPANEL_RESOLUTION) {
 				g.setColor(getOutColor(convertToModel(x), convertToModel(y)));
-				g.fillRect(x, y, resolution, resolution);
+				g.fillRect(x, y, ViewProperties.DATAPANEL_RESOLUTION, ViewProperties.DATAPANEL_RESOLUTION);
 			}			
 		}
 	}
 	
 	private double convertToModel(int in) {
-		return (samplesRange*2 * (double)in / (double)getDimension()) - samplesRange;
+		return (ViewProperties.DATAPANEL_SAMPLES_RANGE*2 * (double)in / (double)getDimension()) - ViewProperties.DATAPANEL_SAMPLES_RANGE;
 	}
 	
 	private int convertToView(double in) {
-		return (int)((in + samplesRange) / (samplesRange*2) * getDimension());
+		return (int)((in + ViewProperties.DATAPANEL_SAMPLES_RANGE) / (ViewProperties.DATAPANEL_SAMPLES_RANGE*2) * getDimension());
 	}
 
 	/**

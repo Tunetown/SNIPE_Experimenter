@@ -742,8 +742,7 @@ public class NeuralNetwork implements Serializable {
 	 * 
 	 * <p>
 	 * The synapses will be assigned a random value dependent on the
-	 * synapseInitialRange defined in the descriptor. TODO hier uu den Fan in
-	 * nehmen oder spezielle funktion daf�r schreiben
+	 * synapseInitialRange defined in the descriptor. 
 	 */
 	public void createSynapsesAllowed() {
 		// count synapses to create
@@ -952,10 +951,6 @@ public class NeuralNetwork implements Serializable {
 	 * 
 	 * <p>
 	 * Computational Effort: O(SYNAPSES) per single propagation.
-	 * 
-	 * TODO was passiert, wenn ein Netz z.b. backwardsynapsen hat, diese aber
-	 * sp�ter im descriptor als unerlaubt markiert werden? Hier m�sste es ein
-	 * pruning geben
 	 * 
 	 * @param input
 	 * @return the output @ if the lenght the input is wrong.
@@ -1180,8 +1175,6 @@ public class NeuralNetwork implements Serializable {
 						if (idx == predIdx) {
 							// add synapse here
 							newShadowPart[idx] = 0;
-							// TODO mal gucken ob da noch irgendwie ein
-							// standardwert vorgegeben werden soll
 						}
 						if (idx > predIdx) {
 							// shift content to the ascending direction by

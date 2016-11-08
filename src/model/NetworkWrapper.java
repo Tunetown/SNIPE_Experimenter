@@ -16,6 +16,8 @@ public abstract class NetworkWrapper {
 
 	public abstract int getFirstNeuronInLayer(int layer);
 
+	public abstract int getMaxNeuronsInLayers();
+
 	public abstract double[] propagate(double[] in);
 
 	public abstract void train(DataWrapper data, TrainingTracker tracker);
