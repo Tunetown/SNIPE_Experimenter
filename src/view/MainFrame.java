@@ -1,7 +1,9 @@
 package view;
 
 import javax.swing.JFrame;
+
 import view.control.ControlPanel;
+import view.data.DataPanel;
 import main.Main;
 
 public class MainFrame extends JFrame {
@@ -32,6 +34,10 @@ public class MainFrame extends JFrame {
 
 	public ControlPanel getControlPanel() {
 		return mainPanel.getControlPanel();
+	}
+	
+	public DataPanel getDataPanel() {
+		return mainPanel.getDataPanel();
 	}
 	
 	public TrainingWorker getTrainingWorker() {

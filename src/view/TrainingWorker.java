@@ -14,26 +14,32 @@ public class TrainingWorker extends SwingWorker {
 	private JFrame frame;
 	
 	private boolean killed;
+	private long procTime = 0;
 	
 	public TrainingWorker(Main main, JFrame frame) {
 		this.main = main;
 		this.frame = frame;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected Object doInBackground() throws Exception {
 		try {
 			while (!isKilled()) {
+				long start = System.currentTimeMillis();
 				main.getNetwork().train(main.getData(), main.getTracker());
-				main.updateStats();
-				frame.repaint(); // TODO optimize screen flickering and thread concept
-				//publish();
+				procTime += System.currentTimeMillis() - start;
+				
+				//main.updateStats();
+				
+				//frame.repaint(); // TODO optimize screen flickering and thread concept
+				publish();
 				
 				Thread.sleep(50);
 			};
 			
 		} catch(Throwable t) {
-			t.printStackTrace(); // TODO when quit, exception can occur here because no propagation data is there
+			t.printStackTrace(); 
 		}
 		return null;
 	}

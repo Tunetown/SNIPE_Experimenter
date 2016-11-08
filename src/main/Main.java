@@ -2,7 +2,9 @@ package main;
 
 import view.MainFrame;
 import view.TrainingWorker;
+
 import javax.swing.SwingUtilities;
+
 import model.DataLoader;
 import model.DataWrapper;
 import model.NetworkWrapper;
@@ -88,6 +90,15 @@ public class Main {
 		frame.getControlPanel().setTrainingStopped();
 	}
 
+	/**
+	 * Set the selected tool for data editing
+	 * 
+	 * @param tool
+	 */
+	public void setDataTool(int tool) {
+		frame.getDataPanel().setTool(tool);
+	}
+	
 	/**
 	 * Main method
 	 *  

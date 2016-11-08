@@ -13,6 +13,8 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private NeuralNetwork net;
+	private double eta = 0.03;
+	private int batchSize = 10;
 	
 	public SNIPENetworkWrapper() {
 		net = createNetwork();
@@ -80,8 +82,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		tracker.addRecord(getRmsError(data));
 		
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
-		//samples.optimizeDesiredOutputsForClassificationProblem(frame.getNetwork().getNetwork()); TODO needed?
-		net.trainBackpropagationOfError(lesson, 100, 0.03);
+		net.trainBackpropagationOfError(lesson, batchSize, eta);
 	}
 
 	@Override
@@ -97,4 +98,23 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		return net.getWeight(0, num + 1);
 	}
 
+	@Override
+	public double getEta() {
+		return eta;
+	}
+
+	@Override
+	public void setEta(double eta) {
+		this.eta = eta;
+	}
+
+	@Override
+	public int getBatchSize() {
+		return batchSize;
+	}
+
+	@Override
+	public void setBatchSize(int size) {
+		batchSize = size;
+	}
 }

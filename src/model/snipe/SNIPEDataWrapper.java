@@ -1,6 +1,8 @@
 package model.snipe;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
@@ -17,7 +19,7 @@ public class SNIPEDataWrapper extends DataWrapper{
 
 	@Override
 	public void setFromSerializable(Object object) {
-		lesson = (TrainingSampleLesson)object;
+		setLesson((TrainingSampleLesson)object);
 	}
 
 	@Override
@@ -45,9 +47,54 @@ public class SNIPEDataWrapper extends DataWrapper{
 		double[] ntl = {value};
 		nteach[in.length] = ntl;
 		
-		lesson = new TrainingSampleLesson(nin, nteach);		
+		setLesson(new TrainingSampleLesson(nin, nteach));		
 	}
 	
+	@Override
+	public void deleteSamplesAroundPoint(double x, double y, double radius) {
+		System.out.println("Removing data around: "+x+", "+y+" Radius: "+ radius);
+		
+		if(lesson == null || lesson.countSamples() == 0) {
+			return;
+		}
+		
+		double[][] in = lesson.getInputs();
+		double[][] teach = lesson.getDesiredOutputs();
+
+		List<Integer> toErase = new ArrayList<Integer>();
+		
+		// See which samples lie inside the given radius around the given coordinates. If so, do
+		// not add them to the new arrays.
+		// NOTE: For simplicity, the radius is NOT evaluated as a circle, but as a square. This is
+		//       sufficient for this application for now.
+		for(int n=0; n<in.length; n++) {
+			if (in[n][0] >= x - radius && in[n][0] <= x + radius &&
+					in[n][1] >= y - radius && in[n][1] <= y + radius) {
+				// Erase point (here, we just mark the index to be erased)
+				toErase.add(n);
+			}
+		}
+		
+		// Now, compose the new arrays and use them
+		double[][] nin = new double[in.length - toErase.size()][2];
+		double[][] nteach = new double[in.length - toErase.size()][1];
+		
+		int nn = 0;
+		for(int n=0; n<in.length; n++) {
+			if (!toErase.contains(n)) {
+				nin[nn] = in[n];
+				nteach[nn] = teach[n];
+				nn++;
+			}
+		}
+		
+		if (nin.length > 0) {
+			setLesson(new TrainingSampleLesson(nin, nteach));
+		} else {
+			setLesson(null);
+		}
+	}
+
 	private void createLesson(double x, double y, double value) {
 		/*
 		double[][] in = {{0.5, -0.5},
@@ -67,7 +114,7 @@ public class SNIPEDataWrapper extends DataWrapper{
 */
 		double[][] in = {{x, y}};
 		double[][] teach = {{value}};
-		lesson = new TrainingSampleLesson(in, teach);
+		setLesson(new TrainingSampleLesson(in, teach));
 	}
 
 	@Override
@@ -90,10 +137,15 @@ public class SNIPEDataWrapper extends DataWrapper{
 
 	@Override
 	public void initialize() {
-		lesson = null;
+		setLesson(null);
 	}
 
 	public TrainingSampleLesson getLesson() {
 		return lesson;
+	}
+	
+	private void setLesson(TrainingSampleLesson lesson) {
+		this.lesson = lesson;
+		//this.lesson.optimizeDesiredOutputsForClassificationProblem(net);
 	}
 }

@@ -11,14 +11,20 @@ import main.Main;
 
 public class DataPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
+	public static final int TOOL_PAINT = 0;
+	public static final int TOOL_ERASE = 1;
 
 	private int defaultSize = 400;
 	private int resolution = 4;
 	private int sampleDia = 6;
 	private double samplesRange = 10.0;
+	private double eraseRadius = 0.5;
 	
 	private Main main;
 	private ViewProperties properties = new ViewProperties();
+
+	private int tool = TOOL_PAINT;
 	
 	public DataPanel(Main main) {
 		this.main = main;
@@ -31,15 +37,29 @@ public class DataPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				wrapper.main.getData().addSample(
-						wrapper.convertToModel(e.getPoint().x), 
-						wrapper.convertToModel(e.getPoint().y), 
-						(e.getButton() == 1) ? 1.0 : ((e.getButton() == 2) ? 0 : -1.0));
+				wrapper.mousePressed(e);
 				wrapper.repaint();
 			}
 		});
 	}
 	
+	protected void mousePressed(MouseEvent e) {
+		switch (tool) {
+		case TOOL_PAINT:
+			main.getData().addSample(
+					convertToModel(e.getPoint().x), 
+					convertToModel(e.getPoint().y), 
+					(e.getButton() == 1) ? 1.0 : ((e.getButton() == 2) ? 0 : -1.0));
+			break;
+		case TOOL_ERASE:
+			main.getData().deleteSamplesAroundPoint(
+					convertToModel(e.getPoint().x), 
+					convertToModel(e.getPoint().y), 
+					eraseRadius);
+			break;
+		}
+	}
+
 	public void paintComponent(Graphics g) {
 		paintGraph(g);
 		paintSamples(g);
@@ -106,7 +126,10 @@ public class DataPanel extends JPanel {
 	private Color getOutColor(double x, double y) {
 		double[] in = {x, y};
 		double[] out = main.getNetwork().propagate(in);
-		//System.out.println(x+"                "+y+"     "+out[0]);
 		return properties.getDataColor(out[0]);
+	}
+
+	public void setTool(int tool) {
+		this.tool = tool;
 	}
 }

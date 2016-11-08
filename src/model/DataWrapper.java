@@ -17,4 +17,6 @@ public abstract class DataWrapper {
 	public abstract double[][] getDesiredOutputs();
 
 	public abstract void initialize();
+
+	public abstract void deleteSamplesAroundPoint(double x, double y, double eraseRadius);
 }

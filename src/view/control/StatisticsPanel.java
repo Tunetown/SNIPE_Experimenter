@@ -17,6 +17,8 @@ public class StatisticsPanel extends JPanel {
 
 	private Main main;
 	
+	private JLabel eta;
+	private JLabel batchSize;
 	private JLabel iterations;
 	private JLabel rmsError;
 	private ErrorGraphPanel errorGraph;
@@ -33,18 +35,33 @@ public class StatisticsPanel extends JPanel {
 		statsR.setLayout(new BoxLayout(statsR, BoxLayout.PAGE_AXIS));
 		add(statsR,BorderLayout.EAST);
 		
+		eta = new JLabel();
+		statsR.add(eta);
+
+		batchSize = new JLabel();
+		statsR.add(batchSize);
+
 		iterations = new JLabel();
 		statsR.add(iterations);
-		setIteration(0);
 
 		rmsError = new JLabel();
 		statsR.add(rmsError);
-		setRmsError(1);
 		rmsError.setPreferredSize(new Dimension(100, rmsError.getPreferredSize().height));
 		
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		
+		update();
 	}
 	
+	private void setEta(double value) {
+		DecimalFormat df = new DecimalFormat("#.#####");
+		eta.setText("Eta: " + df.format(value));
+	}
+
+	private void setBatchSize(int value) {
+		batchSize.setText("Batch Size: " + value);
+	}
+
 	private void setIteration(int i) {
 		iterations.setText("Iterations: " + i);
 	}
@@ -55,6 +72,8 @@ public class StatisticsPanel extends JPanel {
 	}
 
 	public void update() {
+		setEta(main.getNetwork().getEta());
+		setBatchSize(main.getNetwork().getBatchSize());
 		setIteration(main.getTracker().getIterations());
 		setRmsError(main.getNetwork().getRmsError(main.getData()));
 	}

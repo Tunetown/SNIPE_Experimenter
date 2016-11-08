@@ -43,4 +43,8 @@ public class MainPanel extends JPanel {
 	public ControlPanel getControlPanel() {
 		return controlView;
 	}
+	
+	public DataPanel getDataPanel() {
+		return outView;
+	}
 }

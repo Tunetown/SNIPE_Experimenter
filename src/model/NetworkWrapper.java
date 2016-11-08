@@ -23,4 +23,12 @@ public abstract class NetworkWrapper {
 	public abstract double getRmsError(DataWrapper data);
 
 	public abstract double getBiasWeight(int num);
+	
+	public abstract double getEta();
+	
+	public abstract void setEta(double eta);
+
+	public abstract int getBatchSize();
+	
+	public abstract void setBatchSize(int size);
 }
