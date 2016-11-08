@@ -2,6 +2,12 @@ package view;
 
 import java.awt.Color;
 
+/**
+ * UI properties (colors, constants etc.)
+ * 
+ * @author xwebert
+ *
+ */
 public class ViewProperties {
 
 	public static final int TOPOLOGY_NEURON_DIAMETER = 14;

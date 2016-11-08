@@ -6,6 +6,12 @@ import view.control.ControlPanel;
 import view.data.DataPanel;
 import main.Main;
 
+/**
+ * Main frame for the application
+ * 
+ * @author xwebert
+ *
+ */
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	

@@ -16,6 +16,12 @@ import javax.swing.JRadioButton;
 import view.data.DataPanel;
 import main.Main;
 
+/**
+ * COntrols for data manipulation.
+ * 
+ * @author xwebert
+ *
+ */
 public class DataControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -78,6 +84,10 @@ public class DataControlPanel extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
+	/**
+	 * Reset data
+	 * 
+	 */
 	private void resetData() {
 		int dialogResult = JOptionPane.showConfirmDialog(null, "Really delete current training data?", "Delete Training Data", JOptionPane.YES_NO_OPTION); 
 		if (dialogResult == JOptionPane.NO_OPTION) {
@@ -88,6 +98,11 @@ public class DataControlPanel extends JPanel {
 		frame.repaint();
 	}
 	
+	/**
+	 * Set painting tool
+	 * 
+	 * @param tool
+	 */
 	private void setTool(int tool) {
 		main.setDataTool(tool);
 	}

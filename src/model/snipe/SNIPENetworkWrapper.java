@@ -11,6 +11,12 @@ import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicus;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
+/**
+ * Wrapper for SNIPE network.
+ * 
+ * @author xwebert
+ *
+ */
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private double eta = 0.002;
@@ -59,6 +65,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getWeight(int fromNeuron, int toNeuron) {
+		if (!net.isSynapseExistent(fromNeuron, toNeuron)) return Double.NaN;
 		return net.getWeight(fromNeuron + 1,  toNeuron + 1);
 	}
 

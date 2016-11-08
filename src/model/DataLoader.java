@@ -4,7 +4,7 @@ import java.io.File;
 import main.ParamFile;
 
 /**
- * Loads the application specific last used values from the temp file
+ * Loads the application specific last used data from the temp file
  * 
  * @author tweber
  *
@@ -20,7 +20,7 @@ public class DataLoader {
 	}
 	
 	/**
-	 * Adds and defines the shutdown hook, which stores the parameters
+	 * Adds and defines the shutdown hook, which stores the data after exiting
 	 * 
 	 */
 	public void addShutdownHook() {

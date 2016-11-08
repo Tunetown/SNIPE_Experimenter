@@ -7,6 +7,12 @@ import javax.swing.SwingWorker;
 
 import main.Main;
 
+/**
+ * Swing worker which processes the training of the network.
+ * 
+ * @author xwebert
+ *
+ */
 @SuppressWarnings("rawtypes")
 public class TrainingWorker extends SwingWorker {
 

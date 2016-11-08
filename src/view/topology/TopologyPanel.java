@@ -6,6 +6,12 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import main.Main;
 
+/**
+ * UI component holding the topology view.
+ * 
+ * @author xwebert
+ *
+ */
 public class TopologyPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -40,6 +46,11 @@ public class TopologyPanel extends JPanel {
 		synapsePainter = new SynapsePainter(main, this);
 	}
 	
+	/**
+	 * Determines the grid size for the topology dynamically by the given area size.
+	 * 
+	 * @return
+	 */
 	public int getGridSize() {
 		int minDim = 0;
 		if (this.getWidth() > this.getHeight()) {

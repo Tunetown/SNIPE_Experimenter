@@ -7,6 +7,12 @@ import javax.swing.JComponent;
 import view.ViewProperties;
 import main.Main;
 
+/**
+ * UI model for painting one neuron in the topology area.
+ * 
+ * @author xwebert
+ *
+ */
 public class NeuronPanel extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
@@ -26,13 +32,16 @@ public class NeuronPanel extends JComponent {
 		updateCoords();
 	}
 
+	/**
+	 * Set the x/y values of the neuron according to grid size and the network topology
+	 * 
+	 */
 	public void updateCoords() {
 		this.x = view.getGridSize() + main.getNetwork().getLayerOfNeuron(num) * view.getGridSize() * 2;
 		this.y = view.getGridSize() + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * view.getGridSize() * 2;
 		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
 	}
 
-	
 	public int getOutX() {
 		return x;
 	}
@@ -42,7 +51,7 @@ public class NeuronPanel extends JComponent {
 	}
 	
 	/**
-	 * Paints one neuron 
+	 * Paints the neuron. All neurons except the inputs also will show their bias weight as inner color.
 	 * 
 	 * @param g
 	 * @param net

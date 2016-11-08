@@ -9,6 +9,13 @@ import javax.swing.JPanel;
 import view.ViewProperties;
 import main.Main;
 
+/**
+ * Visualization of the output of the network, along with the training data points. This also
+ * takes care about sample manipulation (painting/erasing samples)
+ * 
+ * @author xwebert
+ *
+ */
 public class DataPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -37,6 +44,11 @@ public class DataPanel extends JPanel {
 		});
 	}
 	
+	/**
+	 * Painting/erasing functionality
+	 * 
+	 * @param e
+	 */
 	protected void mousePressed(MouseEvent e) {
 		switch (tool) {
 		case TOOL_PAINT:
@@ -59,6 +71,11 @@ public class DataPanel extends JPanel {
 		paintSamples(g);
 	}
 
+	/**
+	 * Paint the samples of the training data
+	 * 
+	 * @param g
+	 */
 	private void paintSamples(Graphics g) {
 		if(main.getData().getNumOfSamples() == 0) return;
 		
@@ -70,9 +87,10 @@ public class DataPanel extends JPanel {
 	}
 
 	/**
+	 * Paint one data sample
 	 * 
-	 * @param x in [-1,1]
-	 * @param y in [-1,1]
+	 * @param x  
+	 * @param y 
 	 * @param out
 	 */
 	private void paintSample(Graphics g, double x, double y, double out) {
@@ -90,6 +108,11 @@ public class DataPanel extends JPanel {
 				ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
 	}
 
+	/**
+	 * Determine the size of the output area by the Swing component size
+	 * 
+	 * @return
+	 */
 	private int getDimension() {
 		int minDim = 0;
 		if (this.getWidth() > this.getHeight()) {
@@ -100,6 +123,11 @@ public class DataPanel extends JPanel {
 		return minDim;
 	}
 	
+	/**
+	 * Paint the network output 
+	 * 
+	 * @param g
+	 */
 	private void paintGraph(Graphics g) {
 		int minDim = getDimension();
 		for(int x = 0; x<minDim; x+=ViewProperties.DATAPANEL_RESOLUTION) {
@@ -110,18 +138,31 @@ public class DataPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Convert coordinates from UI to model
+	 * 
+	 * @param in
+	 * @return
+	 */
 	private double convertToModel(int in) {
 		return (ViewProperties.DATAPANEL_SAMPLES_RANGE*2 * (double)in / (double)getDimension()) - ViewProperties.DATAPANEL_SAMPLES_RANGE;
 	}
 	
+	/**
+	 * Convert coordinates from model to UI
+	 * 
+	 * @param in
+	 * @return
+	 */
 	private int convertToView(double in) {
 		return (int)((in + ViewProperties.DATAPANEL_SAMPLES_RANGE) / (ViewProperties.DATAPANEL_SAMPLES_RANGE*2) * getDimension());
 	}
 
 	/**
+	 * Returns the color in which to paint a coordinate. This calls the propagation function through the network!
 	 * 
-	 * @param x in [-1, 1]
-	 * @param y in [-1, 1]
+	 * @param x 
+	 * @param y 
 	 * @return
 	 */
 	private Color getOutColor(double x, double y) {
@@ -130,6 +171,11 @@ public class DataPanel extends JPanel {
 		return properties.getDataColor(out[0]);
 	}
 
+	/**
+	 * Set editing tool
+	 * 
+	 * @param tool
+	 */
 	public void setTool(int tool) {
 		this.tool = tool;
 	}

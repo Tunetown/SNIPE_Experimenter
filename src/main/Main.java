@@ -15,14 +15,18 @@ import model.snipe.SNIPENetworkWrapper;
 /**
  * Application class for neural network experimenter
  * 
- * TODO 
- * - Optimize screen flickering and thread concept -> With sleep = 0, nothing works anymore!
+ *  
+ * - TODO Optimize screen flickering and thread concept -> With sleep = 0, nothing works anymore!
  * 		- Concept: Use cloned instance for display rendering. BEWARE: No instance cloning during repaint! (synchronize)
  * 
- * - Adaptive adding/removing of neurons
- * - Adaptive eta determination
+ * - TODO Adaptive adding/removing of neurons
+ * - TODO Adaptive eta determination
  * 
- * - Store test data in file / load from file
+ * - TODO Store test data in file / load from file
+ * 
+ * - TODO document classes and methods
+ * 
+ * - TODO Multi-dimensional visualization
  *  
  * 
  * @author Thomas Weber, 2016

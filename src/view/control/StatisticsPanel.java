@@ -12,6 +12,12 @@ import javax.swing.JPanel;
 
 import main.Main;
 
+/**
+ * UI panel for statistics about the network training process
+ * 
+ * @author xwebert
+ *
+ */
 public class StatisticsPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -61,6 +67,19 @@ public class StatisticsPanel extends JPanel {
 		update();
 	}
 	
+	/**
+	 * Update all statistics according to the network
+	 * 
+	 */
+	public void update() {
+		setEta(main.getNetwork().getEta());
+		setBatchSize(main.getNetwork().getBatchSize());
+		setIteration(main.getTracker().getIterations());
+		setError(main.getNetwork().getError(main.getData()));
+		setProcTime(main.getTracker().getProcessingTime());
+		//setProcPercentage(main.getTracker().getProcessingPercentage());
+	}
+
 	private void setEta(double value) {
 		DecimalFormat df = new DecimalFormat("#.#####");
 		eta.setText("Eta: " + df.format(value));
@@ -92,13 +111,4 @@ public class StatisticsPanel extends JPanel {
 		DecimalFormat df = new DecimalFormat("#.#####");
 		procPercentage.setText("CPU: " + df.format(perc) + "%");
 	}*/
-	
-	public void update() {
-		setEta(main.getNetwork().getEta());
-		setBatchSize(main.getNetwork().getBatchSize());
-		setIteration(main.getTracker().getIterations());
-		setError(main.getNetwork().getError(main.getData()));
-		setProcTime(main.getTracker().getProcessingTime());
-		//setProcPercentage(main.getTracker().getProcessingPercentage());
-	}
 }

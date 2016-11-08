@@ -9,6 +9,12 @@ import javax.swing.JComponent;
 import view.ViewProperties;
 import main.Main;
 
+/**
+ * UI component for showing the dynamic error graph in the statistics section
+ * 
+ * @author xwebert
+ *
+ */
 public class ErrorGraphPanel extends JComponent {
 	private static final long serialVersionUID = 1L;
 

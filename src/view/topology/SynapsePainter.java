@@ -7,6 +7,12 @@ import java.awt.geom.AffineTransform;
 import view.ViewProperties;
 import main.Main;
 
+/**
+ * Helper class which paints the network synapses between the neurons in the topology.
+ * 
+ * @author xwebert
+ *
+ */
 public class SynapsePainter {
 
 	private Main main;
@@ -29,6 +35,15 @@ public class SynapsePainter {
 		}
 	}
 
+	/**
+	 * This paints a color legend.
+	 * 
+	 * @param g
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 */
 	public void paintLegend(Graphics g, int x, int y, int w, int h) {
 		for(int i=0; i<w; i++) {
 			double we = (double)i/w * 2.0 - 1.0;
@@ -37,6 +52,13 @@ public class SynapsePainter {
 		}
 	}
 
+	/**
+	 * Paint one synapse from neuron n1 to neuron n2.
+	 * 
+	 * @param g
+	 * @param n1
+	 * @param n2
+	 */
 	private void paintSynapse(Graphics g, int n1, int n2) {
 		double w = main.getNetwork().getWeight(n1, n2);
 		g.setColor(properties.getDataColor(w));
@@ -51,11 +73,28 @@ public class SynapsePainter {
 		drawArrow(g, ne1.getOutX(), ne1.getOutY(), ne2.getOutX(), ne2.getOutY(), as);
 	}
 	
+	/**
+	 * Returns the thickness for a synapse
+	 * 
+	 * @param weight
+	 * @param max
+	 * @return
+	 */
 	private float getWeightThickness(double weight, int max) {
 		if (Double.isNaN(weight)) return 1; 
 		return (float)(Math.abs(properties.normalize(weight) * max));
 	}
 
+	/**
+	 * Draws an arrowed line
+	 * 
+	 * @param g1
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @param size
+	 */
 	private void drawArrow(Graphics g1, int x1, int y1, int x2, int y2, double size) {
         Graphics2D g = (Graphics2D) g1.create();
 

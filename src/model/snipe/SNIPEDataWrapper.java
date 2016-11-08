@@ -8,6 +8,12 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 import model.DataWrapper;
 
+/**
+ * Wrapper for SNIPE training data
+ * 
+ * @author xwebert
+ *
+ */
 public class SNIPEDataWrapper extends DataWrapper{
 
 	private TrainingSampleLesson lesson;

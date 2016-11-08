@@ -6,6 +6,12 @@ import javax.swing.JPanel;
 
 import main.Main;
 
+/**
+ * Control panel UI component, containing all controls.
+ * 
+ * @author xwebert
+ *
+ */
 public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -34,10 +40,18 @@ public class ControlPanel extends JPanel {
 		add(trainControls);
 	}
 	
+	/**
+	 * Update the network statistics
+	 * 
+	 */
 	public void updateStats() {
 		stats.update();
 	}
 
+	/**
+	 * Tells the UI that training has been stopped
+	 * 
+	 */
 	public void setTrainingStopped() {
 		trainControls.setTrainingStopped();
 	}

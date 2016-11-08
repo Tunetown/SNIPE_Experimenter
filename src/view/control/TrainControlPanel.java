@@ -18,6 +18,12 @@ import javax.swing.event.ChangeListener;
 
 import main.Main;
 
+/**
+ * UI panel holding all training options and buttons
+ * 
+ * @author xwebert
+ *
+ */
 public class TrainControlPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -150,24 +156,49 @@ public class TrainControlPanel extends JPanel {
 
 	}
 	
+	/**
+	 * Set slider to a given learning rate
+	 * 
+	 * @param eta
+	 */
 	public void setEtaSlider(double eta) {
 		etaSlider.setValue(convertModelToSlider(eta));
 	}
 	
+	/**
+	 * Convert slider value to learning rate (exponential)
+	 * 
+	 * @param i
+	 * @return
+	 */
 	private double convertSliderToModel(int i) {
 		return Math.exp((double)i/10) / 10000;
 	}
 	
+	/**
+	 * Convert learning rate to slider value (log)
+	 * 
+	 * @param d
+	 * @return
+	 */
 	private int convertModelToSlider(double d) {
 		return (int)(Math.log(d * 10000) * 10);
 	}
 	
+	/**
+	 * Reset network
+	 * 
+	 */
 	private void trainReset() {
 		main.stopTraining();
 		main.initNetwork();
 		frame.repaint();
 	}
 	
+	/**
+	 * Trigger training start
+	 * 
+	 */
 	private void trainData() {
 		main.startTraining();
 		
@@ -175,10 +206,18 @@ public class TrainControlPanel extends JPanel {
 		trainStop.setEnabled(true);
 	}
 	
+	/**
+	 * Kill training thread
+	 * 
+	 */
 	private void trainStop() {
 		main.stopTraining();
 	}
 
+	/**
+	 * Tell the UI that training has been stopped
+	 * 
+	 */
 	public void setTrainingStopped() {
 		trainData.setEnabled(true);
 		trainStop.setEnabled(false);
