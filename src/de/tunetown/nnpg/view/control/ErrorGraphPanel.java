@@ -1,4 +1,4 @@
-package view.control;
+package de.tunetown.nnpg.view.control;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,8 +6,8 @@ import java.util.Collections;
 
 import javax.swing.JComponent;
 
-import view.ViewProperties;
-import main.Main;
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * UI component for showing the dynamic error graph in the statistics section

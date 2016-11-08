@@ -1,11 +1,12 @@
-package view.topology;
+package de.tunetown.nnpg.view.topology;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
-import view.ViewProperties;
-import main.Main;
+
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * Helper class which paints the network synapses between the neurons in the topology.

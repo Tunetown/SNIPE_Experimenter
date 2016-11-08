@@ -1,4 +1,4 @@
-package model;
+package de.tunetown.nnpg.model;
 
 import java.util.ArrayList;
 import java.util.List;

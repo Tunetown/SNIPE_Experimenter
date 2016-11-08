@@ -1,4 +1,4 @@
-package main;
+package de.tunetown.nnpg.main;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,14 +1,14 @@
-package view;
+package de.tunetown.nnpg.view;
 
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import view.control.ControlPanel;
-import view.data.DataPanel;
-import view.topology.TopologyPanel;
-import main.Main;
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.control.ControlPanel;
+import de.tunetown.nnpg.view.data.DataPanel;
+import de.tunetown.nnpg.view.topology.TopologyPanel;
 
 /**
  * Main UI panel, holding all components

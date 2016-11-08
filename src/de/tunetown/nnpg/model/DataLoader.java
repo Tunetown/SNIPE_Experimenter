@@ -1,7 +1,8 @@
-package model;
+package de.tunetown.nnpg.model;
 
 import java.io.File;
-import main.ParamFile;
+
+import de.tunetown.nnpg.main.ParamFile;
 
 /**
  * Loads the application specific last used data from the temp file

@@ -1,11 +1,11 @@
-package view.topology;
+package de.tunetown.nnpg.view.topology;
 
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import view.ViewProperties;
-import main.Main;
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * UI model for painting one neuron in the topology area.

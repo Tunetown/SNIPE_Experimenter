@@ -1,4 +1,4 @@
-package model;
+package de.tunetown.nnpg.model;
 
 /**
  * Facade wrapper to integrate a neural network implementation.

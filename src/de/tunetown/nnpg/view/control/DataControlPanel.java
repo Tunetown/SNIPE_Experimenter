@@ -1,4 +1,4 @@
-package view.control;
+package de.tunetown.nnpg.view.control;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import view.data.DataPanel;
-import main.Main;
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.data.DataPanel;
 
 /**
  * COntrols for data manipulation.

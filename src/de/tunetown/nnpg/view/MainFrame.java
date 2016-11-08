@@ -1,10 +1,10 @@
-package view;
+package de.tunetown.nnpg.view;
 
 import javax.swing.JFrame;
 
-import view.control.ControlPanel;
-import view.data.DataPanel;
-import main.Main;
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.control.ControlPanel;
+import de.tunetown.nnpg.view.data.DataPanel;
 
 /**
  * Main frame for the application

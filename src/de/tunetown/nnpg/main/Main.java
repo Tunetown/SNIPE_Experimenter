@@ -1,16 +1,15 @@
-package main;
-
-import view.MainFrame;
-import view.TrainingWorker;
+package de.tunetown.nnpg.main;
 
 import javax.swing.SwingUtilities;
 
-import model.DataLoader;
-import model.DataWrapper;
-import model.NetworkWrapper;
-import model.TrainingTracker;
-import model.snipe.SNIPEDataWrapper;
-import model.snipe.SNIPENetworkWrapper;
+import de.tunetown.nnpg.model.DataLoader;
+import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.NetworkWrapper;
+import de.tunetown.nnpg.model.TrainingTracker;
+import de.tunetown.nnpg.model.snipe.SNIPEDataWrapper;
+import de.tunetown.nnpg.model.snipe.SNIPENetworkWrapper;
+import de.tunetown.nnpg.view.MainFrame;
+import de.tunetown.nnpg.view.TrainingWorker;
 
 /**
  * Application class for neural network experimenter

@@ -1,4 +1,4 @@
-package model;
+package de.tunetown.nnpg.model;
 
 import java.io.Serializable;
 

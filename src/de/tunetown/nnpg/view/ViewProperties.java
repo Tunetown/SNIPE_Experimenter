@@ -1,4 +1,4 @@
-package view;
+package de.tunetown.nnpg.view;
 
 import java.awt.Color;
 

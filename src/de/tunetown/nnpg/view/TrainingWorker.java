@@ -1,11 +1,11 @@
-package view;
+package de.tunetown.nnpg.view;
 
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
-import main.Main;
+import de.tunetown.nnpg.main.Main;
 
 /**
  * Swing worker which processes the training of the network.

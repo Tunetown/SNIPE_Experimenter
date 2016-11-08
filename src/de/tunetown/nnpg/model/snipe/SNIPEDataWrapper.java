@@ -1,4 +1,4 @@
-package model.snipe;
+package de.tunetown.nnpg.model.snipe;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
-import model.DataWrapper;
+import de.tunetown.nnpg.model.DataWrapper;
 
 /**
  * Wrapper for SNIPE training data

@@ -1,10 +1,10 @@
-package view.control;
+package de.tunetown.nnpg.view.control;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import main.Main;
+import de.tunetown.nnpg.main.Main;
 
 /**
  * Control panel UI component, containing all controls.

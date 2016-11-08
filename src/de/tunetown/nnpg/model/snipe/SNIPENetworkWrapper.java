@@ -1,8 +1,4 @@
-package model.snipe;
-
-import model.DataWrapper;
-import model.NetworkWrapper;
-import model.TrainingTracker;
+package de.tunetown.nnpg.model.snipe;
 
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
@@ -10,6 +6,10 @@ import com.dkriesel.snipe.neuronbehavior.Identity;
 import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicus;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
+
+import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.NetworkWrapper;
+import de.tunetown.nnpg.model.TrainingTracker;
 
 /**
  * Wrapper for SNIPE network.

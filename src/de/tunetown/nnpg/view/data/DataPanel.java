@@ -1,13 +1,15 @@
-package view.data;
+package de.tunetown.nnpg.view.data;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JPanel;
-import view.ViewProperties;
-import main.Main;
+
+import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * Visualization of the output of the network, along with the training data points. This also

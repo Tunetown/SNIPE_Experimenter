@@ -1,10 +1,12 @@
-package view.topology;
+package de.tunetown.nnpg.view.topology;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+
 import javax.swing.JPanel;
-import main.Main;
+
+import de.tunetown.nnpg.main.Main;
 
 /**
  * UI component holding the topology view.

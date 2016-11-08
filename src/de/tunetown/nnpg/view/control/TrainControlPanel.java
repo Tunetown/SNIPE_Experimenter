@@ -1,4 +1,4 @@
-package view.control;
+package de.tunetown.nnpg.view.control;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import main.Main;
+import de.tunetown.nnpg.main.Main;
 
 /**
  * UI panel holding all training options and buttons
