@@ -29,8 +29,7 @@ public class TrainingWorker extends SwingWorker {
 				main.getNetwork().train(main.getData(), main.getTracker());
 				
 				main.updateStats();
-				frame.repaint(); // TODO optimize screen flickering and thread concept -> With sleep = 0, nothing works!
-				// Concept: Use cloned instance for display rendering. BEWARE: No instance cloning during repaint! 
+				frame.repaint(); 
 				//publish();
 				
 				Thread.sleep(50);

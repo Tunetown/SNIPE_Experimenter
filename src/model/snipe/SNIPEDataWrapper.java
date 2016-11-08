@@ -24,8 +24,6 @@ public class SNIPEDataWrapper extends DataWrapper{
 
 	@Override
 	public void addSample(double x, double y, double value) {
-		System.out.println("Adding data: "+x+", "+y+" -> "+value);
-		
 		if(lesson == null) {
 			createLesson(x, y, value);
 			return;
