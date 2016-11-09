@@ -4,7 +4,7 @@ This program is a basic GUI-driven experimenter for simple neural networks. The 
 
 The SNIPE classes are included in the source, so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
 
-The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, in this program, you can change the code like desired to do any experiment you want.
+The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, being able to create any training and test data you need. Also, in this program, you can change the code like desired to do any experiment you want.
 
 ## Rough Overview
 
