@@ -99,7 +99,7 @@ public class TrainControlPanel extends JPanel {
 		add(controls);
 		
 		// Learning rate (eta)
-		JLabel etaLabel = new JLabel("Learning Rate (eta):");
+		JLabel etaLabel = new JLabel("Learning Rate (Eta):");
 		controls.add(etaLabel);
 		
 		etaSlider = new JSlider(JSlider.HORIZONTAL, 0, 120, convertModelToSlider(main.getNetwork().getEta()));

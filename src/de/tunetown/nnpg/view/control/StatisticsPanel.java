@@ -46,14 +46,14 @@ public class StatisticsPanel extends JPanel {
 		statsR.setLayout(new BoxLayout(statsR, BoxLayout.PAGE_AXIS));
 		add(statsR,BorderLayout.EAST);
 		
+		dataSize = new JLabel();
+		statsR.add(dataSize);
+
 		eta = new JLabel();
 		statsR.add(eta);
 
 		batchSize = new JLabel();
 		statsR.add(batchSize);
-
-		dataSize = new JLabel();
-		statsR.add(dataSize);
 
 		iterations = new JLabel();
 		statsR.add(iterations);

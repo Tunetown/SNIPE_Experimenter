@@ -20,6 +20,12 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * Application class for neural network experimenter.
  * 
  * - TODO 1 Switch activation functions per layer
+ * - TODO 1 Different Grid sizes for hor/vert
+ * - TODO 2 Backprops per Second stat (also add graph in orange!)
+ * - TODO 3 Multiple netwoks of the same topology (slider? 1 - 10) with averaging of outputs
+ * 
+ * - TODO 4 Adaptive eta determination
+ * - TODO 4 Multi-Threaded training? Any idea?
  * 
  * *******************************************************
  * 
@@ -30,7 +36,6 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO X Multi-dimensional visualization
  * 
  * - TODO X Adaptive adding/removing of neurons
- * - TODO X Adaptive eta determination
  * 
  * @author Thomas Weber, 2016
  * @see www.tunetown.de
