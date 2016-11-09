@@ -1,6 +1,6 @@
 # Playground for Neural Networks
 
-This program is a basic experimenter for simple neural networks. The network implementation used is SNIPE by D. Kriesel (www.dkriesel.com), however, also other network implementations can be used easily by creating corresponding wrapper classes.
+This program is a basic GUI-driven experimenter for simple neural networks. The network implementation used is SNIPE by D. Kriesel (www.dkriesel.com), however, also other network implementations can be used easily by creating corresponding wrapper classes.
 
 The SNIPE classes are included in the source, so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
 
