@@ -1,6 +1,6 @@
 # Playground for Neural Networks
 
-This program is a basic GUI-driven experimenter for simple neural networks, written in Java/Swing. The network implementation used is SNIPE by David Kriesel (www.dkriesel.com), however, also other network implementations could be integrated easily by creating corresponding wrapper classes (see the wrapper classes in package de.tunetown.nnpg.model).
+This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. The network implementation used is SNIPE by David Kriesel (www.dkriesel.com), however, also other network implementations could be integrated easily by creating corresponding wrapper classes (see the wrapper classes in package de.tunetown.nnpg.model).
 
 The SNIPE classes are included in the source, so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
 

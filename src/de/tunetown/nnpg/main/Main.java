@@ -18,10 +18,10 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
+ * - TODO 1 Backprops per Second stat (also add graph in orange!)
+ * 		-> Last 1M runs?
  * - TODO 1 Switch activation functions per layer
  * - TODO 1 Different Grid sizes for hor/vert
- * - TODO 2 Backprops per Second stat (also add graph in orange!)
- * 		-> Last 1M runs?
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
  * - TODO 3 Re-store examples
  * 
