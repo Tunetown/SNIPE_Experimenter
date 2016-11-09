@@ -2,6 +2,7 @@ package de.tunetown.nnpg.view;
 
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
+
 import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.model.NetworkWrapper;
 
@@ -40,8 +41,15 @@ public class TrainingWorker extends SwingWorker {
 
 				// Train the working clone.
 				try {
-					clone.train(main.getData(), main.getTracker());
+					long start = System.nanoTime();
 					
+					clone.train(main.getData());
+					
+					main.getTracker().addRun(
+							main.getNetwork().getTrainingError(main.getData()), 
+							main.getNetwork().getTestError(main.getData()),
+							System.nanoTime() - start);
+				
 					// Set the trained clone "productive"
 					synchronized (main.getNetworkLock()) {
 						clone.setParametersFrom(main.getNetwork());

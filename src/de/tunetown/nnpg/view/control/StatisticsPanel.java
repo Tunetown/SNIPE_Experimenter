@@ -91,7 +91,7 @@ public class StatisticsPanel extends JPanel {
 			setIteration(main.getTracker().getIterations());
 			setTrainingError(main.getNetwork().getTrainingError(main.getData()));
 			setTestError(main.getNetwork().getTestError(main.getData()));
-			setProcTime(main.getTracker().getProcessingTime());
+			setProcTime(main.getTracker().getCPUPercentage());
 			setSpeed(main.getTracker().getCurrentSpeed(main.getNetwork()));
 		}
 	}
@@ -102,15 +102,15 @@ public class StatisticsPanel extends JPanel {
 	}
 
 	private void setBatchSize(int value) {
-		batchSize.setText("Batch Size: " + value);
+		batchSize.setText("Batch Size: " + getReadableAmount(value));
 	}
 
 	private void setDataSize(int size) {
-		dataSize.setText("Data Size: " + size);
+		dataSize.setText("Data Size: " + getReadableAmount(size));
 	}
 
 	private void setIteration(int i) {
-		iterations.setText("Iterations: " + i);
+		iterations.setText("Iterations: " + getReadableAmount(i));
 	}
 
 	private void setTrainingError(double i) {
@@ -123,12 +123,9 @@ public class StatisticsPanel extends JPanel {
 		testError.setText("Test Error: " + df.format(i));
 	}
 
-	private void setProcTime(long t) {
-		if (t < 1000000000) {
-			procTime.setText("CPU Time: " + (t / 1000000) + "ms");
-		} else {
-			procTime.setText("CPU Time: " + (t / 1000000000) + "s");
-		}
+	private void setProcTime(double t) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		procTime.setText("CPU Time: " + df.format(t) + "%");
 	}
 	
 	private void setSpeed(long i) {

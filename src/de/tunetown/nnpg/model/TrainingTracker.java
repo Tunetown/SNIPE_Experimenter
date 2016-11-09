@@ -13,9 +13,9 @@ public class TrainingTracker {
 
 	private List<Double> trainingErrors = new ArrayList<Double>(); 
 	private List<Double> testErrors = new ArrayList<Double>(); 
-	private long processingNanoTime = 0;
-	private long runs = 0;
-
+	private List<Long> runtimes = new ArrayList<Long>(); 
+	private List<Double> batchSizes = new ArrayList<Double>();
+	
 	/**
 	 * Returns a list of errors, which holds exactly one error per iteration.
 	 * 
@@ -44,31 +44,11 @@ public class TrainingTracker {
 	}
 
 	/**
-	 * Add an error to the error list.
-	 * 
-	 * @param error
-	 */
-	public void addRecord(double trainingError, double testError) {
-		trainingErrors.add(trainingError);
-		testErrors.add(testError);
-	}
-
-	/**
-	 * Add a processing run to the log
-	 * 
-	 * @param nanoTime nanoseconds needed for the run
-	 */
-	public void addRun(long nanoTime) {
-		processingNanoTime += nanoTime;
-		runs++;
-	}
-	
-	/**
 	 * Get processing time
 	 * 
 	 * @return
 	 */
-	public long getProcessingTime() {
+	public double getCPUPercentage() {
 		return processingNanoTime;
 	}
 
@@ -77,6 +57,20 @@ public class TrainingTracker {
 	 * @return
 	 */
 	public long getCurrentSpeed(NetworkWrapper net) {
-		return (long)((double)processingNanoTime / (double)runs / net.getBatchSize());
+		return (long)((double)processingNanoTime / (double) / net.getBatchSize());
+	}
+
+	/**
+	 * Adds one training run to the log
+	 * 
+	 * @param trainingError
+	 * @param testError
+	 * @param l
+	 */
+	public void addRun(double trainingError, double testError, long runtimeNanos) {
+		// TODO Auto-generated method stub
+		trainingErrors.add(trainingError);
+		testErrors.add(testError);
+		runtimes.add(runtimeNanos);
 	}
 }

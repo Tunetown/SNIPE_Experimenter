@@ -85,15 +85,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public void train(DataWrapper data, TrainingTracker tracker) {
+	public void train(DataWrapper data) {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
-		tracker.addRecord(getTrainingError(data), getTestError(data));
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
-		
-		long start = System.nanoTime();
 		net.trainBackpropagationOfError(lesson, batchSize, eta);
-		tracker.addRun(System.nanoTime() - start);
 	}
 
 	@Override

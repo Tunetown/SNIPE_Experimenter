@@ -2,7 +2,7 @@
 
 This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. The network implementation used is SNIPE by David Kriesel (www.dkriesel.com), however, also other network implementations could be integrated easily by creating corresponding wrapper classes (see the wrapper classes in package de.tunetown.nnpg.model).
 
-The SNIPE classes are included in the source, so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
+The SNIPE version 0.9 classes are included in the source (unchanged), so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
 
 The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, being able to create any training and test data you need. Also, in this program, you can change the code like desired to do any experiment you want.
 

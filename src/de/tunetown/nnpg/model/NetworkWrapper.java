@@ -86,9 +86,8 @@ public abstract class NetworkWrapper {
 	 * Train the network. The training parameters are controlled by the network class itself.
 	 * 
 	 * @param data Training data
-	 * @param tracker Tracker instance, which keeps track of the training process.
 	 */
-	public abstract void train(DataWrapper data, TrainingTracker tracker);
+	public abstract void train(DataWrapper data);
 
 	/**
 	 * Get the current error of the network, regarding the given training data.
