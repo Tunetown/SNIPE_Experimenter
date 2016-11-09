@@ -22,7 +22,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO 1 Switch activation functions per layer
  * - TODO 1 Different Grid sizes for hor/vert
  * - TODO 2 Backprops per Second stat (also add graph in orange!)
- * - TODO 3 Multiple netwoks of the same topology (slider? 1 - 10) with averaging of outputs
+ * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
+ * - TODO 3 Also store eta / batch size
  * 
  * - TODO 4 Adaptive eta determination
  * - TODO 4 Multi-Threaded training? Any idea?
