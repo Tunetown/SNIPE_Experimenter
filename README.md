@@ -18,7 +18,9 @@ The network is using back propagation feed forward networks exclusively at the m
 
 ## Compatibility
 
-The application has been developed using Java 1.8, but should also run without problems with Java 1.6. The repository contains a full, self-contained Eclipse project (created with Eclipse Luna) with no external dependencies.
+The application has been developed using Java 1.8, but should also run without problems with Java 1.6. 
+
+The repository contains a full, self-contained Eclipse project (created with Eclipse Luna) with no external dependencies. If you do not want to use Eclipse, just compile the application with the main method in class de.tunetown.nnpg.main.Main.
 
 ## Release Status
 
