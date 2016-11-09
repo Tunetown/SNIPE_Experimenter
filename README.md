@@ -29,6 +29,8 @@ The project includes a folder "examples". In the program, open the file menu and
 
 The network is using back propagation feed forward networks exclusively at the moment. Support for other topologies or training algorithms will probably be integrated in a later release.
 
+For details about the theory behind this, see David Kriesel´s excellent book "A Brief Introduction to Neural Networks", available at http://www.dkriesel.com/science/neural_networks.
+
 ## Compatibility
 
 The application has been developed using Java 1.8, but should also run without problems with Java 1.6. 
