@@ -208,12 +208,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public int addNeuron(int layer, boolean reset) {
+	public void addNeuron(int layer, boolean reset) {
 		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		if (layer >= t.length || layer < 0) return -1;
+		if (layer >= t.length || layer < 0) return;
 		t[layer]++;
 		createNetwork(t);
-		return 0; // TODO return new neuron number
 	}
 
 	@Override

@@ -133,12 +133,12 @@ public class LayerButtongroup extends JPanel {
 		updateCoords();
 		
 		if (layer != 0 && layer != main.getNetwork().countLayers() - 1) {
-			paintButton(g, 0, 0, "+");
-			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, 0, "-");
-			paintButton(g, 0, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, "+");
-			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, "-");
+			paintButton(g, 0, 0, "L");
+			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, 0, "l");
+			paintButton(g, 0, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, "N");
+			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE, "n");
 		} else {
-			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE / 2, 0, "+");
+			paintButton(g, ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE / 2, 0, "L");
 		}
 	}
 	

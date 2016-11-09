@@ -79,11 +79,11 @@ public class TopologyPanel extends JPanel {
 		synapsePainter.paint(g);
 		
 		// Legend for colors
-		synapsePainter.paintLegend(g, this.getWidth() - 100, this.getHeight() - 30, 100, 10);
+		synapsePainter.paintLegend(g, this.getWidth() - 100, this.getHeight() - 30 - ViewProperties.TOPOLOGY_BUTTON_HEIGHT, 100, 10);
 		
 		// Legend for data area sample symbols
 		MainFrame f = (MainFrame)frame;
-		f.getDataPanel().paintLegend(g, this.getWidth() - 100, this.getHeight() - 58);
+		f.getDataPanel().paintLegend(g, this.getWidth() - 100, this.getHeight() - 58 - ViewProperties.TOPOLOGY_BUTTON_HEIGHT);
 	}
 	
 	/**

@@ -158,7 +158,7 @@ public abstract class NetworkWrapper {
 	public abstract void setParametersFrom(NetworkWrapper network);
 
 	/**
-	 * TODO doc
+	 * Add a layer at a specific position into the network. Optional: reset network weights.
 	 * 
 	 * @param position
 	 * @param neurons
@@ -167,7 +167,7 @@ public abstract class NetworkWrapper {
 	public abstract void addLayer(int position, int neurons, boolean reset);
 	
 	/**
-	 * TODO doc
+	 * Remove a layer from a specific position into the network. Optional: reset network weights.
 	 * 
 	 * @param layer
 	 * @param neurons
@@ -176,15 +176,15 @@ public abstract class NetworkWrapper {
 	public abstract void removeLayer(int layer, boolean reset);
 	
 	/**
-	 * TODO doc
+	 * Add a neuron to a given layer. Optional: reset network weights.
 	 * 
 	 * @param layer
 	 * @return
 	 */
-	public abstract int addNeuron(int layer, boolean reset);
+	public abstract void addNeuron(int layer, boolean reset);
 	
 	/**
-	 * TODO doc
+	 * Remove a neuron from a given layer. Optional: reset network weights.
 	 * 
 	 * @param layer
 	 * @return
