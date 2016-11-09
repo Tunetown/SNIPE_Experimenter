@@ -14,42 +14,49 @@ import de.tunetown.nnpg.model.DataWrapper;
  */
 public class SNIPEDataWrapper extends DataWrapper{
 
-	private TrainingSampleLesson lesson;
-	
+	private TrainingSampleLesson trainingLesson;
+	private TrainingSampleLesson testLesson;
+
 	@Override
 	public void addSample(double x, double y, double value) {
-		if(lesson == null) {
-			createLesson(x, y, value);
-			return;
-		}
-		
-		double[][] in = lesson.getInputs();
-		double[][] teach = lesson.getDesiredOutputs();
-		
-		double[][] nin = new double[in.length + 1][2];
-		double[][] nteach = new double[in.length + 1][1];
-		
-		for(int n=0; n<in.length; n++) {
-			nin[n] = in[n];
-			nteach[n] = teach[n];
+		double[][] in = getMergedInputs();
+		double[][] teach = getMergedDesiredOutputs();
+
+		double[][] nin;
+		double[][] nteach;
+
+		if (in == null) {
+			nin = new double[1][2];
+			nteach = new double[1][1];
 			
+			nin[0][0] = x;
+			nin[0][1] = y;
+			nteach[0][0] = value;
+		} else {
+			nin = new double[in.length + 1][2];
+			nteach = new double[in.length + 1][1];
+			
+			for(int n=0; n<in.length; n++) {
+				nin[n] = in[n];
+				nteach[n] = teach[n];
+				
+			}
+			
+			double[] ninl = {x, y};
+			nin[in.length] = ninl;
+			double[] ntl = {value};
+			nteach[in.length] = ntl;
 		}
-		double[] ninl = {x, y};
-		nin[in.length] = ninl;
-		double[] ntl = {value};
-		nteach[in.length] = ntl;
 		
 		setLesson(new TrainingSampleLesson(nin, nteach));		
 	}
 	
 	@Override
 	public void deleteSamplesAroundPoint(double x, double y, double radius) {
-		if(lesson == null || lesson.countSamples() == 0) {
-			return;
-		}
+		if(!hasData()) return;
 		
-		double[][] in = lesson.getInputs();
-		double[][] teach = lesson.getDesiredOutputs();
+		double[][] in = getMergedInputs();
+		double[][] teach = getMergedDesiredOutputs();
 
 		List<Integer> toErase = new ArrayList<Integer>();
 		
@@ -85,44 +92,9 @@ public class SNIPEDataWrapper extends DataWrapper{
 		}
 	}
 
-	private void createLesson(double x, double y, double value) {
-		/*
-		double[][] in = {{0.5, -0.5},
-				         {-0.7, 0.3},
-				         {-1, 1},
-				         {-1, -1},
-				         {1, 1},
-				         {1, -1},
-		                 {0.1, 0.1}};
-		double[][] teach = {{1},
-				            {1},
-				            {1},
-				            {1},
-				            {1},
-				            {1},
-		                    {-1}};
-*/
-		double[][] in = {{x, y}};
-		double[][] teach = {{value}};
-		setLesson(new TrainingSampleLesson(in, teach));
-	}
-
 	@Override
-	public int getNumOfSamples() {
-		if (lesson == null) return 0;
-		return lesson.countSamples();
-	}
-
-	@Override
-	public double[][] getInputs() {
-		if (lesson == null) return null;
-		return lesson.getInputs();
-	}
-
-	@Override
-	public double[][] getDesiredOutputs() {
-		if (lesson == null) return null;
-		return lesson.getDesiredOutputs();
+	public boolean hasData() {
+		return (trainingLesson != null || testLesson != null);
 	}
 
 	@Override
@@ -130,24 +102,83 @@ public class SNIPEDataWrapper extends DataWrapper{
 		setLesson(null);
 	}
 
-	public TrainingSampleLesson getLesson() {
-		return lesson;
-	}
-	
 	private void setLesson(TrainingSampleLesson lesson) {
-		this.lesson = lesson;
+		trainingLesson = null;
+		testLesson = null;
+
+		if (lesson == null) {
+			// Reset all data to null: We are finished here
+			return;
+		}
+		
+		if(lesson.countSamples() < 10) {
+			// Less than ten samples: Create training data only
+			trainingLesson = lesson;
+			return;
+		}
+		
+		// More than 10 samples: Split lesson into training and test data
+		TrainingSampleLesson[] split = lesson.splitLesson(0.5); 
+		
+		trainingLesson = split[0];
+		testLesson = split[1];
+		
 		//this.lesson.optimizeDesiredOutputsForClassificationProblem(net);
 	}
 
 	@Override
-	public DataContainer getContainer() {
+	public DataContainer getTrainingLesson() {
+		return getContainerFromTrainingLesson(trainingLesson);
+	}
+
+	@Override
+	public DataContainer getTestLesson() {
+		return getContainerFromTrainingLesson(testLesson);
+	}
+
+	@Override
+	public int getNumOfSamples(boolean training) {
+		if (training) {
+			if (trainingLesson == null) return 0;
+			return trainingLesson.countSamples();
+		} else {
+			if (testLesson == null) return 0;
+			return testLesson.countSamples();
+		}
+	}
+
+	private DataContainer getContainerFromTrainingLesson(TrainingSampleLesson lesson) {
 		if (lesson == null) return null;
 		return new DataContainer(lesson.getInputs(), lesson.getDesiredOutputs());
 	}
 
 	@Override
-	public void setFromContainer(DataContainer c) {
-		if (c == null) return;
+	public DataContainer getCompleteDataContainer() {
+		if (!hasData()) return null;
+		return new DataContainer(getMergedInputs(), getMergedDesiredOutputs());
+	}
+
+	@Override
+	public void setFromCompleteDataContainer(DataContainer c) {
+		if (c == null) {
+			setLesson(null);
+			return;
+		}
 		setLesson(new TrainingSampleLesson(c.getInputs(), c.getDesiredOutputs()));
 	}
+
+	public TrainingSampleLesson getSNIPETrainingLesson() {
+		return trainingLesson;
+	}
+
+	public TrainingSampleLesson getSNIPETestLesson() {
+		return testLesson;
+	}
+
+	@Override
+	public void resplitData() {
+		if (!hasData()) return;
+		setLesson(new TrainingSampleLesson(getMergedInputs(), getMergedDesiredOutputs()));
+	}
+
 }

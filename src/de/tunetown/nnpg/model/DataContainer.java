@@ -27,4 +27,18 @@ public class DataContainer implements Serializable {
 	public double[][] getDesiredOutputs() {
 		return desiredOutputs;
 	}
+
+	public int size() {
+		return inputs.length;
+	}
+
+	public int getDimensionalityDesiredOutputs() {
+		if (desiredOutputs == null || desiredOutputs.length == 0) return -1;
+		return desiredOutputs[0].length;
+	}
+
+	public int getDimensionalityInputs() {
+		if (inputs == null || inputs.length == 0) return -1;
+		return inputs[0].length;
+	}
 }

@@ -1357,10 +1357,10 @@ public class NeuralNetwork implements Serializable {
 	 */
 	public boolean isSynapseExistent(int i, int j) {
 		if (i < 0 || i > countNeurons()) {
-			throw new IllegalArgumentException("Illegal Synapse.");
+			throw new IllegalArgumentException("Illegal Synapse: "+i);
 		}
 		if (j < 0 || j > countNeurons()) {
-			throw new IllegalArgumentException("Illegal Synapse.");
+			throw new IllegalArgumentException("Illegal Synapse: "+j);
 		}
 
 		// look for the smaller array to search in and search. a negative return

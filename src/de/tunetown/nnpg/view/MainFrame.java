@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.view.control.ControlPanel;
 import de.tunetown.nnpg.view.data.DataPanel;
+import de.tunetown.nnpg.view.topology.TopologyPanel;
 
 /**
  * Main frame for the application
@@ -52,5 +53,9 @@ public class MainFrame extends JFrame {
 	
 	public void setTrainingWorker(TrainingWorker w) {
 		trainWorker = w;
+	}
+
+	public TopologyPanel getTopologyPanel() {
+		return mainPanel.getTopologyPanel();
 	}
 }

@@ -10,31 +10,35 @@ import java.awt.Color;
  */
 public class ViewProperties {
 
-	public static final int TOPOLOGY_NEURON_DIAMETER = 14;
-
-	public static final int TOPOLOGY_MAX_SYNAPSE_WIDTH = 4;
-	public static final int TOPOLOGY_ARROW_MIN_SIZE = 4;
-	public static final int TOPOLOGY_ARROW_MAX_SIZE = 8;
-	
-	public static final int DATAPANEL_DEFAULT_SIZE = 400;
-	public static final int DATAPANEL_RESOLUTION = 4;
-	public static final int DATAPANEL_SAMPLE_DIAMETER = 6;
-	public static final double DATAPANEL_SAMPLES_RANGE = 10.0;
-	public static final double DATAPANEL_ERASE_RADIUS = 0.5;
-
 	// Colors for value visualizations
 	private static final Color COLOR_ZERO = new Color(200,200,200);
 	private static final Color COLOR_POSITIVE = new Color(255,150,0);
 	private static final Color COLOR_NEGATIVE = new Color(0,150,0);
 	private static final Color COLOR_NAN = new Color(0,0,255);
 	
-	// Color of neurons in topology
+	// Color of neurons in topology, and other topology colors
 	public static final Color COLOR_NEURON_INPUT = new Color(150,150,250);
 	public static final Color COLOR_NEURON_HIDDEN = Color.DARK_GRAY;
+	public static final Color TOPOLOGY_LAYERBUTTON_BGCOLOR = COLOR_POSITIVE;
+	public static final Color TOPOLOGY_LAYERBUTTON_COLOR = Color.WHITE;
 
-	// Other colors
+	// Colors for error graph
 	public static final Color ERRORGRAPH_COLOR_TRAINING_ERROR = Color.BLACK;
+	public static final Color ERRORGRAPH_COLOR_TEST_ERROR = COLOR_NEGATIVE;
 	
+	// General constants for UI elements
+	public static final int TOPOLOGY_NEURON_DIAMETER = 14;
+	public static final int TOPOLOGY_MAX_SYNAPSE_WIDTH = 4;
+	public static final int TOPOLOGY_ARROW_MIN_SIZE = 4;
+	public static final int TOPOLOGY_ARROW_MAX_SIZE = 8;
+	public static final int TOPOLOGY_BUTTON_HEIGHT = 50;
+	public static final int TOPOLOGY_LAYERBUTTON_SIZE = 14;
+	
+	public static final int DATAPANEL_DEFAULT_SIZE = 400;
+	public static final int DATAPANEL_RESOLUTION = 4;
+	public static final int DATAPANEL_SAMPLE_DIAMETER = 6;
+	
+
 	public Color getDataColor(double weight) {
 		if (Double.isNaN(weight)) return COLOR_NAN;  
 		double percent;

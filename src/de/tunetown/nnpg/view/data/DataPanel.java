@@ -2,6 +2,7 @@ package de.tunetown.nnpg.view.data;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,6 +10,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.model.DataContainer;
+import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.view.ViewProperties;
 
 /**
@@ -54,8 +57,8 @@ public class DataPanel extends JPanel {
 	protected void mousePressed(MouseEvent e) {
 		switch (tool) {
 		case TOOL_PAINT:
-			if (Math.abs(convertToModel(e.getPoint().x)) <= ViewProperties.DATAPANEL_SAMPLES_RANGE &&
-				Math.abs(convertToModel(e.getPoint().y)) <= ViewProperties.DATAPANEL_SAMPLES_RANGE) {
+			if (Math.abs(convertToModel(e.getPoint().x)) <= ModelProperties.DATAPANEL_SAMPLES_RANGE &&
+				Math.abs(convertToModel(e.getPoint().y)) <= ModelProperties.DATAPANEL_SAMPLES_RANGE) {
 				main.getData().addSample(
 						convertToModel(e.getPoint().x), 
 						convertToModel(e.getPoint().y), 
@@ -66,9 +69,10 @@ public class DataPanel extends JPanel {
 			main.getData().deleteSamplesAroundPoint(
 					convertToModel(e.getPoint().x), 
 					convertToModel(e.getPoint().y), 
-					ViewProperties.DATAPANEL_ERASE_RADIUS);
+					ModelProperties.DATAPANEL_ERASE_RADIUS);
 			break;
 		}
+		main.updateStats();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -82,12 +86,18 @@ public class DataPanel extends JPanel {
 	 * @param g
 	 */
 	private void paintSamples(Graphics g) {
-		if(main.getData().getNumOfSamples() == 0) return;
+		DataContainer data = main.getData().getTrainingLesson();
+		if(data != null && data.size() > 0) paintSamples(g, data, true);
 		
-		for(int n=0; n<main.getData().getInputs().length; n++) {
-			double[][] in = main.getData().getInputs();
-			double[][] out = main.getData().getDesiredOutputs();
-			paintSample(g, in[n][0], in[n][1], out[n][0]);
+		data = main.getData().getTestLesson();
+		if(data != null && data.size() > 0) paintSamples(g, data, false);
+	}
+
+	private void paintSamples(Graphics g, DataContainer data, boolean training) {
+		for(int n=0; n<data.getInputs().length; n++) {
+			double[][] in = data.getInputs();
+			double[][] out = data.getDesiredOutputs();
+			paintSample(g, convertToView(in[n][0]), convertToView(in[n][1]), properties.getDataColor(out[n][0]), training);
 		}
 	}
 
@@ -98,19 +108,36 @@ public class DataPanel extends JPanel {
 	 * @param y 
 	 * @param out
 	 */
-	private void paintSample(Graphics g, double x, double y, double out) {
-		g.setColor(properties.getDataColor(out));
-		g.fillOval(
-				convertToView(x) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
-				convertToView(y) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
-				ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
-				ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+	private void paintSample(Graphics g, int x, int y, Color color, boolean training) {
+		g.setColor(color);
+		if (!training) {
+			g.fillOval(
+					x - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					y - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+		} else {
+			g.fillRect(
+					x - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					y - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+		}
+		
 		g.setColor(Color.BLACK);
-		g.drawOval(
-				convertToView(x) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
-				convertToView(y) - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
-				ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
-				ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+		if (!training) {
+			g.drawOval(
+					x - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					y - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+		} else {
+			g.drawRect(
+					x - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					y - ViewProperties.DATAPANEL_SAMPLE_DIAMETER/2, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER, 
+					ViewProperties.DATAPANEL_SAMPLE_DIAMETER);
+		}
 	}
 
 	/**
@@ -153,7 +180,7 @@ public class DataPanel extends JPanel {
 	 * @return
 	 */
 	private double convertToModel(int in) {
-		return (ViewProperties.DATAPANEL_SAMPLES_RANGE*2 * (double)in / (double)getDimension()) - ViewProperties.DATAPANEL_SAMPLES_RANGE;
+		return (ModelProperties.DATAPANEL_SAMPLES_RANGE*2 * (double)in / (double)getDimension()) - ModelProperties.DATAPANEL_SAMPLES_RANGE;
 	}
 	
 	/**
@@ -163,7 +190,7 @@ public class DataPanel extends JPanel {
 	 * @return
 	 */
 	private int convertToView(double in) {
-		return (int)((in + ViewProperties.DATAPANEL_SAMPLES_RANGE) / (ViewProperties.DATAPANEL_SAMPLES_RANGE*2) * getDimension());
+		return (int)((in + ModelProperties.DATAPANEL_SAMPLES_RANGE) / (ModelProperties.DATAPANEL_SAMPLES_RANGE*2) * getDimension());
 	}
 
 	/**
@@ -186,5 +213,24 @@ public class DataPanel extends JPanel {
 	 */
 	public void setTool(int tool) {
 		this.tool = tool;
+	}
+
+	/**
+	 * Paints a legend for the data points
+	 * 
+	 * @param g
+	 * @param x
+	 * @param y
+	 */
+	public void paintLegend(Graphics g, int x, int y) {
+		g.setFont(new Font("Sansserif", Font.PLAIN, 10));
+		
+		g.setColor(Color.BLACK);
+		g.drawString("Training Sample", x + 13, y + 5);
+		paintSample(g, x+3, y, properties.getDataColor(0), true);
+		
+		g.setColor(Color.BLACK);
+		g.drawString("Test Sample", x + 13, y + 13 + 5);
+		paintSample(g, x+3, y + 13, properties.getDataColor(0), false);
 	}
 }

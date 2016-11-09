@@ -1,7 +1,7 @@
 package de.tunetown.nnpg.model;
 
 import java.io.File;
-
+import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.main.ParamFile;
 
 /**
@@ -12,10 +12,10 @@ import de.tunetown.nnpg.main.ParamFile;
  */
 public class DataLoader {
 
-	private DataWrapper data;
+	private Main main;
 	
-	public DataLoader(DataWrapper data) {
-		this.data = data;
+	public DataLoader(Main main) {
+		this.main = main;
 	}
 	
 	/**
@@ -27,7 +27,8 @@ public class DataLoader {
 		try {
 			ParamFile var = new ParamFile(file);
 
-			var.set("data", data.getContainer());
+			var.set("data", main.getData().getCompleteDataContainer());
+			var.set("network", main.getNetwork().getTopology());
     	
 			var.store();
     	
@@ -44,8 +45,11 @@ public class DataLoader {
 		try {
 			ParamFile vars = new ParamFile(file);
 
-			data.initialize();
-			data.setFromContainer((DataContainer)vars.get("data"));
+			main.getData().initialize();
+			main.getData().setFromCompleteDataContainer((DataContainer)vars.get("data"));
+			
+			if (vars.get("network") != null) 
+				main.getNetwork().createNetwork((int[])vars.get("network")); 
 			
 		} catch (Throwable e) {
 			e.printStackTrace();

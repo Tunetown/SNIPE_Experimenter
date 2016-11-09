@@ -1,6 +1,8 @@
 package de.tunetown.nnpg.view.topology;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -48,6 +50,12 @@ public class SynapsePainter {
 	 * @param h
 	 */
 	public void paintLegend(Graphics g, int x, int y, int w, int h) {
+		g.setFont(new Font("Sansserif", Font.PLAIN, 10));
+		g.setColor(Color.BLACK);
+		g.drawString("-1", x, y + 25);
+		g.drawString("0", x + w/2-2, y + 25);
+		g.drawString("1", x + w-5, y + 25);
+
 		for(int i=0; i<w; i++) {
 			double we = (double)i/w * 2.0 - 1.0;
 			g.setColor(properties.getDataColor(we));

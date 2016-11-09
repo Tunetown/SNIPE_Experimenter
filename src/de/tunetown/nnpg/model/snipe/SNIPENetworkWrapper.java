@@ -21,30 +21,25 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private double eta = 0.002;
 	private int batchSize = 10000;
+	private double initialRange = 0.1;
 
 	private NeuralNetwork net;
 	
-	public SNIPENetworkWrapper() {
-		this(true);
-	}
-	
-	private SNIPENetworkWrapper(boolean initialize) {
-		if (initialize) net = createNetwork();
+	public SNIPENetworkWrapper(int[] topology) {
+		createNetwork(topology);
 	}
 
-	private NeuralNetwork createNetwork() {
-		int[] layers = {2,8,8,8, 1};
-		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
+	@Override
+	public void createNetwork(int[] topology) {
+		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
 		desc.setSettingsTopologyFeedForward();
-		desc.setSynapseInitialRange(0.1);
+		desc.setSynapseInitialRange(initialRange);
 		
 		desc.setNeuronBehaviorInputNeurons(new Identity());
 		desc.setNeuronBehaviorHiddenNeurons(new TangensHyperbolicus());
 		desc.setNeuronBehaviorOutputNeurons(new TangensHyperbolicus());
 		
-		NeuralNetwork net = desc.createNeuralNetwork();
- 
-		return net;
+		net = desc.createNeuralNetwork();
 	}
 
 	@Override
@@ -90,11 +85,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public void train(DataWrapper data, TrainingTracker tracker) {
-		if (data.getNumOfSamples() == 0) return;
+		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
-		tracker.addRecord(getError(data));
+		tracker.addRecord(getTrainingError(data), getTestError(data));
 		
-		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
+		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
 		
 		long start = System.nanoTime();
 		net.trainBackpropagationOfError(lesson, batchSize, eta);
@@ -102,8 +97,15 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public double getError(DataWrapper data) {
-		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getLesson();
+	public double getTrainingError(DataWrapper data) {
+		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
+		if (lesson == null || lesson.countSamples() == 0) return 0;
+		return ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
+	}
+
+	@Override
+	public double getTestError(DataWrapper data) {
+		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETestLesson();
 		if (lesson == null || lesson.countSamples() == 0) return 0;
 		return ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
 	}
@@ -145,7 +147,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public NetworkWrapper clone() {
-		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(false);
+		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(net.getDescriptor().getNeuronsPerLayer());
 		ret.net = net.clone();
 		ret.setParametersFrom(this);
 		return ret;
@@ -157,6 +159,75 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		
 		setEta(n.getEta());
 		setBatchSize(n.getBatchSize());
+	}
+
+	/**
+	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
+	 */
+	@Override
+	public void addLayer(int position, int neurons, boolean reset) {
+		if (position >= net.countLayers()) return;
+		
+		int[] t = net.getDescriptor().getNeuronsPerLayer();
+		int[] nt = new int[t.length + 1];
+		
+		int nn = 0;
+		for(int i=0; i<position; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		nt[nn] = neurons;
+		nn++;
+		for(int i=position; i<t.length; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		createNetwork(nt);
+	}
+
+	/**
+	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
+	 */
+	@Override
+	public void removeLayer(int layer, boolean reset) {
+		if (layer >= net.countLayers()) return;
+		
+		int[] t = net.getDescriptor().getNeuronsPerLayer();
+		int[] nt = new int[t.length - 1];
+		
+		int nn = 0;
+		for(int i=0; i<layer; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		for(int i=layer+1; i<t.length; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		createNetwork(nt);
+	}
+
+	@Override
+	public int addNeuron(int layer, boolean reset) {
+		int[] t = net.getDescriptor().getNeuronsPerLayer();
+		if (layer >= t.length || layer < 0) return -1;
+		t[layer]++;
+		createNetwork(t);
+		return 0; // TODO return new neuron number
+	}
+
+	@Override
+	public void removeNeuron(int layer, boolean reset) {
+		int[] t = net.getDescriptor().getNeuronsPerLayer();
+		if (layer >= t.length || layer < 0) return;
+		if (t[layer] < 2) return;
+		t[layer]--;
+		createNetwork(t);
+	}
+
+	@Override
+	public int[] getTopology() {
+		return net.getDescriptor().getNeuronsPerLayer();
 	}
 }
 

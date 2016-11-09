@@ -50,10 +50,10 @@ public class ParamFile implements Serializable {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public Object get(String name) throws Throwable {
+	public Serializable get(String name) throws Throwable {
 		for (Param v : content) {
 			if (v.getName().equals(name)) {
-				return v.getValue();
+				return (Serializable)v.getValue();
 			}
 		}
 		return null;

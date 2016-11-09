@@ -105,7 +105,6 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 		main.stopTraining(false);
 		
 		JFileChooser j = new JFileChooser();
-		//j.setFileFilter(new FileNameExtensionFilter("Training Data File (.dat)", "dat"));  
 		
 		int answer = j.showSaveDialog(frame);
 		
@@ -122,13 +121,15 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 		main.stopTraining(false);
 		
 		JFileChooser j = new JFileChooser();
-		//j.setFileFilter(new FileNameExtensionFilter("Training Data File (.dat)", "dat"));  
 		
 		int answer = j.showOpenDialog(frame);
 		
 		if (answer == JFileChooser.APPROVE_OPTION) {
 			File file = j.getSelectedFile();
 			main.getDataLoader().loadFromFile(file);
+
+			((MainFrame)frame).getTopologyPanel().update();
+			((MainFrame)frame).getTopologyPanel().resetGridSize();
 			frame.repaint();
 		}
 	}

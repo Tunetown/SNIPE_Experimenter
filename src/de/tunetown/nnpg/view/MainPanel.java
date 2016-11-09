@@ -35,7 +35,7 @@ public class MainPanel extends JPanel {
 	
 	private void init() {
 		// Visualization of Topology
-		netView = new TopologyPanel(main);
+		netView = new TopologyPanel(main, frame);
 		add(netView, BorderLayout.CENTER);
 		
 		// Output graph
@@ -52,5 +52,9 @@ public class MainPanel extends JPanel {
 	
 	public DataPanel getDataPanel() {
 		return outView;
+	}
+
+	public TopologyPanel getTopologyPanel() {
+		return netView;
 	}
 }

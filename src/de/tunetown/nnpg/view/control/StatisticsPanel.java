@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * UI panel for statistics about the network training process
@@ -25,8 +26,10 @@ public class StatisticsPanel extends JPanel {
 	
 	private JLabel eta;
 	private JLabel batchSize;
+	private JLabel dataSize;
 	private JLabel iterations;
-	private JLabel error;
+	private JLabel trainingError;
+	private JLabel testError;
 	private JLabel procTime;
 	//private JLabel procPercentage;
 	private ErrorGraphPanel errorGraph;
@@ -49,12 +52,20 @@ public class StatisticsPanel extends JPanel {
 		batchSize = new JLabel();
 		statsR.add(batchSize);
 
+		dataSize = new JLabel();
+		statsR.add(dataSize);
+
 		iterations = new JLabel();
 		statsR.add(iterations);
 
-		error = new JLabel();
-		statsR.add(error);
-		error.setPreferredSize(new Dimension(150, error.getPreferredSize().height));
+		trainingError = new JLabel();
+		statsR.add(trainingError);
+		trainingError.setForeground(ViewProperties.ERRORGRAPH_COLOR_TRAINING_ERROR);
+		trainingError.setPreferredSize(new Dimension(150, trainingError.getPreferredSize().height));
+
+		testError = new JLabel();
+		testError.setForeground(ViewProperties.ERRORGRAPH_COLOR_TEST_ERROR);
+		statsR.add(testError);
 		
 		procTime = new JLabel();
 		statsR.add(procTime);
@@ -75,8 +86,10 @@ public class StatisticsPanel extends JPanel {
 		synchronized (main.getNetworkLock()) {
 			setEta(main.getNetwork().getEta());
 			setBatchSize(main.getNetwork().getBatchSize());
+			setDataSize(main.getData().getNumOfSamples(false) + main.getData().getNumOfSamples(true));
 			setIteration(main.getTracker().getIterations());
-			setError(main.getNetwork().getError(main.getData()));
+			setTrainingError(main.getNetwork().getTrainingError(main.getData()));
+			setTestError(main.getNetwork().getTestError(main.getData()));
 			setProcTime(main.getTracker().getProcessingTime());
 			//setProcPercentage(main.getTracker().getProcessingPercentage());
 		}
@@ -91,13 +104,22 @@ public class StatisticsPanel extends JPanel {
 		batchSize.setText("Batch Size: " + value);
 	}
 
+	private void setDataSize(int size) {
+		dataSize.setText("Data Size: " + size);
+	}
+
 	private void setIteration(int i) {
 		iterations.setText("Iterations: " + i);
 	}
 
-	private void setError(double i) {
+	private void setTrainingError(double i) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		error.setText("Training Error: " + df.format(i));
+		trainingError.setText("Training Error: " + df.format(i));
+	}
+
+	private void setTestError(double i) {
+		DecimalFormat df = new DecimalFormat("#.##");
+		testError.setText("Test Error: " + df.format(i));
 	}
 
 	private void setProcTime(long t) {

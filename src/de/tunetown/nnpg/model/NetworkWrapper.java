@@ -91,12 +91,20 @@ public abstract class NetworkWrapper {
 	public abstract void train(DataWrapper data, TrainingTracker tracker);
 
 	/**
-	 * Get the current error of the network, regarding the given data.
+	 * Get the current error of the network, regarding the given training data.
 	 * 
 	 * @param data
 	 * @return
 	 */
-	public abstract double getError(DataWrapper data);
+	public abstract double getTrainingError(DataWrapper data);
+	
+	/**
+	 * Get the current error of the network, regarding the given test data.
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public abstract double getTestError(DataWrapper data);
 
 	/**
 	 * Returns the bias weight for a neuron, or NaN if there is no bias neuron connected 
@@ -148,4 +156,52 @@ public abstract class NetworkWrapper {
 	 * @return
 	 */
 	public abstract void setParametersFrom(NetworkWrapper network);
+
+	/**
+	 * TODO doc
+	 * 
+	 * @param position
+	 * @param neurons
+	 * @return
+	 */
+	public abstract void addLayer(int position, int neurons, boolean reset);
+	
+	/**
+	 * TODO doc
+	 * 
+	 * @param layer
+	 * @param neurons
+	 * @return
+	 */
+	public abstract void removeLayer(int layer, boolean reset);
+	
+	/**
+	 * TODO doc
+	 * 
+	 * @param layer
+	 * @return
+	 */
+	public abstract int addNeuron(int layer, boolean reset);
+	
+	/**
+	 * TODO doc
+	 * 
+	 * @param layer
+	 * @return
+	 */
+	public abstract void removeNeuron(int layer, boolean reset);
+
+	/**
+	 * Get the neurons per layer array
+	 * 
+	 * @return
+	 */
+	public abstract int[] getTopology();
+
+	/**
+	 * (Re)create the network
+	 * 
+	 * @param topology
+	 */
+	public abstract void createNetwork(int[] topology);
 }

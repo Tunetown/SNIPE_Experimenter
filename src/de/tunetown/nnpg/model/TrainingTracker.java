@@ -11,17 +11,26 @@ import java.util.List;
  */
 public class TrainingTracker {
 
-	private List<Double> rmsErrors = new ArrayList<Double>(); 
+	private List<Double> trainingErrors = new ArrayList<Double>(); 
+	private List<Double> testErrors = new ArrayList<Double>(); 
 	private long processingNanoTime = 0;
-	//private long startNanoTime = 0; TODO cleanup
 
 	/**
 	 * Returns a list of errors, which holds exactly one error per iteration.
 	 * 
 	 * @return
 	 */
-	public List<Double> getRmsErrors() {
-		return rmsErrors;
+	public List<Double> getTrainingErrors() {
+		return trainingErrors;
+	}
+
+	/**
+	 * Returns a list of errors, which holds exactly one error per iteration.
+	 * 
+	 * @return
+	 */
+	public List<Double> getTestErrors() {
+		return testErrors;
 	}
 
 	/**
@@ -30,7 +39,7 @@ public class TrainingTracker {
 	 * @return
 	 */
 	public int getIterations() {
-		return rmsErrors.size();
+		return trainingErrors.size();
 	}
 
 	/**
@@ -38,8 +47,9 @@ public class TrainingTracker {
 	 * 
 	 * @param error
 	 */
-	public void addRecord(double error) {
-		rmsErrors.add(error);
+	public void addRecord(double trainingError, double testError) {
+		trainingErrors.add(trainingError);
+		testErrors.add(testError);
 	}
 
 	/**
@@ -59,21 +69,4 @@ public class TrainingTracker {
 	public long getProcessingTime() {
 		return processingNanoTime;
 	}
-
-	/**
-	 * Start tracking of general CPU time
-	 * 
-	 *
-	public void startTracking() {
-		startNanoTime = System.nanoTime();
-	}
-	
-	/**
-	 * Returns the overall percentage of CPU used for training (TODO cleanup)
-	 * @return
-	 *
-	public double getProcessingPercentage() {
-		long all = System.nanoTime() - startNanoTime;
-		return (double)getProcessingTime() / (double)all;
-	}*/
 }

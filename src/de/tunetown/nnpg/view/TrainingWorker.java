@@ -27,10 +27,10 @@ public class TrainingWorker extends SwingWorker {
 	@Override
 	protected Object doInBackground() throws Exception {
 		try {
-			// Start tracking of statistics about this training process
-			//main.getTracker().startTracking(); TODO cleanup
-
 			while (!isKilled()) {
+				// Stop training if no data is present
+				if (!main.getData().hasData()) kill();
+
 				// Create a working clone of the network for training. This is necessary 
 				// to be able to update the UI in parallel.
 				NetworkWrapper clone;
@@ -39,21 +39,27 @@ public class TrainingWorker extends SwingWorker {
 				}
 
 				// Train the working clone.
-				clone.train(main.getData(), main.getTracker());
-				
-				// Set the trained clone "productive"
-				synchronized (main.getNetworkLock()) {
-					clone.setParametersFrom(main.getNetwork());
-					main.setNetwork(clone);
+				try {
+					clone.train(main.getData(), main.getTracker());
+					
+					// Set the trained clone "productive"
+					synchronized (main.getNetworkLock()) {
+						clone.setParametersFrom(main.getNetwork());
+						main.setNetwork(clone);
+					}
+					
+					// Update statistics in the UI
+					main.updateStats();
+					
+					// Trigger that repainting will happen in the EDT. The repainting routines
+					// will use the new "productive" network instance, while we will continue training
+					// on the next clone here.
+					frame.repaint();
+					
+				} catch (Exception e) {
+					System.out.println("Training glitch occurred, stopped training");
+					kill();
 				}
-				
-				// Update statistics in the UI
-				main.updateStats();
-				
-				// Trigger that repainting will happen in the EDT. The repainting routines
-				// will use the new "productive" network instance, while we will continue training
-				// on the next clone here.
-				frame.repaint(); 
 			};
 			
 		} catch(Throwable t) {
@@ -65,14 +71,6 @@ public class TrainingWorker extends SwingWorker {
 	public boolean isKilled() {
 		return killed;
 	}
-
-	/** TODO cleanup
-	@Override
-	protected void process(List chunks) {
-		main.updateStats();
-		frame.repaint();
-	}
-	*/
 
 	@Override
 	protected void done() {

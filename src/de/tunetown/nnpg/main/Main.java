@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 
 import de.tunetown.nnpg.model.DataLoader;
 import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
 import de.tunetown.nnpg.model.snipe.SNIPEDataWrapper;
@@ -18,19 +19,20 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter
  * 
- *  
- * - TODO 2 Optimize screen flickering and thread concept -> With sleep = 0, nothing works anymore!
- * 		- Concept: Use cloned instance for display rendering. BEWARE: No instance cloning during repaint! (synchronize)
+ * - TODO 4 New tool: Grow/Reduce. Slider for rate, from 0.5 to 2.
  * 
- * - TODO 9 Adaptive adding/removing of neurons
- * - TODO 9 Adaptive eta determination
+ * - TODO 5 Button: Add noise
+ *
+ * - TODO 9 Github documentation update
  * 
- * - TODO 1 Concept for splitting training and test data (also have to be edited separately!)
+ * *******************************************************
  * 
- * - TODO 8 Multi-dimensional visualization
+ * - TODO X Slider: Ratio training/test data (not necessary...?)
  * 
- * - TODO 6 Github documentation
- *  
+ * - TODO X Multi-dimensional visualization
+ * 
+ * - TODO X Adaptive adding/removing of neurons
+ * - TODO X Adaptive eta determination
  * 
  * @author Thomas Weber, 2016
  * @see www.tunetown.de
@@ -87,7 +89,7 @@ public class Main {
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
 		data = new SNIPEDataWrapper();
-		dataLoader = new DataLoader(data);
+		dataLoader = new DataLoader(this);
 		
 		// Initialize the network, tracker and data instances
 		initNetwork();
@@ -117,7 +119,11 @@ public class Main {
 		}
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
-		setNetwork(new SNIPENetworkWrapper());
+		if (getNetwork() == null) {
+			setNetwork(new SNIPENetworkWrapper(ModelProperties.DEFAULT_TOPOLOGY));
+		} else {
+			setNetwork(new SNIPENetworkWrapper(getNetwork().getTopology()));
+		}
 		
 		if (eta != 0) net.setEta(eta);
 		if (batchSize != 0) net.setBatchSize(batchSize);
@@ -125,6 +131,7 @@ public class Main {
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();
 		
+		if (frame != null && frame.getTopologyPanel() != null) frame.getTopologyPanel().update();
 		updateStats();
 	}
 

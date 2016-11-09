@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.view.data.DataPanel;
 
 /**
@@ -80,6 +81,48 @@ public class DataControlPanel extends JPanel {
 		});
 		add(resetData);
 
+		// Resplit button
+		JButton resplitData = new JButton("Re-Split Data");
+		resplitData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					resplitData();
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+		});
+		add(resplitData);
+
+		// Grow data button
+		JButton growData = new JButton("Grow All Data");
+		growData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					growData();
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+		});
+		add(growData);
+
+		// Reduce data button
+		JButton reduceData = new JButton("Reduce All Data");
+		reduceData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				try {
+					reduceData();
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+		});
+		add(reduceData);
+
         // Border around control area
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
@@ -95,9 +138,39 @@ public class DataControlPanel extends JPanel {
 		}
 
 		main.getData().initialize();
+		main.updateStats();
 		frame.repaint();
 	}
 	
+	/**
+	 * Reset data
+	 * 
+	 */
+	private void resplitData() {
+		main.getData().resplitData();
+		frame.repaint();
+	}
+
+	/**
+	 * Doubles and re-splits the training and test data.
+	 * 
+	 */
+	private void growData() {
+		main.getData().growData(ModelProperties.DATAPANEL_DOUBLERATE, ModelProperties.DATAPANEL_DOUBLERADIUS);
+		main.updateStats();
+		frame.repaint();
+	}
+
+	/**
+	 * Reduces and re-splits the training and test data.
+	 * 
+	 */
+	private void reduceData() {
+		main.getData().growData(1.0 / ModelProperties.DATAPANEL_DOUBLERATE, ModelProperties.DATAPANEL_DOUBLERADIUS);
+		main.updateStats();
+		frame.repaint();
+	}
+
 	/**
 	 * Set painting tool
 	 * 
