@@ -64,7 +64,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getWeight(int fromNeuron, int toNeuron) {
-		if (!net.isSynapseExistent(fromNeuron, toNeuron)) return Double.NaN;
+		if (!net.isSynapseExistent(fromNeuron + 1, toNeuron + 1)) return Double.NaN;
 		return net.getWeight(fromNeuron + 1,  toNeuron + 1);
 	}
 

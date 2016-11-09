@@ -19,6 +19,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
+ * - TODO 1 Switch activation functions per layer
+ * 
  * - TODO 9 Github documentation update
  * 
  * *******************************************************

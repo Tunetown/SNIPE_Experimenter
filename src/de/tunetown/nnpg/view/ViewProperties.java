@@ -11,7 +11,7 @@ import java.awt.Color;
 public class ViewProperties {
 
 	// Colors for value visualizations
-	private static final Color COLOR_ZERO = new Color(200,200,200);
+	private static final Color COLOR_ZERO = Color.WHITE; //new Color(200,200,200);
 	private static final Color COLOR_POSITIVE = new Color(255,150,0);
 	private static final Color COLOR_NEGATIVE = new Color(0,150,0);
 	private static final Color COLOR_NAN = new Color(0,0,255);
@@ -19,7 +19,7 @@ public class ViewProperties {
 	// Color of neurons in topology, and other topology colors
 	public static final Color COLOR_NEURON_INPUT = new Color(150,150,250);
 	public static final Color COLOR_NEURON_HIDDEN = Color.DARK_GRAY;
-	public static final Color TOPOLOGY_LAYERBUTTON_BGCOLOR = COLOR_POSITIVE;
+	public static final Color TOPOLOGY_LAYERBUTTON_BGCOLOR = Color.LIGHT_GRAY;
 	public static final Color TOPOLOGY_LAYERBUTTON_COLOR = Color.WHITE;
 
 	// Colors for error graph

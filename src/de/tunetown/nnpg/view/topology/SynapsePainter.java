@@ -52,14 +52,14 @@ public class SynapsePainter {
 	public void paintLegend(Graphics g, int x, int y, int w, int h) {
 		g.setFont(new Font("Sansserif", Font.PLAIN, 10));
 		g.setColor(Color.BLACK);
-		g.drawString("-1", x, y + 25);
-		g.drawString("0", x + w/2-2, y + 25);
-		g.drawString("1", x + w-5, y + 25);
+		g.drawString("1 (L)", x, y + 25);
+		g.drawString("0 (M)", x + w/2-15, y + 25);
+		g.drawString("-1 (R)", x + w-28, y + 25);
 
 		for(int i=0; i<w; i++) {
 			double we = (double)i/w * 2.0 - 1.0;
 			g.setColor(properties.getDataColor(we));
-			g.drawLine(x+i, y, x+i, y+h);
+			g.drawLine(x+w-i, y, x+w-i, y+h);
 		}
 	}
 
@@ -72,6 +72,8 @@ public class SynapsePainter {
 	 */
 	private void paintSynapse(Graphics g, int n1, int n2) {
 		double w = main.getNetwork().getWeight(n1, n2);
+		if (Double.isNaN(w)) return;
+		
 		g.setColor(properties.getDataColor(w));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(getWeightThickness(w, ViewProperties.TOPOLOGY_MAX_SYNAPSE_WIDTH), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
