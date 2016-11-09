@@ -19,13 +19,13 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
- * - TODO 4 New tool: Grow/Reduce. Area: radius (see slider) 
- * 		- Slider for rate, from 0.5 to 2.
- * 		- Slider for radius, from 0 to range max.
- * 
  * - TODO 9 Github documentation update
  * 
  * *******************************************************
+ * 
+ * - TODO X New tool: Grow/Reduce. Area: radius (see slider) 
+ * 		- Slider for rate, from 0.5 to 2.
+ * 		- Slider for radius, from 0 to range max.
  * 
  * - TODO X Multi-dimensional visualization
  * - TODO X Adaptive adding/removing of neurons
