@@ -10,11 +10,11 @@ import de.tunetown.nnpg.model.DataContainer;
  * @author tweber
  *
  */
-public class DataLoader {
+public class ProjectLoader {
 
 	private Main main;
 	
-	public DataLoader(Main main) {
+	public ProjectLoader(Main main) {
 		this.main = main;
 	}
 	
@@ -29,6 +29,8 @@ public class DataLoader {
 
 			var.set("data", main.getData().getCompleteDataContainer());
 			var.set("network", main.getNetwork().getTopology());
+			var.set("eta", main.getNetwork().getEta());
+			var.set("batchsize", main.getNetwork().getBatchSize());
     	
 			var.store();
     	
@@ -51,7 +53,11 @@ public class DataLoader {
 			if (vars.get("network") != null) 
 				main.getNetwork().createNetwork((int[])vars.get("network")); 
 			
+			main.getNetwork().setEta((double)(vars.get("eta")));
+			main.getNetwork().setBatchSize((int)(vars.get("batchsize")));
+			
 		} catch (Throwable e) {
+			System.out.println("Error loading project file:");
 			e.printStackTrace();
 		}
 	}

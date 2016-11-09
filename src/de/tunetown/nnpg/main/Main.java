@@ -21,8 +21,9 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO 1 Switch activation functions per layer
  * - TODO 1 Different Grid sizes for hor/vert
  * - TODO 2 Backprops per Second stat (also add graph in orange!)
+ * 		-> Last 1M runs?
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
- * - TODO 3 Also store eta / batch size
+ * - TODO 3 Re-store examples
  * 
  * - TODO 4 Adaptive eta determination
  * - TODO 4 Multi-Threaded training? Any idea?
@@ -52,7 +53,7 @@ public class Main {
 	private NetworkWrapper net;
 	private DataWrapper data;
 	private TrainingTracker tracker;
-	private DataLoader dataLoader;
+	private ProjectLoader dataLoader;
 	
 	private MainFrame frame;
 	private Menu menu;
@@ -93,7 +94,7 @@ public class Main {
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
 		data = new SNIPEDataWrapper();
-		dataLoader = new DataLoader(this);
+		dataLoader = new ProjectLoader(this);
 		
 		// Initialize the network, tracker and data instances
 		initNetwork();
@@ -124,7 +125,7 @@ public class Main {
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
 		if (getNetwork() == null) {
-			setNetwork(new SNIPENetworkWrapper(ModelProperties.DEFAULT_TOPOLOGY));
+			setNetwork(new SNIPENetworkWrapper(ModelProperties.NETWORK_DEFAULT_TOPOLOGY));
 		} else {
 			setNetwork(new SNIPENetworkWrapper(getNetwork().getTopology()));
 		}
@@ -180,7 +181,7 @@ public class Main {
 	 * 
 	 * @return
 	 */
-	public DataLoader getDataLoader() {
+	public ProjectLoader getDataLoader() {
 		return dataLoader;
 	}
 	

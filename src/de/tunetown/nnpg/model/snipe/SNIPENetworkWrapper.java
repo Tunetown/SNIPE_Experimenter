@@ -8,6 +8,7 @@ import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
 
@@ -19,9 +20,9 @@ import de.tunetown.nnpg.model.TrainingTracker;
  */
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
-	private double eta = 0.002;
-	private int batchSize = 10000;
-	private double initialRange = 0.1;
+	private double eta = ModelProperties.NETWORK_DEFAULT_ETA;
+	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE;
+	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
 	private NeuralNetwork net;
 	
@@ -88,12 +89,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
 		tracker.addRecord(getTrainingError(data), getTestError(data));
-		
 		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
 		
 		long start = System.nanoTime();
 		net.trainBackpropagationOfError(lesson, batchSize, eta);
-		tracker.addNanoTime(System.nanoTime() - start);
+		tracker.addRun(System.nanoTime() - start);
 	}
 
 	@Override
@@ -134,6 +134,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	@Override
 	public void setBatchSize(int size) {
 		batchSize = size;
+	}
+
+	@Override
+	public int[] getTopology() {
+		return net.getDescriptor().getNeuronsPerLayer();
 	}
 
 	@Override
@@ -222,11 +227,6 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		if (t[layer] < 2) return;
 		t[layer]--;
 		createNetwork(t);
-	}
-
-	@Override
-	public int[] getTopology() {
-		return net.getDescriptor().getNeuronsPerLayer();
 	}
 }
 

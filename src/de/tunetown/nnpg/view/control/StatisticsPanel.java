@@ -24,6 +24,8 @@ public class StatisticsPanel extends JPanel {
 
 	private Main main;
 	
+	private ErrorGraphPanel errorGraph;
+	
 	private JLabel eta;
 	private JLabel batchSize;
 	private JLabel dataSize;
@@ -31,9 +33,8 @@ public class StatisticsPanel extends JPanel {
 	private JLabel trainingError;
 	private JLabel testError;
 	private JLabel procTime;
-	//private JLabel procPercentage;
-	private ErrorGraphPanel errorGraph;
-
+	private JLabel speed;
+	
 	public StatisticsPanel(Main main) {
 		this.main = main;
 		
@@ -70,8 +71,8 @@ public class StatisticsPanel extends JPanel {
 		procTime = new JLabel();
 		statsR.add(procTime);
 
-		//procPercentage = new JLabel();
-		//statsR.add(procPercentage);
+		speed = new JLabel();
+		statsR.add(speed);
 
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		
@@ -91,7 +92,7 @@ public class StatisticsPanel extends JPanel {
 			setTrainingError(main.getNetwork().getTrainingError(main.getData()));
 			setTestError(main.getNetwork().getTestError(main.getData()));
 			setProcTime(main.getTracker().getProcessingTime());
-			//setProcPercentage(main.getTracker().getProcessingPercentage());
+			setSpeed(main.getTracker().getCurrentSpeed(main.getNetwork()));
 		}
 	}
 
@@ -130,9 +131,15 @@ public class StatisticsPanel extends JPanel {
 		}
 	}
 	
-	/*
-	private void setProcPercentage(double perc) {
-		DecimalFormat df = new DecimalFormat("#.#####");
-		procPercentage.setText("CPU: " + df.format(perc) + "%");
-	}*/
+	private void setSpeed(long i) {
+		speed.setText("Runs/sec: " + getReadableAmount(i));
+	}
+	
+	private String getReadableAmount(long s) {
+	    if(s == 0) return "0";
+	    if(s < 0) return ""+s;
+	    final String[] units = new String[] { "", "k", "M", "B", "MM", "BB", "MMM" };  
+	    int digitGroups = (int) (Math.log10(s)/Math.log10(1000));
+	    return new DecimalFormat("#,##0.#").format(s/Math.pow(1000, digitGroups)) + " " + units[digitGroups]; 
+	}
 }

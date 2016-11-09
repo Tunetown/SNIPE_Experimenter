@@ -14,6 +14,7 @@ public class TrainingTracker {
 	private List<Double> trainingErrors = new ArrayList<Double>(); 
 	private List<Double> testErrors = new ArrayList<Double>(); 
 	private long processingNanoTime = 0;
+	private long runs = 0;
 
 	/**
 	 * Returns a list of errors, which holds exactly one error per iteration.
@@ -53,12 +54,13 @@ public class TrainingTracker {
 	}
 
 	/**
-	 * Add processing time
+	 * Add a processing run to the log
 	 * 
-	 * @param nanoTime
+	 * @param nanoTime nanoseconds needed for the run
 	 */
-	public void addNanoTime(long nanoTime) {
+	public void addRun(long nanoTime) {
 		processingNanoTime += nanoTime;
+		runs++;
 	}
 	
 	/**
@@ -68,5 +70,13 @@ public class TrainingTracker {
 	 */
 	public long getProcessingTime() {
 		return processingNanoTime;
+	}
+
+	/**
+	 * Returns the current training speed in number of training runs per second
+	 * @return
+	 */
+	public long getCurrentSpeed(NetworkWrapper net) {
+		return (long)((double)processingNanoTime / (double)runs / net.getBatchSize());
 	}
 }
