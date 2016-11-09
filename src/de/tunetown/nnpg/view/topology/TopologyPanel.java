@@ -50,21 +50,24 @@ public class TopologyPanel extends JPanel {
 	
 	/**
 	 * Determines the grid size for the topology dynamically by the given area size.
+	 * TODO only cann once
 	 * 
 	 * @return
 	 */
 	public int getGridSize() {
-		int minDim = 0;
-		if (this.getWidth() > this.getHeight()) {
-			minDim = this.getHeight();
-		} else {
-			minDim = this.getWidth();
+		synchronized (main.getNetworkLock()) {
+			int minDim = 0;
+			if (this.getWidth() > this.getHeight()) {
+				minDim = this.getHeight();
+			} else {
+				minDim = this.getWidth();
+			}
+			if (main.getNetwork().getMaxNeuronsInLayers() > main.getNetwork().countLayers()) {
+				return (int)(minDim / (main.getNetwork().getMaxNeuronsInLayers()) / 2);
+			} else {
+				return (int)(minDim / (main.getNetwork().countLayers()) / 2);
+			}
 		}
-		if (main.getNetwork().getMaxNeuronsInLayers() > main.getNetwork().countLayers()) {
-			return (int)(minDim / (main.getNetwork().getMaxNeuronsInLayers()) / 2);
-		} else {
-			return (int)(minDim / (main.getNetwork().countLayers()) / 2);
-		} 
 	}
 
 	public void paintComponent(Graphics g) {

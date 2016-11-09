@@ -36,7 +36,7 @@ public class NeuronPanel extends JComponent {
 	 * Set the x/y values of the neuron according to grid size and the network topology
 	 * 
 	 */
-	public void updateCoords() {
+	private void updateCoords() {
 		this.x = view.getGridSize() + main.getNetwork().getLayerOfNeuron(num) * view.getGridSize() * 2;
 		this.y = view.getGridSize() + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * view.getGridSize() * 2;
 		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
@@ -58,20 +58,22 @@ public class NeuronPanel extends JComponent {
 	 * @param index
 	 */
 	public void paintComponent(Graphics g) {
-		updateCoords();
-		
-		if (main.getNetwork().getLayerOfNeuron(num) == 0) {
-			g.setColor(ViewProperties.COLOR_NEURON_INPUT); 
-		} else {
-			g.setColor(ViewProperties.COLOR_NEURON_HIDDEN); 
-		}
-		
-		g.fillOval(0, 0, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
-		
-		// Bias weight
-		if (neuronBorder > 0 && !Double.isNaN(main.getNetwork().getBiasWeight(num))) { 
-			g.setColor(properties.getDataColor(main.getNetwork().getBiasWeight(num)));
-			g.fillOval(neuronBorder, neuronBorder, ViewProperties.TOPOLOGY_NEURON_DIAMETER-2*neuronBorder, ViewProperties.TOPOLOGY_NEURON_DIAMETER-2*neuronBorder);
+		synchronized (main.getNetworkLock()) {
+			updateCoords();
+			
+			if (main.getNetwork().getLayerOfNeuron(num) == 0) {
+				g.setColor(ViewProperties.COLOR_NEURON_INPUT); 
+			} else {
+				g.setColor(ViewProperties.COLOR_NEURON_HIDDEN); 
+			}
+			
+			g.fillOval(0, 0, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
+			
+			// Bias weight
+			if (neuronBorder > 0 && !Double.isNaN(main.getNetwork().getBiasWeight(num))) { 
+				g.setColor(properties.getDataColor(main.getNetwork().getBiasWeight(num)));
+				g.fillOval(neuronBorder, neuronBorder, ViewProperties.TOPOLOGY_NEURON_DIAMETER-2*neuronBorder, ViewProperties.TOPOLOGY_NEURON_DIAMETER-2*neuronBorder);
+			}
 		}
 	}
 }

@@ -102,7 +102,7 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 	 * Save data to file
 	 */
 	private void saveDataFile() {
-		main.stopTraining();
+		main.stopTraining(false);
 		
 		JFileChooser j = new JFileChooser();
 		//j.setFileFilter(new FileNameExtensionFilter("Training Data File (.dat)", "dat"));  
@@ -119,7 +119,7 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 	 * Open data file
 	 */
 	private void openDataFile() {
-		main.stopTraining();
+		main.stopTraining(false);
 		
 		JFileChooser j = new JFileChooser();
 		//j.setFileFilter(new FileNameExtensionFilter("Training Data File (.dat)", "dat"));  

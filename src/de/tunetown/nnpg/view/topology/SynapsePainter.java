@@ -27,10 +27,12 @@ public class SynapsePainter {
 	}
 	
 	public void paint(Graphics g) {
-		for(int n = 0; n<targetPanel.getNeurons().length; n++) {
-			for(int n2 = 1; n2<targetPanel.getNeurons().length; n2++) {
-				if (main.getNetwork().isSynapseExistent(n, n2)) {
-					paintSynapse(g, n, n2);
+		synchronized (main.getNetworkLock()) {
+			for(int n = 0; n<targetPanel.getNeurons().length; n++) {
+				for(int n2 = 1; n2<targetPanel.getNeurons().length; n2++) {
+					if (main.getNetwork().isSynapseExistent(n, n2)) {
+						paintSynapse(g, n, n2);
+					}
 				}
 			}
 		}

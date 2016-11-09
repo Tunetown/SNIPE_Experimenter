@@ -190,7 +190,7 @@ public class TrainControlPanel extends JPanel {
 	 * 
 	 */
 	private void trainReset() {
-		main.stopTraining();
+		main.stopTraining(true);
 		main.initNetwork();
 		frame.repaint();
 	}
@@ -211,7 +211,7 @@ public class TrainControlPanel extends JPanel {
 	 * 
 	 */
 	private void trainStop() {
-		main.stopTraining();
+		main.stopTraining(true);
 	}
 
 	/**

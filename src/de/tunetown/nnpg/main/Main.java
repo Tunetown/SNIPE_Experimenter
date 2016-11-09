@@ -4,7 +4,6 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import de.tunetown.nnpg.model.DataLoader;
 import de.tunetown.nnpg.model.DataWrapper;
@@ -20,17 +19,17 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * Application class for neural network experimenter
  * 
  *  
- * - TODO Optimize screen flickering and thread concept -> With sleep = 0, nothing works anymore!
+ * - TODO 2 Optimize screen flickering and thread concept -> With sleep = 0, nothing works anymore!
  * 		- Concept: Use cloned instance for display rendering. BEWARE: No instance cloning during repaint! (synchronize)
  * 
- * - TODO Adaptive adding/removing of neurons
- * - TODO Adaptive eta determination
+ * - TODO 9 Adaptive adding/removing of neurons
+ * - TODO 9 Adaptive eta determination
  * 
- * - TODO Concept for splitting training and test data (also have to be edited separately!)
+ * - TODO 1 Concept for splitting training and test data (also have to be edited separately!)
  * 
- * - TODO Multi-dimensional visualization
+ * - TODO 8 Multi-dimensional visualization
  * 
- * - TODO Github documentation
+ * - TODO 6 Github documentation
  *  
  * 
  * @author Thomas Weber, 2016
@@ -39,6 +38,9 @@ import de.tunetown.nnpg.view.TrainingWorker;
  */
 public class Main {
 
+	/**
+	 * Temporary file (here, the last used data will be saved and reloaded on next startup)
+	 */
 	private static final File TEMP_FILE = new File(System.getProperty("user.home") + File.separator + "SE.tmp");
 	
 	private NetworkWrapper net;
@@ -50,6 +52,34 @@ public class Main {
 	private Menu menu;
 	private TrainingWorker trainWorker;
 	
+	private Object trainLock = new Object();
+	
+	/**
+	 * Main method
+	 *  
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try {
+			// Use the native menu bar on mac os x
+			System.setProperty("apple.laf.useScreenMenuBar", "true"); //$NON-NLS-1$
+		
+			// Set native look and feel 
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
+		} catch (Throwable t) {
+			t.printStackTrace();
+		} 
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				Main appl = new Main();
+				appl.init();
+			}
+		});	
+	}
+
 	/**
 	 * Initialize the application (called by main() method)
 	 * 
@@ -59,19 +89,52 @@ public class Main {
 		data = new SNIPEDataWrapper();
 		dataLoader = new DataLoader(data);
 		
+		// Initialize the network, tracker and data instances
 		initNetwork();
 		
 		// Load data from temporary file and take care that it is being saved on exit
-		
 		dataLoader.loadFromFile(TEMP_FILE);
 		dataLoader.addShutdownHook(TEMP_FILE);
 		
-		// Create application frame and menu.
+		// Create and initialize application frame and menu. Order is critical here for proper display.
 		frame = new MainFrame(this);
 		menu = new Menu(this, frame);
 		
 		menu.init();
 		frame.init();
+	}
+
+	/**
+	 * Sets up the network
+	 * 
+	 */
+	public void initNetwork() {
+		double eta = 0;
+		int batchSize = 0;
+		if (net != null) {
+			eta = net.getEta();
+			batchSize = net.getBatchSize();
+		}
+		
+		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
+		setNetwork(new SNIPENetworkWrapper());
+		
+		if (eta != 0) net.setEta(eta);
+		if (batchSize != 0) net.setBatchSize(batchSize);
+		
+		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
+		tracker = new TrainingTracker();
+		
+		updateStats();
+	}
+
+	/**
+	 * Set a new network wrapper instance
+	 * 
+	 * @param net
+	 */
+	public void setNetwork(NetworkWrapper net) {
+		this.net = net;
 	}
 
 	/**
@@ -119,7 +182,35 @@ public class Main {
 	}
 
 	/**
-	 * Tell the UI elements that training has been stopped
+	 * Starts the training Thread
+	 *  
+	 */
+	public void startTraining() {
+		trainWorker = new TrainingWorker(this, frame);
+		trainWorker.execute();		
+	}
+	
+	/**
+	 * Stops the training Thread
+	 * @param wait 
+	 * 
+	 */
+	public void stopTraining(boolean wait) {
+		if (trainWorker == null) return;
+		trainWorker.kill();
+		
+		while(!trainWorker.isDone()) {
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Tell the UI elements that training has been stopped. This is called by the done() method of the
+	 * swing worker after finishing. If you want to stop training, call stopTraining() ;-)
 	 * 
 	 */
 	public void setTrainingStopped() {
@@ -136,72 +227,12 @@ public class Main {
 	}
 	
 	/**
-	 * Starts the training Thread
+	 * Returns the lock object used during training. This is used to protect the cloning and publishing of the training clone network instance.
 	 *  
+	 * @return
 	 */
-	public void startTraining() {
-		trainWorker = new TrainingWorker(this, frame);
-		trainWorker.execute();		
-	}
-	
-	/**
-	 * Stops the training Thread
-	 * 
-	 */
-	public void stopTraining() {
-		if (trainWorker != null) {
-			trainWorker.kill();
-		}
-	}
-	
-	/**
-	 * Sets up the network
-	 * 
-	 */
-	public void initNetwork() {
-		double eta = 0;
-		int batchSize = 0;
-		if (net != null) {
-			eta = net.getEta();
-			batchSize = net.getBatchSize();
-		}
-		
-		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
-		net = new SNIPENetworkWrapper();
-		
-		if (eta != 0) net.setEta(eta);
-		if (batchSize != 0) net.setBatchSize(batchSize);
-		
-		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
-		tracker = new TrainingTracker();
-		
-		updateStats();
-	}
-
-	/**
-	 * Main method
-	 *  
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			// Use the native menu bar on mac os x
-			System.setProperty("apple.laf.useScreenMenuBar", "true"); //$NON-NLS-1$
-		
-			// Set native look and feel 
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			
-		} catch (Throwable t) {
-			t.printStackTrace();
-		} 
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				Main appl = new Main();
-				appl.init();
-			}
-		});	
+	public Object getNetworkLock() {
+		return trainLock;
 	}
 }
 

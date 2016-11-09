@@ -72,12 +72,14 @@ public class StatisticsPanel extends JPanel {
 	 * 
 	 */
 	public void update() {
-		setEta(main.getNetwork().getEta());
-		setBatchSize(main.getNetwork().getBatchSize());
-		setIteration(main.getTracker().getIterations());
-		setError(main.getNetwork().getError(main.getData()));
-		setProcTime(main.getTracker().getProcessingTime());
-		//setProcPercentage(main.getTracker().getProcessingPercentage());
+		synchronized (main.getNetworkLock()) {
+			setEta(main.getNetwork().getEta());
+			setBatchSize(main.getNetwork().getBatchSize());
+			setIteration(main.getTracker().getIterations());
+			setError(main.getNetwork().getError(main.getData()));
+			setProcTime(main.getTracker().getProcessingTime());
+			//setProcPercentage(main.getTracker().getProcessingPercentage());
+		}
 	}
 
 	private void setEta(double value) {
@@ -100,9 +102,9 @@ public class StatisticsPanel extends JPanel {
 
 	private void setProcTime(long t) {
 		if (t < 1000000000) {
-			procTime.setText("CPU: " + (t / 1000000) + "ms");
+			procTime.setText("CPU Time: " + (t / 1000000) + "ms");
 		} else {
-			procTime.setText("CPU: " + (t / 1000000000) + "s");
+			procTime.setText("CPU Time: " + (t / 1000000000) + "s");
 		}
 	}
 	

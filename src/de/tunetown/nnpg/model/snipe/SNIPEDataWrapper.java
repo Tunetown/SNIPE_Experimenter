@@ -44,8 +44,6 @@ public class SNIPEDataWrapper extends DataWrapper{
 	
 	@Override
 	public void deleteSamplesAroundPoint(double x, double y, double radius) {
-		System.out.println("Removing data around: "+x+", "+y+" Radius: "+ radius);
-		
 		if(lesson == null || lesson.countSamples() == 0) {
 			return;
 		}

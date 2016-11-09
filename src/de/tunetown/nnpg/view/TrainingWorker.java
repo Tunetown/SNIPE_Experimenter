@@ -1,11 +1,9 @@
 package de.tunetown.nnpg.view;
 
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.SwingWorker;
-
 import de.tunetown.nnpg.main.Main;
+import de.tunetown.nnpg.model.NetworkWrapper;
 
 /**
  * Swing worker which processes the training of the network.
@@ -29,16 +27,33 @@ public class TrainingWorker extends SwingWorker {
 	@Override
 	protected Object doInBackground() throws Exception {
 		try {
-			main.getTracker().startTracking();
+			// Start tracking of statistics about this training process
+			//main.getTracker().startTracking(); TODO cleanup
 
 			while (!isKilled()) {
-				main.getNetwork().train(main.getData(), main.getTracker());
+				// Create a working clone of the network for training. This is necessary 
+				// to be able to update the UI in parallel.
+				NetworkWrapper clone;
+				synchronized (main.getNetworkLock()) {
+					clone = main.getNetwork().clone();
+				}
+
+				// Train the working clone.
+				clone.train(main.getData(), main.getTracker());
 				
+				// Set the trained clone "productive"
+				synchronized (main.getNetworkLock()) {
+					clone.setParametersFrom(main.getNetwork());
+					main.setNetwork(clone);
+				}
+				
+				// Update statistics in the UI
 				main.updateStats();
-				frame.repaint(); 
-				//publish();
 				
-				Thread.sleep(50);
+				// Trigger that repainting will happen in the EDT. The repainting routines
+				// will use the new "productive" network instance, while we will continue training
+				// on the next clone here.
+				frame.repaint(); 
 			};
 			
 		} catch(Throwable t) {
@@ -51,11 +66,13 @@ public class TrainingWorker extends SwingWorker {
 		return killed;
 	}
 
+	/** TODO cleanup
 	@Override
 	protected void process(List chunks) {
 		main.updateStats();
 		frame.repaint();
 	}
+	*/
 
 	@Override
 	protected void done() {

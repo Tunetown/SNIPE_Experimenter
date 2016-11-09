@@ -25,9 +25,13 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	private NeuralNetwork net;
 	
 	public SNIPENetworkWrapper() {
-		net = createNetwork();
+		this(true);
 	}
 	
+	private SNIPENetworkWrapper(boolean initialize) {
+		if (initialize) net = createNetwork();
+	}
+
 	private NeuralNetwork createNetwork() {
 		int[] layers = {2,8,8,8, 1};
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(layers);
@@ -137,6 +141,22 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			if (countNeuronsInLayer(i) > max) max = countNeuronsInLayer(i);
 		}
 		return max;
+	}
+
+	@Override
+	public NetworkWrapper clone() {
+		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(false);
+		ret.net = net.clone();
+		ret.setParametersFrom(this);
+		return ret;
+	}
+
+	@Override
+	public void setParametersFrom(NetworkWrapper network) {
+		SNIPENetworkWrapper n = (SNIPENetworkWrapper)network;
+		
+		setEta(n.getEta());
+		setBatchSize(n.getBatchSize());
 	}
 }
 

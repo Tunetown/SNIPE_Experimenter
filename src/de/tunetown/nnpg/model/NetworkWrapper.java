@@ -134,4 +134,18 @@ public abstract class NetworkWrapper {
 	 * @param size
 	 */
 	public abstract void setBatchSize(int size);
+	
+	/**
+	 * Returns a clone of the whole network
+	 * 
+	 */
+	public abstract NetworkWrapper clone();
+
+	/**
+	 * Copy all parameters (not the learning stuff like weight) from a given network instance
+	 * 
+	 * @param network
+	 * @return
+	 */
+	public abstract void setParametersFrom(NetworkWrapper network);
 }

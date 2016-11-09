@@ -13,7 +13,7 @@ public class TrainingTracker {
 
 	private List<Double> rmsErrors = new ArrayList<Double>(); 
 	private long processingNanoTime = 0;
-	private long startNanoTime = 0;
+	//private long startNanoTime = 0; TODO cleanup
 
 	/**
 	 * Returns a list of errors, which holds exactly one error per iteration.
@@ -63,17 +63,17 @@ public class TrainingTracker {
 	/**
 	 * Start tracking of general CPU time
 	 * 
-	 */
+	 *
 	public void startTracking() {
 		startNanoTime = System.nanoTime();
 	}
 	
 	/**
-	 * Returns the overall percentage of CPU used for training (TODO: Not correct!)
+	 * Returns the overall percentage of CPU used for training (TODO cleanup)
 	 * @return
-	 */
+	 *
 	public double getProcessingPercentage() {
 		long all = System.nanoTime() - startNanoTime;
 		return (double)getProcessingTime() / (double)all;
-	}
+	}*/
 }

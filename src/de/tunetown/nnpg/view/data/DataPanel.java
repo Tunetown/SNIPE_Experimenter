@@ -135,11 +135,14 @@ public class DataPanel extends JPanel {
 	 */
 	private void paintGraph(Graphics g) {
 		int minDim = getDimension();
-		for(int x = 0; x<minDim; x+=ViewProperties.DATAPANEL_RESOLUTION) {
-			for(int y = 0; y<minDim; y+=ViewProperties.DATAPANEL_RESOLUTION) {
-				g.setColor(getOutColor(convertToModel(x), convertToModel(y)));
-				g.fillRect(x, y, ViewProperties.DATAPANEL_RESOLUTION, ViewProperties.DATAPANEL_RESOLUTION);
-			}			
+		
+		synchronized (main.getNetworkLock()) {
+			for(int x = 0; x<minDim; x+=ViewProperties.DATAPANEL_RESOLUTION) {
+				for(int y = 0; y<minDim; y+=ViewProperties.DATAPANEL_RESOLUTION) {
+					g.setColor(getOutColor(convertToModel(x), convertToModel(y)));
+					g.fillRect(x, y, ViewProperties.DATAPANEL_RESOLUTION, ViewProperties.DATAPANEL_RESOLUTION);
+				}			
+			}
 		}
 	}
 	
