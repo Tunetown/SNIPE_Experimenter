@@ -30,11 +30,13 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * 		- Slider for radius, from 0 to range max.
  * 
  * - TODO X Multi-dimensional visualization
+ * 
  * - TODO X Adaptive adding/removing of neurons
  * - TODO X Adaptive eta determination
  * 
  * @author Thomas Weber, 2016
  * @see www.tunetown.de
+ * @version 0.1
  *
  */
 public class Main {
