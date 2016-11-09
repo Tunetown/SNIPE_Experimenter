@@ -14,7 +14,7 @@ The network is using back propagation feed forward topology exclusively. Support
 
 ## Compatibility
 
-The application has been developed using Java 1.8, but should also run without problems with Java 1.6.
+The application has been developed using Java 1.8, but should also run without problems with Java 1.6. The repository contains a full, self-contained Eclipse project (created with Eclipse Luna) with no external dependencies.
 
 ## Release Status
 
