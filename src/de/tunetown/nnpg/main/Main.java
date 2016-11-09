@@ -21,8 +21,6 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * 
  * - TODO 1 Switch activation functions per layer
  * 
- * - TODO 9 Github documentation update
- * 
  * *******************************************************
  * 
  * - TODO X New tool: Grow/Reduce. Area: radius (see slider) 
