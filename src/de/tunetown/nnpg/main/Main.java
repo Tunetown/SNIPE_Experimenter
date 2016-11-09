@@ -5,7 +5,6 @@ import java.io.File;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import de.tunetown.nnpg.model.DataLoader;
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
