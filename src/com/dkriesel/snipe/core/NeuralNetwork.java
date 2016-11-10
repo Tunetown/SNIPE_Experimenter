@@ -474,50 +474,50 @@ import com.dkriesel.snipe.util.MersenneTwisterFast;
  */
 public class NeuralNetwork implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	protected static final long serialVersionUID = 1L;
 
-	private NeuralNetworkDescriptor descriptor;
+	protected NeuralNetworkDescriptor descriptor;
 
 	// main data storage
-	private int[][] predecessors;
-	private double[][] predecessorWeights;
-	private int[][] successors;
-	private int[][] successorWeightIndexInPendantPredecessorArray;
+	protected int[][] predecessors;
+	protected double[][] predecessorWeights;
+	protected int[][] successors;
+	protected int[][] successorWeightIndexInPendantPredecessorArray;
 
 	// additional data storage for learning rules (initialized once used, can be
 	// deleted with clearAllCaches()
-	private TreeMap<String, double[][]> shadows = new TreeMap<String, double[][]>();
-	private static final String SHADOWKEY_resilientBackpropagationGradients = "resilientBackpropagationGradients";
-	private static final String SHADOWKEY_resilientBackpropagationLearningRates = "resilientBackpropagationLearningRates";
-	private static final String SHADOWKEY_resilientBackpropagationLastWeightUpdates = "resilientBackpropagationLastWeightUpdates";
-	private static final String SHADOWKEY_gaussianMutationAdaptivePertubationVector = "gaussianMutationAdaptivePertubationVector";
-	private static final String USERSHADOWPREFIX = "USER_";
+	protected TreeMap<String, double[][]> shadows = new TreeMap<String, double[][]>();
+	protected static final String SHADOWKEY_resilientBackpropagationGradients = "resilientBackpropagationGradients";
+	protected static final String SHADOWKEY_resilientBackpropagationLearningRates = "resilientBackpropagationLearningRates";
+	protected static final String SHADOWKEY_resilientBackpropagationLastWeightUpdates = "resilientBackpropagationLastWeightUpdates";
+	protected static final String SHADOWKEY_gaussianMutationAdaptivePertubationVector = "gaussianMutationAdaptivePertubationVector";
+	protected static final String USERSHADOWPREFIX = "USER_";
 
 	// layer organisation
-	private int[] layerStartingNeurons;
-	private int[] neuronsPerLayer;
+	protected int[] layerStartingNeurons;
+	protected int[] neuronsPerLayer;
 
 	// neural processing caches
-	private double[] activations;
-	private double[] netInputs;
-	private NeuronBehavior[] neuronBehaviors;
+	protected double[] activations;
+	protected double[] netInputs;
+	protected NeuronBehavior[] neuronBehaviors;
 
 	// learning parameters for Resilient Backpropagation
-	private double resilientBackpropagationDeltaZero = 0.1;
-	private double resilientBackpropagationDeltaMax = 50;
-	private double resilientBackpropagationDeltaMin = 0.000001;
-	private double resilientBackpropagationEtaMinus = 0.5;
-	private double resilientBackpropagationEtaPlus = 1.2;
+	protected double resilientBackpropagationDeltaZero = 0.1;
+	protected double resilientBackpropagationDeltaMax = 50;
+	protected double resilientBackpropagationDeltaMin = 0.000001;
+	protected double resilientBackpropagationEtaMinus = 0.5;
+	protected double resilientBackpropagationEtaPlus = 1.2;
 
 	// gaussian mutation parameters
-	private final double gaussianMutationAdaptivePertubationInit = 1;
+	protected final double gaussianMutationAdaptivePertubationInit = 1;
 
 	// string delimiters
-	private final static String dataDelimiter = "###NEURALNETDATADELIMITER###";
+	protected final static String dataDelimiter = "###NEURALNETDATADELIMITER###";
 
 	// other
-	private MersenneTwisterFast random = new MersenneTwisterFast();
-	private static final double EPSILON = 0.000001;
+	protected MersenneTwisterFast random = new MersenneTwisterFast();
+	protected static final double EPSILON = 0.000001;
 
 	/**
 	 * Creates a neural network defined by the input and output layer neuron
@@ -671,7 +671,7 @@ public class NeuralNetwork implements Serializable {
 		}
 	}
 
-	private void initialize(NeuralNetworkDescriptor descriptor, int[] layers) {
+	protected void initialize(NeuralNetworkDescriptor descriptor, int[] layers) {
 		this.descriptor = descriptor;
 		int[] layersCopy = layers.clone();
 
@@ -836,7 +836,7 @@ public class NeuralNetwork implements Serializable {
 		initialize(descriptor, neuronsPerLayer);
 	}
 
-	private void resetInternalValues() {
+	protected void resetInternalValues() {
 		for (int i = 1; i < (countNeurons() + 1); i++) {
 			activations[i] = 0;
 			netInputs[i] = 0;
@@ -1636,7 +1636,7 @@ public class NeuralNetwork implements Serializable {
 		return rnd;
 	}
 
-	private double[][] createShadow(String key) {
+	protected double[][] createShadow(String key) {
 		if (shadows.containsKey(key)) {
 			// impossible to accidently overwrite shadows
 			throw new IllegalArgumentException("Synapse shadow key \"" + key
@@ -1694,7 +1694,7 @@ public class NeuralNetwork implements Serializable {
 		return newShadow;
 	}
 
-	private void removeShadow(String key) {
+	protected void removeShadow(String key) {
 		shadows.remove(key);
 	}
 
