@@ -25,7 +25,7 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 	
 	/**
 	 * Multithreaded version of the original method. TODO
-	 *  
+	 *   
 	 */
 	@Override
 	public void trainBackpropagationOfError(TrainingSampleLesson lesson, int runs, double eta) {
