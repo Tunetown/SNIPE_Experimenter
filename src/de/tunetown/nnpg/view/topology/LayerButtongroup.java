@@ -119,7 +119,8 @@ public class LayerButtongroup extends JPanel {
 	 * 
 	 */
 	private void updateCoords() {
-		this.x = view.getGridSize() - ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE + layer * view.getGridSize() * 2;
+		int[] gs = view.getGridSize();
+		this.x = gs[0] - ViewProperties.TOPOLOGY_LAYERBUTTON_SIZE + layer * gs[0] * 2;
 		this.y = view.getHeight() - ViewProperties.TOPOLOGY_BUTTON_HEIGHT;
 		this.setBounds(
 				x, 

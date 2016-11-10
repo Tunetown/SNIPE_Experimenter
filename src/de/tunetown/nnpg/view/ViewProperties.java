@@ -25,6 +25,7 @@ public class ViewProperties {
 	// Colors for error graph
 	public static final Color ERRORGRAPH_COLOR_TRAINING_ERROR = Color.BLACK;
 	public static final Color ERRORGRAPH_COLOR_TEST_ERROR = COLOR_NEGATIVE;
+	public static final Color ERRORGRAPH_COLOR_SPEED = COLOR_POSITIVE;
 	
 	// General constants for UI elements
 	public static final int TOPOLOGY_NEURON_DIAMETER = 14;

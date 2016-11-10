@@ -37,8 +37,9 @@ public class NeuronPanel extends JComponent {
 	 * 
 	 */
 	private void updateCoords() {
-		this.x = view.getGridSize() + main.getNetwork().getLayerOfNeuron(num) * view.getGridSize() * 2;
-		this.y = view.getGridSize() + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * view.getGridSize() * 2;
+		int[] gs = view.getGridSize();
+		this.x = gs[0] + main.getNetwork().getLayerOfNeuron(num) * gs[0] * 2;
+		this.y = gs[1] + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * gs[1] * 2;
 		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
 	}
 

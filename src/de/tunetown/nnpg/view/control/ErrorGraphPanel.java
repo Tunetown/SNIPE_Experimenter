@@ -2,6 +2,7 @@ package de.tunetown.nnpg.view.control;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,16 +35,28 @@ public class ErrorGraphPanel extends JComponent {
 		
 		if (main.getTracker().getIterations() == 0) return;
 		
+		// Calculation speed
+		g.setColor(ViewProperties.ERRORGRAPH_COLOR_SPEED);
+		paintGraph(g, getDoubleList(main.getTracker().getSpeeds()));
+
 		// Training data
 		g.setColor(ViewProperties.ERRORGRAPH_COLOR_TRAINING_ERROR);
-		paintErrors(g, main.getTracker().getTrainingErrors());
+		paintGraph(g, main.getTracker().getTrainingErrors());
 
 		// Test data
 		g.setColor(ViewProperties.ERRORGRAPH_COLOR_TEST_ERROR);
-		paintErrors(g, main.getTracker().getTestErrors());
+		paintGraph(g, main.getTracker().getTestErrors());
 }
 	
-	private void paintErrors(Graphics g, List<Double> errors) {
+	private List<Double> getDoubleList(List<Long> list) {
+		List<Double> ret = new ArrayList<Double>();
+		for(int i=0; i< list.size(); i++) {
+			ret.add(new Double(list.get(i)));
+		}
+		return ret;
+	}
+
+	private void paintGraph(Graphics g, List<Double> errors) {
 		try {
 			double xstep = getWidth() / (double)errors.size();
 			double ystep = getHeight() / Collections.max(errors);

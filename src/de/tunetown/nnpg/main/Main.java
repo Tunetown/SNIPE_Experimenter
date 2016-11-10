@@ -18,15 +18,19 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
- * - TODO 1 Backprops per Second stat (also add graph in orange!)
- * 		-> Last 1M runs?
  * - TODO 1 Switch activation functions per layer
- * - TODO 1 Different Grid sizes for hor/vert
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
  * - TODO 3 Re-store examples
  * 
  * - TODO 4 Adaptive eta determination
+ * 		-> Read papers about that!
  * - TODO 4 Multi-Threaded training? Any idea?
+ * 		-> Create global Thread Pool, containing cores-1 threads
+ * 		-> train method can be multithreaded with a thread pool
+ * 		-> Averaging networks can of course be multithreaded
+ * 
+ * - TODO 5 Graph of errors: Reduce data points somehow, so that no growing of runtime occurs
+ * 		- Perhaps cumulate iterations?
  * 
  * *******************************************************
  * 

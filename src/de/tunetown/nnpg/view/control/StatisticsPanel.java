@@ -72,6 +72,7 @@ public class StatisticsPanel extends JPanel {
 		statsR.add(procTime);
 
 		speed = new JLabel();
+		speed.setForeground(ViewProperties.ERRORGRAPH_COLOR_SPEED);
 		statsR.add(speed);
 
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
@@ -91,8 +92,8 @@ public class StatisticsPanel extends JPanel {
 			setIteration(main.getTracker().getIterations());
 			setTrainingError(main.getNetwork().getTrainingError(main.getData()));
 			setTestError(main.getNetwork().getTestError(main.getData()));
-			setProcTime(main.getTracker().getCPUPercentage());
-			setSpeed(main.getTracker().getCurrentSpeed(main.getNetwork()));
+			setProcTime(main.getTracker().getCPUUsage());
+			setSpeed(main.getTracker().getCurrentSpeed());
 		}
 	}
 
@@ -125,11 +126,11 @@ public class StatisticsPanel extends JPanel {
 
 	private void setProcTime(double t) {
 		DecimalFormat df = new DecimalFormat("#.##");
-		procTime.setText("CPU Time: " + df.format(t) + "%");
+		procTime.setText("Thread Usage: " + df.format(t*100) + "%");
 	}
 	
 	private void setSpeed(long i) {
-		speed.setText("Runs/sec: " + getReadableAmount(i));
+		speed.setText("Batches/sec: " + getReadableAmount(i));
 	}
 	
 	private String getReadableAmount(long s) {

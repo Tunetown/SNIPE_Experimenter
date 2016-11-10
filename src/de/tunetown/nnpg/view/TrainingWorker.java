@@ -28,6 +28,9 @@ public class TrainingWorker extends SwingWorker {
 	@Override
 	protected Object doInBackground() throws Exception {
 		try {
+			// Tell the tracker that training has been started
+			main.getTracker().setTrainingStart();
+			
 			while (!isKilled()) {
 				// Stop training if no data is present
 				if (!main.getData().hasData()) kill();
@@ -46,9 +49,10 @@ public class TrainingWorker extends SwingWorker {
 					clone.train(main.getData());
 					
 					main.getTracker().addRun(
-							main.getNetwork().getTrainingError(main.getData()), 
-							main.getNetwork().getTestError(main.getData()),
-							System.nanoTime() - start);
+							clone.getTrainingError(main.getData()), 
+							clone.getTestError(main.getData()),
+							System.nanoTime() - start,
+							clone.getBatchSize());
 				
 					// Set the trained clone "productive"
 					synchronized (main.getNetworkLock()) {
@@ -66,6 +70,7 @@ public class TrainingWorker extends SwingWorker {
 					
 				} catch (Exception e) {
 					System.out.println("Training glitch occurred, stopped training");
+					e.printStackTrace();
 					kill();
 				}
 			};

@@ -53,8 +53,8 @@ public class ProjectLoader {
 			if (vars.get("network") != null) 
 				main.getNetwork().createNetwork((int[])vars.get("network")); 
 			
-			main.getNetwork().setEta((double)(vars.get("eta")));
-			main.getNetwork().setBatchSize((int)(vars.get("batchsize")));
+			main.getNetwork().setEta((Double)(vars.get("eta")));
+			main.getNetwork().setBatchSize((Integer)(vars.get("batchsize")));
 			
 		} catch (Throwable e) {
 			System.out.println("Error loading project file:");

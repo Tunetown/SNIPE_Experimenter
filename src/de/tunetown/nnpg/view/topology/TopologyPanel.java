@@ -27,7 +27,7 @@ public class TopologyPanel extends JPanel {
 	
 	private int heightBuffer = 0;
 	private int widthBuffer = 0;
-	private int gridSizeBuffer = 0;
+	private int[] gridSizeBuffer = {0, 0}; // Horizontal / Vertical
 
 	public TopologyPanel(Main main, JFrame frame) {
 		this.main = main;
@@ -87,27 +87,19 @@ public class TopologyPanel extends JPanel {
 	}
 	
 	/**
-	 * Determines the grid size for the topology dynamically by the given area size.
+	 * Determines the grid size for the topology dynamically by the given area size. This is buffered, so
+	 * the grid sizes are only calculated when width and/or height have been changed, or after a call to resetGridSize(). 
 	 * 
 	 * @return
 	 */
-	public int getGridSize() {
+	public int[] getGridSize() {
 		synchronized (main.getNetworkLock()) {
 			if (getWidth() == widthBuffer && getHeight() == heightBuffer) {
 				return gridSizeBuffer;
 			}
 			
-			int minDim = 0;
-			if (getWidth() > getHeight() - ViewProperties.TOPOLOGY_BUTTON_HEIGHT) {
-				minDim = getHeight() - ViewProperties.TOPOLOGY_BUTTON_HEIGHT;
-			} else {
-				minDim = getWidth();
-			}
-			if (main.getNetwork().getMaxNeuronsInLayers() > main.getNetwork().countLayers()) {
-				gridSizeBuffer = (int)(minDim / (main.getNetwork().getMaxNeuronsInLayers()) / 2);
-			} else {
-				gridSizeBuffer = (int)(minDim / (main.getNetwork().countLayers()) / 2);
-			}
+			gridSizeBuffer[0] = (int)((double)getWidth() / (double)(main.getNetwork().countLayers()) / 2.0);
+			gridSizeBuffer[1] = (int)((double)(getHeight() - ViewProperties.TOPOLOGY_BUTTON_HEIGHT) / (double)(main.getNetwork().getMaxNeuronsInLayers()) / 2.0);
 			
 			widthBuffer = getWidth();
 			heightBuffer = getHeight();
