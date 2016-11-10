@@ -26,9 +26,10 @@ public class StatisticsPanel extends JPanel {
 	
 	private ErrorGraphPanel errorGraph;
 	
+	private JLabel dataSize;
 	private JLabel eta;
 	private JLabel batchSize;
-	private JLabel dataSize;
+	private JLabel activationFunction;
 	private JLabel iterations;
 	private JLabel trainingError;
 	private JLabel testError;
@@ -49,6 +50,9 @@ public class StatisticsPanel extends JPanel {
 		
 		dataSize = new JLabel();
 		statsR.add(dataSize);
+
+		activationFunction = new JLabel();
+		statsR.add(activationFunction);
 
 		eta = new JLabel();
 		statsR.add(eta);
@@ -88,6 +92,7 @@ public class StatisticsPanel extends JPanel {
 		synchronized (main.getNetworkLock()) {
 			setEta(main.getNetwork().getEta());
 			setBatchSize(main.getNetwork().getBatchSize());
+			setActivationFunction(main.getNetwork().getBehaviorDescriptions()[main.getNetwork().getBehavior()]);
 			setDataSize(main.getData().getNumOfSamples(false) + main.getData().getNumOfSamples(true));
 			setIteration(main.getTracker().getIterations());
 			setTrainingError(main.getNetwork().getTrainingError(main.getData()));
@@ -95,6 +100,10 @@ public class StatisticsPanel extends JPanel {
 			setProcTime(main.getTracker().getCPUUsage());
 			setSpeed(main.getTracker().getCurrentSpeed());
 		}
+	}
+
+	private void setActivationFunction(String string) {
+		activationFunction.setText("Act.Fnct.: " + string);
 	}
 
 	private void setEta(double value) {

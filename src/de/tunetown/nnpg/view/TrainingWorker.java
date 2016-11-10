@@ -58,10 +58,11 @@ public class TrainingWorker extends SwingWorker {
 					synchronized (main.getNetworkLock()) {
 						clone.setParametersFrom(main.getNetwork());
 						main.setNetwork(clone);
+					
 					}
 					
 					// Update statistics in the UI
-					main.updateStats();
+					main.updateView();
 					
 					// Trigger that repainting will happen in the EDT. The repainting routines
 					// will use the new "productive" network instance, while we will continue training

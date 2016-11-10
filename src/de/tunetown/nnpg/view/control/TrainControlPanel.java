@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.Hashtable;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import de.tunetown.nnpg.main.Main;
 
 /**
@@ -29,9 +31,13 @@ public class TrainControlPanel extends JPanel {
 	private Main main;
 	private JFrame frame;
 	
-	public JButton trainData;
-	public JButton trainStop;
-	public JSlider etaSlider;
+	private JButton trainData;
+	private JButton trainStop;
+	
+	@SuppressWarnings("rawtypes")
+	private JComboBox behaviors;
+	private JSlider etaSlider;
+	private JSlider batchSlider;
 
 	public TrainControlPanel(Main main, JFrame frame) {
 		this.main = main;
@@ -45,6 +51,7 @@ public class TrainControlPanel extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initButtons() {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.PAGE_AXIS));
@@ -91,7 +98,7 @@ public class TrainControlPanel extends JPanel {
 		buttons.add(trainReset);
 
 		// Activation functions
-		JComboBox behaviors = new JComboBox(main.getNetwork().getBehaviorDescriptions());
+		behaviors = new JComboBox(main.getNetwork().getBehaviorDescriptions());
 		behaviors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
@@ -139,7 +146,7 @@ public class TrainControlPanel extends JPanel {
 				int value = ((JSlider)e.getSource()).getValue();
 				double eta = convertSliderToModel(value);
 				main.getNetwork().setEta(eta);
-				main.updateStats();
+				main.updateView(false, false, false);
 			}
 		});
 		controls.add(etaSlider);
@@ -148,7 +155,7 @@ public class TrainControlPanel extends JPanel {
 		JLabel batchLabel = new JLabel("Batch Size:");
 		controls.add(batchLabel);
 		
-		JSlider batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 10000, main.getNetwork().getBatchSize());
+		batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 10000, main.getNetwork().getBatchSize());
 		Hashtable labelTable2 = new Hashtable();
 		for(int i=0; i<=10000; i+=5000) {
 			labelTable2.put( i, new JLabel(""+i));
@@ -164,13 +171,23 @@ public class TrainControlPanel extends JPanel {
 				int value = ((JSlider)e.getSource()).getValue();
 				if (value == 0) value = 1;
 				main.getNetwork().setBatchSize(value);
-				main.updateStats();
+				main.updateView(false, false, false);
 			}
 		});
 		controls.add(batchSlider);
 
 	}
 	
+	/**
+	 * Update the controls from the network
+	 * 
+	 */
+	public void update() {
+		setEtaSlider(main.getNetwork().getEta());
+		batchSlider.setValue(main.getNetwork().getBatchSize());
+		behaviors.setSelectedIndex(main.getNetwork().getBehavior());
+	}
+
 	/**
 	 * Set slider to a given learning rate
 	 * 
@@ -246,7 +263,7 @@ public class TrainControlPanel extends JPanel {
 	private void setBehavior(int choice) {
 		main.stopTraining(true);
 		main.getNetwork().setBehavior(choice);
-		main.updateStats();
+		main.updateView(false, false, false);
 		frame.repaint();
 	}
 }

@@ -39,6 +39,8 @@ public class ViewProperties {
 	public static final int DATAPANEL_RESOLUTION = 4;
 	public static final int DATAPANEL_SAMPLE_DIAMETER = 6;
 	
+	public static final int STATISTICS_AVERAGE_RANGE = 20;
+	
 
 	public Color getDataColor(double weight) {
 		if (Double.isNaN(weight)) return COLOR_NAN;  

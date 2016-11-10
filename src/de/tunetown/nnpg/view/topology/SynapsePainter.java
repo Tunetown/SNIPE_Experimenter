@@ -83,6 +83,8 @@ public class SynapsePainter {
 		NeuronPanel ne1 = targetPanel.getNeurons()[n1];
 		NeuronPanel ne2 = targetPanel.getNeurons()[n2];
 		
+		if (ne1 == null || ne2 == null) return;
+		
 		double as = getWeightThickness(w, ViewProperties.TOPOLOGY_ARROW_MAX_SIZE);
 		if (as < ViewProperties.TOPOLOGY_ARROW_MIN_SIZE) as = ViewProperties.TOPOLOGY_ARROW_MIN_SIZE;
 		drawArrow(g, ne1.getOutX(), ne1.getOutY(), ne2.getOutX(), ne2.getOutY(), as);

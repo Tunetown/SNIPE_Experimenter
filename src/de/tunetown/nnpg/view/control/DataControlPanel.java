@@ -138,7 +138,7 @@ public class DataControlPanel extends JPanel {
 		}
 
 		main.getData().initialize();
-		main.updateStats();
+		main.updateView();
 		frame.repaint();
 	}
 	
@@ -157,7 +157,7 @@ public class DataControlPanel extends JPanel {
 	 */
 	private void growData() {
 		main.getData().growData(ModelProperties.DATAPANEL_DOUBLERATE, ModelProperties.DATAPANEL_DOUBLERADIUS);
-		main.updateStats();
+		main.updateView();
 		frame.repaint();
 	}
 
@@ -167,7 +167,7 @@ public class DataControlPanel extends JPanel {
 	 */
 	private void reduceData() {
 		main.getData().growData(1.0 / ModelProperties.DATAPANEL_DOUBLERATE, ModelProperties.DATAPANEL_DOUBLERADIUS);
-		main.updateStats();
+		main.updateView();
 		frame.repaint();
 	}
 
@@ -179,5 +179,4 @@ public class DataControlPanel extends JPanel {
 	private void setTool(int tool) {
 		main.setDataTool(tool);
 	}
-
 }	

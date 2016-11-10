@@ -226,4 +226,18 @@ public abstract class NetworkWrapper {
 	 */
 	public abstract String[] getBehaviorDescriptions();
 	
+	/**
+	 * Sets the initial range to +/- range.
+	 * 
+	 * @param range
+	 */
+	public abstract void setInitialRange(double range);
+	
+	/**
+	 * Returns the initial range
+	 * 
+	 * @return
+	 */
+	public abstract double getInitialRange();
+	
 }

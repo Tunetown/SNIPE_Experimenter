@@ -69,7 +69,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		desc.setNeuronBehaviorInputNeurons(new Identity());
 		desc.setNeuronBehaviorHiddenNeurons(behavior);
 		desc.setNeuronBehaviorOutputNeurons(behavior);
-		
+
 		net = desc.createNeuralNetwork();
 	}
 
@@ -190,6 +190,8 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		
 		setEta(n.getEta());
 		setBatchSize(n.getBatchSize());
+		setBehavior(n.getBehavior());
+		setInitialRange(n.getInitialRange());
 	}
 
 	/**
@@ -258,6 +260,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	@Override
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;
+		if (i == behaviorIndex) return;
 		
 		behavior = behaviors[i];
 		behaviorIndex = i;
@@ -273,6 +276,16 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	@Override
 	public int getBehavior() {
 		return behaviorIndex;
+	}
+
+	@Override
+	public void setInitialRange(double range) {
+		initialRange = range;
+	}
+
+	@Override
+	public double getInitialRange() {
+		return initialRange;
 	}
 }
 

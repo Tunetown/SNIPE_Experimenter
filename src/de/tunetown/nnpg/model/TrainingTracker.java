@@ -3,6 +3,8 @@ package de.tunetown.nnpg.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.tunetown.nnpg.view.ViewProperties;
+
 /**
  * Tracker, which keeps tracking info about the learning process.
  * 
@@ -14,7 +16,7 @@ public class TrainingTracker {
 	/**
 	 * Amount of runs to be used for determining statistics 
 	 */
-	private int measurementLength = 10;
+	private int measurementLength = ViewProperties.STATISTICS_AVERAGE_RANGE;
 	
 	private List<Double> trainingErrors = new ArrayList<Double>(); 
 	private List<Double> testErrors = new ArrayList<Double>(); 

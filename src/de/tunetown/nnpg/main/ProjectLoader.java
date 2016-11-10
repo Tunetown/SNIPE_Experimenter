@@ -45,23 +45,55 @@ public class ProjectLoader {
 	 * 
 	 */
 	public void loadFromFile(File file) {
+		System.out.println("Loading network project from " + file);
+		ParamFile vars = null;
 		try {
-			ParamFile vars = new ParamFile(file);
+			vars = new ParamFile(file);
 
-			main.getData().initialize();
-			main.getData().setFromCompleteDataContainer((DataContainer)vars.get("data"));
-			
-			if (vars.get("network") != null) 
-				main.getNetwork().createNetwork((int[])vars.get("network")); 
-			
-			main.getNetwork().setEta((Double)(vars.get("eta")));
-			main.getNetwork().setBatchSize((Integer)(vars.get("batchsize")));
-			main.getNetwork().setBehavior((Integer)(vars.get("behavior")));
-			
 		} catch (Throwable e) {
 			System.out.println("Error loading project file:");
 			e.printStackTrace();
+			return;
 		}
+
+		try {
+			main.getData().initialize();
+			main.getData().setFromCompleteDataContainer((DataContainer)vars.get("data"));
+			
+		} catch (Throwable e) {
+			System.out.println("Error loading data container");
+		}
+
+		try {
+			if (vars.get("network") != null) 
+				main.getNetwork().createNetwork((int[])vars.get("network"));
+			
+		} catch (Throwable e) {
+			System.out.println("Error loading network definition");
+		}
+
+		try {
+			main.getNetwork().setEta((Double)(vars.get("eta")));
+			
+		} catch (Throwable e) {
+			System.out.println("Error loading eta");
+		}
+
+		try {
+			main.getNetwork().setBatchSize((Integer)(vars.get("batchsize")));
+			
+		} catch (Throwable e) {
+			System.out.println("Error loading batch size");
+		}
+
+		try {
+			main.getNetwork().setBehavior((Integer)(vars.get("behavior")));
+			
+		} catch (Throwable e) {
+			System.out.println("Error loading activation function");
+		}
+
+		main.updateView(true, true, true);
 	}
 
 	/**

@@ -128,8 +128,7 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 			File file = j.getSelectedFile();
 			main.getDataLoader().loadFromFile(file);
 
-			((MainFrame)frame).getTopologyPanel().update();
-			((MainFrame)frame).getTopologyPanel().resetGridSize();
+			main.updateView();
 			frame.repaint();
 		}
 	}

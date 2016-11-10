@@ -35,7 +35,7 @@ public class TopologyPanel extends JPanel {
 		
 		this.setLayout(null);
 		
-		Dimension dim = new Dimension(400, 400);
+		Dimension dim = new Dimension(600, 400);
 		this.setPreferredSize(dim);
 		this.setMinimumSize(dim);
 		this.setSize(dim);

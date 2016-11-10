@@ -43,8 +43,11 @@ public class DataPanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				wrapper.mousePressed(e);
-				wrapper.repaint();
+				try {
+					wrapper.mousePressed(e);
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
 			}
 		});
 	}
@@ -72,7 +75,8 @@ public class DataPanel extends JPanel {
 					ModelProperties.DATAPANEL_ERASE_RADIUS);
 			break;
 		}
-		main.updateStats();
+		main.updateView(false, false, false);
+		repaint();
 	}
 
 	public void paintComponent(Graphics g) {

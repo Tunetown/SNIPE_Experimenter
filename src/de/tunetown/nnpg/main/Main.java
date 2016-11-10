@@ -18,10 +18,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
- * - TODO 1 BUG: Activation function is reset when "Reset training"!!!
- * - TODO 1 Update control panel when opening files
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
- * - TODO 3 Re-store examples
  * 
  * - TODO 4 Adaptive eta determination
  * 		-> Read papers about that!
@@ -144,8 +141,7 @@ public class Main {
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();
 		
-		if (frame != null && frame.getTopologyPanel() != null) frame.getTopologyPanel().update();
-		updateStats();
+		updateView();
 	}
 
 	/**
@@ -192,13 +188,31 @@ public class Main {
 	public ProjectLoader getDataLoader() {
 		return dataLoader;
 	}
+
+	/**
+	 * Update statistics on UI elements according to the network state
+	 * 
+	 * @param resetGridSize
+	 * @param updateTopology
+	 */
+	public void updateView() {
+		updateView(false, false, false);
+	}
 	
 	/**
 	 * Update statistics on UI elements according to the network state
 	 * 
+	 * @param resetGridSize
+	 * @param updateTopology
 	 */
-	public void updateStats() {
-		if (frame != null && frame.getControlPanel() != null) frame.getControlPanel().updateStats();
+	public void updateView(boolean resetGridSize, boolean updateTopology, boolean updateControls) {
+		if (frame == null || frame.getControlPanel() == null || frame.getTopologyPanel() == null) return;
+
+		frame.getControlPanel().updateStats();
+		if (updateControls) frame.getControlPanel().updateControls();
+		if (updateTopology) frame.getTopologyPanel().update();
+		if (resetGridSize) frame.getTopologyPanel().resetGridSize();
+
 	}
 
 	/**

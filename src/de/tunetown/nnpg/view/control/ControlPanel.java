@@ -48,6 +48,10 @@ public class ControlPanel extends JPanel {
 		stats.update();
 	}
 
+	public void updateControls() {
+		trainControls.update();
+	}
+
 	/**
 	 * Tells the UI that training has been stopped
 	 * 
