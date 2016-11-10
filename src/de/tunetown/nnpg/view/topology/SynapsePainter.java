@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 
 import de.tunetown.nnpg.main.Main;
@@ -76,6 +77,7 @@ public class SynapsePainter {
 		
 		g.setColor(properties.getDataColor(w));
 		Graphics2D g2 = (Graphics2D) g;
+		Stroke s = g2.getStroke();
 		g2.setStroke(new BasicStroke(getWeightThickness(w, ViewProperties.TOPOLOGY_MAX_SYNAPSE_WIDTH), BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
 		
 		NeuronPanel ne1 = targetPanel.getNeurons()[n1];
@@ -84,6 +86,8 @@ public class SynapsePainter {
 		double as = getWeightThickness(w, ViewProperties.TOPOLOGY_ARROW_MAX_SIZE);
 		if (as < ViewProperties.TOPOLOGY_ARROW_MIN_SIZE) as = ViewProperties.TOPOLOGY_ARROW_MIN_SIZE;
 		drawArrow(g, ne1.getOutX(), ne1.getOutY(), ne2.getOutX(), ne2.getOutY(), as);
+		
+		g2.setStroke(s);
 	}
 	
 	/**

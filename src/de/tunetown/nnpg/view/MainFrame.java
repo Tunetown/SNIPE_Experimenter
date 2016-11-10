@@ -40,6 +40,7 @@ public class MainFrame extends JFrame {
 	}
 
 	public ControlPanel getControlPanel() {
+		if (mainPanel == null) return null;
 		return mainPanel.getControlPanel();
 	}
 	

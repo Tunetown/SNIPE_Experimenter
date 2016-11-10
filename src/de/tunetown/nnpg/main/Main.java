@@ -18,7 +18,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
- * - TODO 1 Switch activation functions per layer
+ * - TODO 1 BUG: Activation function is reset when "Reset training"!!!
+ * - TODO 1 Update control panel when opening files
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
  * - TODO 3 Re-store examples
  * 
@@ -122,20 +123,23 @@ public class Main {
 	public void initNetwork() {
 		double eta = 0;
 		int batchSize = 0;
+		int behavior = -1;
 		if (net != null) {
 			eta = net.getEta();
 			batchSize = net.getBatchSize();
+			behavior = net.getBehavior();
 		}
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
-		if (getNetwork() == null) {
+		if (net == null) {
 			setNetwork(new SNIPENetworkWrapper(ModelProperties.NETWORK_DEFAULT_TOPOLOGY));
 		} else {
-			setNetwork(new SNIPENetworkWrapper(getNetwork().getTopology()));
+			setNetwork(new SNIPENetworkWrapper(net.getTopology()));
 		}
 		
 		if (eta != 0) net.setEta(eta);
 		if (batchSize != 0) net.setBatchSize(batchSize);
+		if (behavior != -1) net.setBehavior(behavior);
 		
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();

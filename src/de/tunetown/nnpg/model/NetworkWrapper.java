@@ -212,6 +212,13 @@ public abstract class NetworkWrapper {
 	public abstract void setBehavior(int i);
 
 	/**
+	 * Returns the selected behavior
+	 * 
+	 * @return
+	 */
+	public abstract int getBehavior();
+	
+	/**
 	 * Returns the list of descriptions for the supported behaviors. The behaviors 
 	 * can be set by the index in this array. 
 	 * 

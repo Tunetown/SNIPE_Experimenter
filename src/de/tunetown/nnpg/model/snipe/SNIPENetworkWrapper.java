@@ -30,6 +30,9 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE;
 	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
+	private NeuronBehavior behavior = new TangensHyperbolicus();
+	private int behaviorIndex = 0;
+
 	private NeuralNetwork net;
 	
 	private String[] behaviorDescriptions = { 
@@ -64,8 +67,8 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		desc.setSynapseInitialRange(initialRange);
 		
 		desc.setNeuronBehaviorInputNeurons(new Identity());
-		desc.setNeuronBehaviorHiddenNeurons(new TangensHyperbolicus());
-		desc.setNeuronBehaviorOutputNeurons(new TangensHyperbolicus());
+		desc.setNeuronBehaviorHiddenNeurons(behavior);
+		desc.setNeuronBehaviorOutputNeurons(behavior);
 		
 		net = desc.createNeuralNetwork();
 	}
@@ -256,14 +259,20 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;
 		
-		// TODO
+		behavior = behaviors[i];
+		behaviorIndex = i;
 		
-		System.out.println("Set beh " + i);
+		createNetwork(getTopology());
 	}
 
 	@Override
 	public String[] getBehaviorDescriptions() {
 		return behaviorDescriptions;
+	}
+
+	@Override
+	public int getBehavior() {
+		return behaviorIndex;
 	}
 }
 

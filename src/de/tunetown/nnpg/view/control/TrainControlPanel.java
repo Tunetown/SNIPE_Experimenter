@@ -90,8 +90,7 @@ public class TrainControlPanel extends JPanel {
 		});
 		buttons.add(trainReset);
 
-		// TODO: Combo box for activation functions
-
+		// Activation functions
 		JComboBox behaviors = new JComboBox(main.getNetwork().getBehaviorDescriptions());
 		behaviors.addActionListener(new ActionListener() {
 			@Override
@@ -104,6 +103,7 @@ public class TrainControlPanel extends JPanel {
 				}
 			}
 		});
+		behaviors.setSelectedIndex(main.getNetwork().getBehavior());
 		buttons.add(behaviors);
 	}
 	

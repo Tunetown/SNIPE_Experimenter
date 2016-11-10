@@ -29,6 +29,7 @@ public class ProjectLoader {
 
 			var.set("data", main.getData().getCompleteDataContainer());
 			var.set("network", main.getNetwork().getTopology());
+			var.set("behavior", main.getNetwork().getBehavior());
 			var.set("eta", main.getNetwork().getEta());
 			var.set("batchsize", main.getNetwork().getBatchSize());
     	
@@ -55,6 +56,7 @@ public class ProjectLoader {
 			
 			main.getNetwork().setEta((Double)(vars.get("eta")));
 			main.getNetwork().setBatchSize((Integer)(vars.get("batchsize")));
+			main.getNetwork().setBehavior((Integer)(vars.get("behavior")));
 			
 		} catch (Throwable e) {
 			System.out.println("Error loading project file:");
