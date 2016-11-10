@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
+import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 /**
  * Multithreaded version of NeuralNetwork. back propagation training is re-implemented to support a thread pool.
@@ -23,9 +24,75 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 	}
 	
 	/**
+	 * Multithreaded version of the original method. TODO
+	 * 
+	 */
+	@Override
+	public void trainBackpropagationOfError(TrainingSampleLesson lesson, int runs, double eta) {
+		// Some Checks
+		if (descriptor.isAllowBackwardSynapses()
+				|| descriptor.isAllowBackwardShortcutSynapses()
+				|| descriptor.isAllowLateralSynapses()
+				|| descriptor.isAllowSelfSynapses()) {
+			throw new IllegalArgumentException(
+					"Can't backprop. Only forward and forward shortcut Synapses are allowed.");
+		}
+
+		double[][] inputs = lesson.getInputs();
+		double[][] desiredOutputs = lesson.getDesiredOutputs();
+		int numberOfSamples = inputs.length;
+
+		for (int run = 0; run < runs; run++) {
+			// Choose Sample
+			int chosenSample = getRandomIntegerBetweenIncluding(0,
+					numberOfSamples - 1);
+
+			double[] delta = new double[countNeurons() + 1];
+			for (int i = countNeurons(); i >= getNeuronFirstInLayer(1); i--) {
+				delta[i] = 0;
+				// first part of delta
+				delta[i] = neuronBehaviors[i].computeDerivative(netInputs[i]);
+				
+				// second part of delta depending on kind of neuron
+				if (isNeuronOutput(i)) {
+					// Propagate Sample
+					double[] outputs = propagate(inputs[chosenSample]);
+					delta[i] *= (desiredOutputs[chosenSample][mapOutputNeuronToOutputNumber(i)] 
+							- outputs[mapOutputNeuronToOutputNumber(i)]);
+					
+					delta[i] *= eta;// multiplication with eta is done here and
+					// can therefore be ommited when calculating
+					// the weight changes
+				} else {
+					double temp = 0;
+					// collect delta from connected neuron
+					for (int j = 0; j < successors[i].length; j++) {
+						temp += (predecessorWeights[successors[i][j]][successorWeightIndexInPendantPredecessorArray[i][j]] * delta[successors[i][j]]);
+					}
+					delta[i] *= temp;
+				}
+			}
+
+			// alter weights
+			for (int i = 0; i < countNeurons() + 1; i++) {
+				for (int j = 0; j < predecessors[i].length; j++) {
+					// behandelt wird synapse predecessors[i][j]-->i
+					predecessorWeights[i][j] += activations[predecessors[i][j]]
+							* delta[i];
+					// multiplication with eta is ommited here because it is
+					// already done while calculating errors
+					
+				}
+			}
+		}
+
+	}
+	
+	/**
 	 * This is just a copy of NeuralNetwork.clone() with types replaced
 	 * 
 	 */
+	@Override
 	public SNIPEPooleNeuralNetwork clone() {
 		SNIPEPooleNeuralNetwork clonedNeuralNet = new SNIPEPooleNeuralNetwork(descriptor);
 
