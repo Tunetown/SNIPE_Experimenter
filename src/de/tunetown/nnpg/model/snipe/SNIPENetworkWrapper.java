@@ -2,15 +2,21 @@ package de.tunetown.nnpg.model.snipe;
 
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
+import com.dkriesel.snipe.neuronbehavior.Fermi;
 import com.dkriesel.snipe.neuronbehavior.Identity;
+import com.dkriesel.snipe.neuronbehavior.LeakyIntegratorExponential;
+import com.dkriesel.snipe.neuronbehavior.LeakyIntegratorLinear;
+import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicus;
+import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusAnguita;
+import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusAnguitaLeCun;
+import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusLeCun;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
 
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
-import de.tunetown.nnpg.model.TrainingTracker;
 
 /**
  * Wrapper for SNIPE network.
@@ -25,6 +31,27 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
 	private NeuralNetwork net;
+	
+	private String[] behaviorDescriptions = { 
+			"TanH", 
+			"Tanh (Anguita)", 
+			"TanH (Anguita, LeCun)", 
+			"Tanh (LeCun)", 
+            "Fermi", 
+            "Identity", 
+            "LeakyInt.Lin.", 
+            "LeakyInt.Exp." };
+	
+	private NeuronBehavior[] behaviors = { 
+			new TangensHyperbolicus(),
+			new TangensHyperbolicusAnguita(),
+			new TangensHyperbolicusAnguitaLeCun(),
+			new TangensHyperbolicusLeCun(),
+			new Fermi(),
+			new Identity(),
+			new LeakyIntegratorExponential(-1),
+			new LeakyIntegratorLinear(-1)};
+
 	
 	public SNIPENetworkWrapper(int[] topology) {
 		createNetwork(topology);
@@ -223,6 +250,20 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		if (t[layer] < 2) return;
 		t[layer]--;
 		createNetwork(t);
+	}
+
+	@Override
+	public void setBehavior(int i) {
+		if (i < 0 || i >= behaviors.length) return;
+		
+		// TODO
+		
+		System.out.println("Set beh " + i);
+	}
+
+	@Override
+	public String[] getBehaviorDescriptions() {
+		return behaviorDescriptions;
 	}
 }
 

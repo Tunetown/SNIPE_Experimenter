@@ -203,4 +203,20 @@ public abstract class NetworkWrapper {
 	 * @param topology
 	 */
 	public abstract void createNetwork(int[] topology);
+	
+	/**
+	 * Set a given behavior. The given index must be contained in the list returned by getSupportedBehaviors().
+	 * 
+	 * @param i
+	 */
+	public abstract void setBehavior(int i);
+
+	/**
+	 * Returns the list of descriptions for the supported behaviors. The behaviors 
+	 * can be set by the index in this array. 
+	 * 
+	 * @return
+	 */
+	public abstract String[] getBehaviorDescriptions();
+	
 }

@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import com.dkriesel.snipe.neuronbehavior.*;
 import de.tunetown.nnpg.main.Main;
 
 /**
@@ -92,36 +91,20 @@ public class TrainControlPanel extends JPanel {
 		buttons.add(trainReset);
 
 		// TODO: Combo box for activation functions
-		String[] petStrings = { "TanH", 
-								"Tanh (Anguita)", 
-								"TanH (Anguita, LeCun)", 
-								"Tanh (LeCun)", 
-				                "Fermi", 
-				                "Identity", 
-				                "LeakyInt.Lin.", 
-				                "LeakyInt.Exp." };
-		NeuronBehavior[] behaviours = { new TangensHyperbolicus(),
-										new TangensHyperbolicusAnguita(),
-										new TangensHyperbolicusAnguitaLeCun(),
-										new TangensHyperbolicusLeCun(),
-										new Fermi(),
-										new Identity(),
-										new LeakyIntegratorExponential(-1),
-										new LeakyIntegratorLinear(-1)};
 
-		JComboBox petList = new JComboBox(petStrings);
-		petList.addActionListener(new ActionListener() {
+		JComboBox behaviors = new JComboBox(main.getNetwork().getBehaviorDescriptions());
+		behaviors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
 				try {
 					int choice = ((JComboBox)ae.getSource()).getSelectedIndex();
-					System.out.println(choice);
+					setBehavior(choice);
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}
 			}
 		});
-		buttons.add(petList);
+		buttons.add(behaviors);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -253,5 +236,17 @@ public class TrainControlPanel extends JPanel {
 	public void setTrainingStopped() {
 		trainData.setEnabled(true);
 		trainStop.setEnabled(false);
+	}
+	
+	/**
+	 * Set a behavior by index
+	 * 
+	 * @param choice
+	 */
+	private void setBehavior(int choice) {
+		main.stopTraining(true);
+		main.getNetwork().setBehavior(choice);
+		main.updateStats();
+		frame.repaint();
 	}
 }
