@@ -2,6 +2,8 @@ package de.tunetown.nnpg.model.snipe;
 
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
@@ -16,10 +18,12 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
  * @author tweber
  *
  */
-public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
+public class SNIPEPooledNeuralNetwork extends NeuralNetwork {
 	private static final long serialVersionUID = 1L;
 
-	public SNIPEPooleNeuralNetwork(NeuralNetworkDescriptor descriptor) {
+	private ExecutorService pool = Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors() - 4);//TODO
+	
+	public SNIPEPooledNeuralNetwork(NeuralNetworkDescriptor descriptor) {
 		super(descriptor);
 	}
 	
@@ -29,6 +33,8 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 	 */
 	@Override
 	public void trainBackpropagationOfError(TrainingSampleLesson lesson, int runs, double eta) {
+		super.trainBackpropagationOfError(lesson, runs, eta);
+		if(1==1)return;
 		// Some Checks
 		if (descriptor.isAllowBackwardSynapses()
 				|| descriptor.isAllowBackwardShortcutSynapses()
@@ -41,7 +47,7 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 		double[][] inputs = lesson.getInputs();
 		double[][] desiredOutputs = lesson.getDesiredOutputs();
 		int numberOfSamples = inputs.length;
-
+		
 		for (int run = 0; run < runs; run++) {
 			// Choose Sample
 			int chosenSample = getRandomIntegerBetweenIncluding(0,
@@ -49,21 +55,12 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 
 			double[] delta = new double[countNeurons() + 1];
 			for (int i = countNeurons(); i >= getNeuronFirstInLayer(1); i--) {
-				delta[i] = 0;
-				// first part of delta
-				delta[i] = neuronBehaviors[i].computeDerivative(netInputs[i]);
 				
+			}
+			
+			for (int i = countNeurons(); i >= getNeuronFirstInLayer(1); i--) {
 				// second part of delta depending on kind of neuron
-				if (isNeuronOutput(i)) {
-					// Propagate Sample
-					double[] outputs = propagate(inputs[chosenSample]);
-					delta[i] *= (desiredOutputs[chosenSample][mapOutputNeuronToOutputNumber(i)] 
-							- outputs[mapOutputNeuronToOutputNumber(i)]);
-					
-					delta[i] *= eta;// multiplication with eta is done here and
-					// can therefore be ommited when calculating
-					// the weight changes
-				} else {
+				if (!isNeuronOutput(i)) {
 					double temp = 0;
 					// collect delta from connected neuron
 					for (int j = 0; j < successors[i].length; j++) {
@@ -88,13 +85,33 @@ public class SNIPEPooleNeuralNetwork extends NeuralNetwork {
 
 	}
 	
+	private double getDelta(double[][] inputs, double[][] desiredOutputs, int chosenSample, double eta, int i) {
+		double delta = 0;
+		// first part of delta
+		delta = neuronBehaviors[i].computeDerivative(netInputs[i]);
+		
+		// second part of delta depending on kind of neuron
+		if (isNeuronOutput(i)) {
+			// Propagate Sample
+			double[] outputs = propagate(inputs[chosenSample]);
+			delta *= (desiredOutputs[chosenSample][mapOutputNeuronToOutputNumber(i)] 
+					- outputs[mapOutputNeuronToOutputNumber(i)]);
+			
+			delta *= eta;// multiplication with eta is done here and
+			// can therefore be ommited when calculating
+			// the weight changes
+		} 
+		
+		return delta;
+	}
+	
 	/**
 	 * This is just a copy of NeuralNetwork.clone() with types replaced
 	 * 
 	 */
 	@Override
-	public SNIPEPooleNeuralNetwork clone() {
-		SNIPEPooleNeuralNetwork clonedNeuralNet = new SNIPEPooleNeuralNetwork(descriptor);
+	public SNIPEPooledNeuralNetwork clone() {
+		SNIPEPooledNeuralNetwork clonedNeuralNet = new SNIPEPooledNeuralNetwork(descriptor);
 
 		// 2dim arrays have to be cloned manually
 		int[][] predecessorsClone = predecessors.clone();

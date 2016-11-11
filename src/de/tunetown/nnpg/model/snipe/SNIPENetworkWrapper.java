@@ -31,10 +31,12 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private int behavior = 0;
 
-	private SNIPEPooleNeuralNetwork net;
+	private SNIPEPooledNeuralNetwork net;
 	
 	private String[] behaviorDescriptions = { 
 			"TanH", 
+			"TanH (ACM)",
+			"TanH (Jafama)",
 			"Tanh (Ang.)", 
 			"TanH (AngLeCun)", 
 			"Tanh (LeCun)", 
@@ -45,6 +47,8 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	
 	private NeuronBehavior[] behaviors = { 
 			new TangensHyperbolicus(),
+			new TangensHyperbolicusACM(),
+			new TangensHyperbolicusJafama(),
 			new TangensHyperbolicusAnguita(),
 			new TangensHyperbolicusAnguitaLeCun(),
 			new TangensHyperbolicusLeCun(),
@@ -53,13 +57,30 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			new LeakyIntegratorExponential(-1),
 			new LeakyIntegratorLinear(-1)};
 
-	
+	public SNIPENetworkWrapper() {
+		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY);
+	}
+		
 	public SNIPENetworkWrapper(int[] topology) {
 		createNetwork(topology);
 	}
+	
+	public SNIPENetworkWrapper(int[] topology, double initialRange, int behavior) {
+		this.behavior = behavior;
+		this.initialRange = initialRange;
+		createNetwork(topology, initialRange, behavior);
+	}
 
+	private void createNetwork() {
+		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY, initialRange, behavior);
+	}
+	
 	@Override
 	public void createNetwork(int[] topology) {
+		createNetwork(topology, initialRange, behavior);
+	}
+		
+	private void createNetwork(int[] topology, double initialRange, int behavior) {
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
 		desc.setSettingsTopologyFeedForward();
 		desc.setSynapseInitialRange(initialRange);
@@ -68,7 +89,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		desc.setNeuronBehaviorHiddenNeurons(behaviors[behavior]);
 		desc.setNeuronBehaviorOutputNeurons(behaviors[behavior]);
 
-		net = new SNIPEPooleNeuralNetwork(desc);
+		net = new SNIPEPooledNeuralNetwork(desc);
 	}
 
 	@Override
@@ -176,7 +197,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public NetworkWrapper clone() {
-		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(net.getDescriptor().getNeuronsPerLayer());
+		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(net.getDescriptor().getNeuronsPerLayer(), initialRange, behavior);
 		ret.net = net.clone();
 		ret.setParametersFrom(this);
 		return ret;
@@ -259,9 +280,8 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;
 		if (i == behavior) return;
-		
 		behavior = i;
-		createNetwork(getTopology());
+		createNetwork();
 	}
 
 	@Override

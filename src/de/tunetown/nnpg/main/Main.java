@@ -6,7 +6,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import de.tunetown.nnpg.model.DataWrapper;
-import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
 import de.tunetown.nnpg.model.snipe.SNIPEDataWrapper;
@@ -129,7 +128,7 @@ public class Main {
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
 		if (net == null) {
-			setNetwork(new SNIPENetworkWrapper(ModelProperties.NETWORK_DEFAULT_TOPOLOGY));
+			setNetwork(new SNIPENetworkWrapper());
 		} else {
 			setNetwork(new SNIPENetworkWrapper(net.getTopology()));
 		}
