@@ -1,7 +1,5 @@
 package de.tunetown.nnpg.model.neuroph;
 
-import java.util.ArrayList;
-import java.util.List;
 import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 

@@ -17,6 +17,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
+ * - TODO 1 integrate Neuroph
+ * 
  * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
  * 
  * - TODO 4 Adaptive eta determination
