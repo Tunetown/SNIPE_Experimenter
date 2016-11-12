@@ -4,7 +4,7 @@ import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 
 /**
- * Wrapper for Neuroph training data
+ * Wrapper for Neuroph training data (TODO: To Implement...)
  * 
  * @author xwebert
  *

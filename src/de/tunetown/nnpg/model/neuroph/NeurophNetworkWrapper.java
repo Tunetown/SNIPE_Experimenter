@@ -7,7 +7,7 @@ import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 
 /**
- * Wrapper for Neuroph network. 
+ * Wrapper for Neuroph network. (TODO: To Implement...)
  * 
  * @author xwebert
  *
