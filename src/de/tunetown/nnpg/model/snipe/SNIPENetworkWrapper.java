@@ -1,5 +1,6 @@
 package de.tunetown.nnpg.model.snipe;
 
+import com.dkriesel.snipe.core.NeuralNetwork;
 import com.dkriesel.snipe.core.NeuralNetworkDescriptor;
 import com.dkriesel.snipe.neuronbehavior.Fermi;
 import com.dkriesel.snipe.neuronbehavior.Identity;
@@ -31,7 +32,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private int behavior = 0;
 
-	private SNIPEPooledNeuralNetwork net;
+	private NeuralNetwork net;
 	
 	private String[] behaviorDescriptions = { 
 			"TanH", 
@@ -89,7 +90,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		desc.setNeuronBehaviorHiddenNeurons(behaviors[behavior]);
 		desc.setNeuronBehaviorOutputNeurons(behaviors[behavior]);
 
-		net = new SNIPEPooledNeuralNetwork(desc);
+		net = new NeuralNetwork(desc);
 	}
 
 	@Override
