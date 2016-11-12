@@ -2,7 +2,6 @@ package de.tunetown.nnpg.model.neuroph;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.dkriesel.snipe.training.TrainingSampleLesson;
 import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 
@@ -14,11 +13,12 @@ import de.tunetown.nnpg.model.DataWrapper;
  */
 public class NeurophDataWrapper extends DataWrapper{
 
-	private TrainingSampleLesson trainingLesson;
-	private TrainingSampleLesson testLesson;
+	//private TrainingSampleLesson trainingLesson;
+	//private TrainingSampleLesson testLesson;
 
 	@Override
 	public void addSample(double x, double y, double value) {
+		/*
 		double[][] in = getMergedInputs();
 		double[][] teach = getMergedDesiredOutputs();
 
@@ -48,11 +48,13 @@ public class NeurophDataWrapper extends DataWrapper{
 			nteach[in.length] = ntl;
 		}
 		
-		setLesson(new TrainingSampleLesson(nin, nteach));		
+		setLesson(new TrainingSampleLesson(nin, nteach));	
+		*/	
 	}
 	
 	@Override
 	public void deleteSamplesAroundPoint(double x, double y, double radius) {
+		/*
 		if(!hasData()) return;
 		
 		double[][] in = getMergedInputs();
@@ -90,18 +92,20 @@ public class NeurophDataWrapper extends DataWrapper{
 		} else {
 			setLesson(null);
 		}
+		*/
 	}
 
 	@Override
 	public boolean hasData() {
-		return (trainingLesson != null || testLesson != null);
+		return false; //(trainingLesson != null || testLesson != null);
 	}
 
 	@Override
 	public void initialize() {
-		setLesson(null);
+		//setLesson(null);
 	}
 
+	/*
 	private void setLesson(TrainingSampleLesson lesson) {
 		trainingLesson = null;
 		testLesson = null;
@@ -125,33 +129,36 @@ public class NeurophDataWrapper extends DataWrapper{
 		
 		//this.lesson.optimizeDesiredOutputsForClassificationProblem(net);
 	}
+	 */
 
 	@Override
 	public DataContainer getTrainingLesson() {
-		return getContainerFromTrainingLesson(trainingLesson);
+		return null; //getContainerFromTrainingLesson(trainingLesson);
 	}
 
 	@Override
 	public DataContainer getTestLesson() {
-		return getContainerFromTrainingLesson(testLesson);
+		return null; //getContainerFromTrainingLesson(testLesson);
 	}
 
 	@Override
 	public int getNumOfSamples(boolean training) {
+		/*
 		if (training) {
 			if (trainingLesson == null) return 0;
 			return trainingLesson.countSamples();
 		} else {
 			if (testLesson == null) return 0;
 			return testLesson.countSamples();
-		}
+		}*/
+		return 0;
 	}
-
+/*
 	private DataContainer getContainerFromTrainingLesson(TrainingSampleLesson lesson) {
 		if (lesson == null) return null;
 		return new DataContainer(lesson.getInputs(), lesson.getDesiredOutputs());
 	}
-
+*/
 	@Override
 	public DataContainer getCompleteDataContainer() {
 		if (!hasData()) return null;
@@ -160,25 +167,21 @@ public class NeurophDataWrapper extends DataWrapper{
 
 	@Override
 	public void setFromCompleteDataContainer(DataContainer c) {
+		/*
 		if (c == null) {
 			setLesson(null);
 			return;
 		}
 		setLesson(new TrainingSampleLesson(c.getInputs(), c.getDesiredOutputs()));
-	}
-
-	public TrainingSampleLesson getSNIPETrainingLesson() {
-		return trainingLesson;
-	}
-
-	public TrainingSampleLesson getSNIPETestLesson() {
-		return testLesson;
+		*/
 	}
 
 	@Override
 	public void resplitData() {
+		/*
 		if (!hasData()) return;
 		setLesson(new TrainingSampleLesson(getMergedInputs(), getMergedDesiredOutputs()));
+		*/
 	}
 
 }
