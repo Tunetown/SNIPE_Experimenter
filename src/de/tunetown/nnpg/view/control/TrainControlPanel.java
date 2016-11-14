@@ -155,14 +155,14 @@ public class TrainControlPanel extends JPanel {
 		JLabel batchLabel = new JLabel("Batch Size:");
 		controls.add(batchLabel);
 		
-		batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 10000, main.getNetwork().getBatchSize());
+		batchSlider = new JSlider(JSlider.HORIZONTAL, 0, 100000, main.getNetwork().getBatchSize());
 		Hashtable labelTable2 = new Hashtable();
-		for(int i=0; i<=10000; i+=5000) {
+		for(int i=0; i<=100000; i+=50000) {
 			labelTable2.put( i, new JLabel(""+i));
 		}
 		batchSlider.setLabelTable( labelTable2 );
 		batchSlider.setPaintLabels(true);
-		batchSlider.setMinorTickSpacing(500);
+		batchSlider.setMinorTickSpacing(10000);
 		batchSlider.setPaintTicks(true);
 		
 		batchSlider.addChangeListener(new ChangeListener() {
