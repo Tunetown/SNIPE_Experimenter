@@ -6,7 +6,7 @@ import java.util.Random;
  * Facade wrapper for integration of data containers, which are then used against the defined
  * neural network.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public abstract class DataWrapper {

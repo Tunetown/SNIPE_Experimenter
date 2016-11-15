@@ -14,7 +14,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * UI component for showing the dynamic error graph in the statistics section
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class ErrorGraphPanel extends JComponent {

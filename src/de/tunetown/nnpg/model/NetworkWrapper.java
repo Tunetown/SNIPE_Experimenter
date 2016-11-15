@@ -6,7 +6,7 @@ package de.tunetown.nnpg.model;
  * Neurons are numbered from 0 linearly starting from layer 0 (input), 
  * without the bias neuron being counted.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public abstract class NetworkWrapper {

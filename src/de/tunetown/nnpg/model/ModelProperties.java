@@ -1,5 +1,11 @@
 package de.tunetown.nnpg.model;
 
+/**
+ * Properties for the model
+ * 
+ * @author Thomas Weber
+ *
+ */
 public class ModelProperties {
 	public static final double DATAPANEL_SAMPLES_RANGE = 10.0;
 	public static final double DATAPANEL_ERASE_RADIUS = 0.5;

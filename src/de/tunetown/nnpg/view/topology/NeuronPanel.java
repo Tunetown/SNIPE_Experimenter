@@ -1,16 +1,14 @@
 package de.tunetown.nnpg.view.topology;
 
 import java.awt.Graphics;
-
 import javax.swing.JComponent;
-
 import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.view.ViewProperties;
 
 /**
  * UI model for painting one neuron in the topology area.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class NeuronPanel extends JComponent {
@@ -38,9 +36,19 @@ public class NeuronPanel extends JComponent {
 	 */
 	private void updateCoords() {
 		int[] gs = view.getGridSize();
+
 		this.x = gs[0] + main.getNetwork().getLayerOfNeuron(num) * gs[0] * 2;
 		this.y = gs[1] + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * gs[1] * 2;
-		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, ViewProperties.TOPOLOGY_NEURON_DIAMETER, ViewProperties.TOPOLOGY_NEURON_DIAMETER);
+		
+		if (x < 0) x = 0; // TODO necessary?
+		if (y < 0) y = 0;
+		if (x > view.getWidth()) x = view.getWidth();
+		if (y > view.getHeight()) y = view.getHeight();
+		
+		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, 
+				       y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, 
+				       ViewProperties.TOPOLOGY_NEURON_DIAMETER, 
+				       ViewProperties.TOPOLOGY_NEURON_DIAMETER);
 	}
 
 	public int getOutX() {
@@ -62,7 +70,7 @@ public class NeuronPanel extends JComponent {
 	public void paintComponent(Graphics g) {
 		synchronized (main.getNetworkLock()) {
 			updateCoords();
-			
+
 			if (main.getNetwork().getLayerOfNeuron(num) == 0) {
 				g.setColor(ViewProperties.COLOR_NEURON_INPUT); 
 			} else {

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Data container used for loading and saving training/test data. This is used to
  * also enable usage of existing test data files with different neural network implementations.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class DataContainer implements Serializable {

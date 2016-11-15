@@ -14,7 +14,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * Helper class which paints the network synapses between the neurons in the topology.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class SynapsePainter {

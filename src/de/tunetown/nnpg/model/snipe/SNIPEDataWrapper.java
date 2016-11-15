@@ -9,7 +9,7 @@ import de.tunetown.nnpg.model.DataWrapper;
 /**
  * Wrapper for SNIPE training data
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class SNIPEDataWrapper extends DataWrapper{

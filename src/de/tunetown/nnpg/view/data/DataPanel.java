@@ -18,7 +18,7 @@ import de.tunetown.nnpg.view.ViewProperties;
  * Visualization of the output of the network, along with the training data points. This also
  * takes care about sample manipulation (painting/erasing samples)
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class DataPanel extends JPanel {

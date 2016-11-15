@@ -15,7 +15,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * Buttons for one layer in topology view
  * 
- * @author tweber
+ * @author Thomas Weber
  *
  */
 public class LayerButtongroup extends JPanel {

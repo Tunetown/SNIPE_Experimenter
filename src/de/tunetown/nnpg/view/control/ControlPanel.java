@@ -9,7 +9,7 @@ import de.tunetown.nnpg.main.Main;
 /**
  * Control panel UI component, containing all controls.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class ControlPanel extends JPanel {

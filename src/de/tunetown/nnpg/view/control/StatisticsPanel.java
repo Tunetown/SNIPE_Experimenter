@@ -16,7 +16,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * UI panel for statistics about the network training process
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class StatisticsPanel extends JPanel {

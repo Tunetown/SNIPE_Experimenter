@@ -8,7 +8,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * Tracker, which keeps tracking info about the learning process.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class TrainingTracker {

@@ -22,7 +22,7 @@ import de.tunetown.nnpg.main.Main;
 /**
  * UI panel holding all training options and buttons
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class TrainControlPanel extends JPanel {

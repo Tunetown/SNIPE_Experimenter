@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Parameter loader. Loads and stores (name, value) pairs from a file.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class ParamFile implements Serializable {

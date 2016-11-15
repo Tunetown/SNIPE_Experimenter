@@ -7,7 +7,7 @@ import de.tunetown.nnpg.model.DataContainer;
 /**
  * Loads the application specific last used data from the temp file
  * 
- * @author tweber
+ * @author Thomas Weber
  *
  */
 public class ProjectLoader {

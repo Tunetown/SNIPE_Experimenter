@@ -9,7 +9,7 @@ import de.tunetown.nnpg.model.NetworkWrapper;
 /**
  * Wrapper for Neuroph network. (TODO: To Implement...)
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class NeurophNetworkWrapper extends NetworkWrapper {

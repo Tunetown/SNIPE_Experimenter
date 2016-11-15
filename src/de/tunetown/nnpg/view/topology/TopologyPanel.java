@@ -12,7 +12,7 @@ import de.tunetown.nnpg.view.ViewProperties;
 /**
  * UI component holding the topology view.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class TopologyPanel extends JPanel {

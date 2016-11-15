@@ -6,7 +6,7 @@ import de.tunetown.nnpg.model.DataWrapper;
 /**
  * Wrapper for Neuroph training data (TODO: To Implement...)
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class NeurophDataWrapper extends DataWrapper{

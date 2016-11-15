@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Parameter model class for simple, generically typed (name, value) pairs
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  * @param <T> The generic type of the value
  */

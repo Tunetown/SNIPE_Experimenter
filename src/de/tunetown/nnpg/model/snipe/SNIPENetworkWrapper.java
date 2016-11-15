@@ -23,7 +23,7 @@ import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusJafama;
 /**
  * Wrapper for SNIPE network.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class SNIPENetworkWrapper extends NetworkWrapper {

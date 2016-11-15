@@ -20,7 +20,7 @@ import de.tunetown.nnpg.view.data.DataPanel;
 /**
  * COntrols for data manipulation.
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class DataControlPanel extends JPanel {
