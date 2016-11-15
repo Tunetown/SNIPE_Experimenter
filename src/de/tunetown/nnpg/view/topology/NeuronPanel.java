@@ -34,16 +34,11 @@ public class NeuronPanel extends JComponent {
 	 * Set the x/y values of the neuron according to grid size and the network topology
 	 * 
 	 */
-	private void updateCoords() {
+	public void updateCoords() {
 		int[] gs = view.getGridSize();
 
 		this.x = gs[0] + main.getNetwork().getLayerOfNeuron(num) * gs[0] * 2;
 		this.y = gs[1] + (num - main.getNetwork().getFirstNeuronInLayer(main.getNetwork().getLayerOfNeuron(num))) * gs[1] * 2;
-		
-		if (x < 0) x = 0; // TODO necessary?
-		if (y < 0) y = 0;
-		if (x > view.getWidth()) x = view.getWidth();
-		if (y > view.getHeight()) y = view.getHeight();
 		
 		this.setBounds(x - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, 
 				       y - ViewProperties.TOPOLOGY_NEURON_DIAMETER / 2, 
@@ -69,8 +64,6 @@ public class NeuronPanel extends JComponent {
 	@Override
 	public void paintComponent(Graphics g) {
 		synchronized (main.getNetworkLock()) {
-			updateCoords();
-
 			if (main.getNetwork().getLayerOfNeuron(num) == 0) {
 				g.setColor(ViewProperties.COLOR_NEURON_INPUT); 
 			} else {

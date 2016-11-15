@@ -27,7 +27,7 @@ public class TopologyPanel extends JPanel {
 	
 	private int heightBuffer = 0;
 	private int widthBuffer = 0;
-	private int[] gridSizeBuffer = {0, 0}; // Horizontal / Vertical
+	private int[] gridSizeBuffer = {0, 0}; // {Horizontal, Vertical}
 
 	public TopologyPanel(Main main, JFrame frame) {
 		this.main = main;
@@ -85,6 +85,11 @@ public class TopologyPanel extends JPanel {
 
 		// Synapses
 		synapsePainter.paint(g);
+		
+		// Update neuron coordinates. This avoids the "loosing" of neurons on resizing.
+		synchronized (main.getNetworkLock()) {
+			for(NeuronPanel p : neurons) p.updateCoords();
+		}
 	}
 	
 	/**
@@ -94,11 +99,11 @@ public class TopologyPanel extends JPanel {
 	 * @return
 	 */
 	public int[] getGridSize() {
+		if (getWidth() == widthBuffer && getHeight() == heightBuffer) {
+			return gridSizeBuffer;
+		}
+
 		synchronized (main.getNetworkLock()) {
-			if (getWidth() == widthBuffer && getHeight() == heightBuffer) {
-				return gridSizeBuffer;
-			}
-			
 			gridSizeBuffer[0] = (int)((double)getWidth() / (double)(main.getNetwork().countLayers()) / 2.0);
 			gridSizeBuffer[1] = (int)((double)(getHeight() - ViewProperties.TOPOLOGY_BUTTON_HEIGHT) / (double)(main.getNetwork().getMaxNeuronsInLayers()) / 2.0);
 			
