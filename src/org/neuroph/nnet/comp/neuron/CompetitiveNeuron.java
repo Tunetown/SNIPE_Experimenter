@@ -61,8 +61,8 @@ public class CompetitiveNeuron extends DelayedNeuron {
 	 */
 	public CompetitiveNeuron(InputFunction inputFunction, TransferFunction transferFunction) {
 		super(inputFunction, transferFunction);
-		connectionsFromOtherLayers = new ArrayList<>();
-		connectionsFromThisLayer = new ArrayList<>();
+		connectionsFromOtherLayers = new ArrayList<Connection>();
+		connectionsFromThisLayer = new ArrayList<Connection>();
 		addInputConnection(this, 1);
 	}
 

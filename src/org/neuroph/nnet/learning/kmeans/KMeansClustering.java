@@ -71,7 +71,7 @@ public class KMeansClustering {
     // http://en.wikipedia.org/wiki/K-means_clustering
     public void initClusters() {               
         
-        ArrayList<Integer> idxList = new ArrayList<>();
+        ArrayList<Integer> idxList = new ArrayList<Integer>();
         
         for(int i=0; i<dataSet.size(); i++) {
             idxList.add(i);

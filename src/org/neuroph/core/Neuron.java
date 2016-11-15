@@ -111,8 +111,8 @@ public class Neuron implements Serializable, Cloneable /*, Callable<Void>*/ {
     public Neuron() {
         this.inputFunction = new WeightedSum();
         this.transferFunction = new Step();
-        this.inputConnections = new ArrayList<>();
-        this.outConnections = new ArrayList<>();
+        this.inputConnections = new ArrayList<Connection>();
+        this.outConnections = new ArrayList<Connection>();
     }
 
     /**
@@ -132,8 +132,8 @@ public class Neuron implements Serializable, Cloneable /*, Callable<Void>*/ {
 
         this.inputFunction = inputFunction;
         this.transferFunction = transferFunction;
-        this.inputConnections = new ArrayList<>();
-        this.outConnections = new ArrayList<>();
+        this.inputConnections = new ArrayList<Connection>();
+        this.outConnections = new ArrayList<Connection>();
     }
 
     /**

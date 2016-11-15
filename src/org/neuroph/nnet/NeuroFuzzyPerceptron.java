@@ -50,7 +50,7 @@ public class NeuroFuzzyPerceptron extends NeuralNetwork {
 	private static final long serialVersionUID = 1L;
 
 	public NeuroFuzzyPerceptron(double[][] pointsSets, double[][] timeSets) {
-		List<Integer> inputSets = new ArrayList<>();
+		List<Integer> inputSets = new ArrayList<Integer>();
 		inputSets.add(Integer.valueOf(4));
 		inputSets.add(Integer.valueOf(3));
 

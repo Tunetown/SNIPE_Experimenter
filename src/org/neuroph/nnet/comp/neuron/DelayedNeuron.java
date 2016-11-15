@@ -74,7 +74,7 @@ public class DelayedNeuron extends Neuron {
         private void readObject(java.io.ObjectInputStream in)
             throws IOException, ClassNotFoundException {
             in.defaultReadObject();
-            outputHistory = new ArrayList<>(5);
+            outputHistory = new ArrayList<Double>(5);
         }        
 
 }

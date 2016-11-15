@@ -70,7 +70,7 @@ abstract public class IterativeLearning extends LearningRule implements
      */
     public IterativeLearning() {
         super();
-        this.stopConditions = new ArrayList<>();
+        this.stopConditions = new ArrayList<StopCondition>();
     }
 
     /**

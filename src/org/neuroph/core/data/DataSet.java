@@ -376,8 +376,9 @@ public class DataSet implements Serializable {
         if ((delimiter == null) || delimiter.equals("")) {
             delimiter = " ";
         }
-
-
+        
+        System.out.println("Functionality deactivated to be compliant to Java 6");
+/*
         try (PrintWriter out = new PrintWriter(new FileWriter(new File(filePath)))) {
 
             int columnCount = inputSize + outputSize;
@@ -411,6 +412,7 @@ public class DataSet implements Serializable {
         } catch (IOException ex) {
             throw new NeurophException("Error saving data set file!", ex);
         }
+        */
     }
 
     /**

@@ -54,7 +54,7 @@ public class RBFLearning extends LMS {
         }
         
         // get cluster centroids as list
-        List<KVector> centroids = new ArrayList<>();                
+        List<KVector> centroids = new ArrayList<KVector>();                
         for(Cluster cluster : clusters) {
             centroids.add(cluster.getCentroid());
         }        

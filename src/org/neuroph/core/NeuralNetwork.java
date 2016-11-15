@@ -109,10 +109,10 @@ public class NeuralNetwork<L extends LearningRule> implements Serializable {
      * Creates an instance of empty neural network.
      */
     public NeuralNetwork() {
-        this.layers = new ArrayList<>();
-        this.inputNeurons = new ArrayList<>();
-        this.outputNeurons = new ArrayList<>();
-        this.plugins = new HashMap<>();
+        this.layers = new ArrayList<Layer>();
+        this.inputNeurons = new ArrayList<Neuron>();
+        this.outputNeurons = new ArrayList<Neuron>();
+        this.plugins = new HashMap<Class, PluginBase>();
     }
 
     /**

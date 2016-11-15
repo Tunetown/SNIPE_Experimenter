@@ -72,7 +72,7 @@ public class MultiLayerPerceptron extends NeuralNetwork<BackPropagation> {
         neuronProperties.setProperty("transferFunction", TransferFunctionType.SIGMOID);
         neuronProperties.setProperty("inputFunction", WeightedSum.class);
 
-        List<Integer> neuronsInLayersVector = new ArrayList<>();
+        List<Integer> neuronsInLayersVector = new ArrayList<Integer>();
         for (int i = 0; i < neuronsInLayers.length; i++) {
             neuronsInLayersVector.add(Integer.valueOf(neuronsInLayers[i]));
         }
@@ -88,7 +88,7 @@ public class MultiLayerPerceptron extends NeuralNetwork<BackPropagation> {
         neuronProperties.setProperty("inputFunction", WeightedSum.class);
 
 
-        List<Integer> neuronsInLayersVector = new ArrayList<>();
+        List<Integer> neuronsInLayersVector = new ArrayList<Integer>();
         for (int i = 0; i < neuronsInLayers.length; i++) {
             neuronsInLayersVector.add(Integer.valueOf(neuronsInLayers[i]));
         }

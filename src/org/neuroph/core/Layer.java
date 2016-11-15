@@ -62,7 +62,7 @@ public class Layer implements Serializable {
      * Creates an instance of empty Layer
      */
     public Layer() {
-        neurons = new ArrayList<>();
+        neurons = new ArrayList<Neuron>();
     }
     
     /**
@@ -70,7 +70,7 @@ public class Layer implements Serializable {
      * @param neuronsCount number of neurons in this layer
      */
     public Layer(int neuronsCount) {
-       neurons = new ArrayList<>(neuronsCount);
+       neurons = new ArrayList<Neuron>(neuronsCount);
     }    
 
     /**
@@ -259,10 +259,11 @@ public class Layer implements Serializable {
      */
     public void calculate() {
 
-//        for (Neuron neuron : this.neurons) { // use directly underlying array since its faster
-//            neuron.calculate();
-//        }
-          neurons.parallelStream().forEach( n -> n.calculate());
+        for (Neuron neuron : this.neurons) { // use directly underlying array since its faster
+            neuron.calculate();
+        }
+          //neurons.parallelStream().forEach( n -> n.calculate());  // Remove TW
+    		
 
 //        mainPool.invokeAll(Arrays.asList(neurons.asArray()));
     }

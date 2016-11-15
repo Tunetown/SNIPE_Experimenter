@@ -255,7 +255,7 @@ public class NeuralNetworkFactory {
 	 * last as output)
 	 */
 	public static void setDefaultIO(NeuralNetwork nnet) {
-               ArrayList<Neuron> inputNeuronsList = new ArrayList<>();
+               ArrayList<Neuron> inputNeuronsList = new ArrayList<Neuron>();
                 Layer firstLayer = nnet.getLayerAt(0);
                 for (Neuron neuron : firstLayer.getNeurons() ) {
                     if (!(neuron instanceof BiasNeuron)) {  // dont set input to bias neurons

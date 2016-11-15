@@ -22,7 +22,7 @@ public class Cluster {
 
     
     public Cluster() {
-        this.vectors = new ArrayList<>();
+        this.vectors = new ArrayList<KVector>();
     }
    
     public KVector getCentroid() {

@@ -1,5 +1,8 @@
 package de.tunetown.nnpg.model.neuroph;
 
+import java.util.List;
+
+import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
@@ -104,8 +107,10 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public boolean isSynapseExistent(int fromNeuron, int toNeuron) { 
-		return ;
+	public boolean isSynapseExistent(int fromNeuron, int toNeuron) {
+		List<Layer> layers = net.getLayers();
+		Layer l1 = null;
+		return false;
 	}
 
 	@Override

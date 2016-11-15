@@ -73,7 +73,7 @@ public abstract class FeatureMapsLayer extends Layer {
      */
     public FeatureMapsLayer(/*Kernel kernel*/) {
    //     this.kernel = kernel;
-        this.featureMaps = new ArrayList<>();
+        this.featureMaps = new ArrayList<FeatureMapLayer>();
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class FeatureMapsLayer extends Layer {
     public FeatureMapsLayer(/*Kernel kernel,*/ Dimension2D mapDimensions) {
    //     this.kernel = kernel;
         this.mapDimensions = mapDimensions;
-        this.featureMaps = new ArrayList<>();
+        this.featureMaps = new ArrayList<FeatureMapLayer>();
     }
 
     /**
@@ -101,7 +101,7 @@ public abstract class FeatureMapsLayer extends Layer {
     public FeatureMapsLayer(Dimension2D kernelDimension, Dimension2D mapDimensions, int mapCount, NeuronProperties neuronProp) {
        // this.kernel = kernel;
         this.mapDimensions = mapDimensions;
-        this.featureMaps = new ArrayList<>();
+        this.featureMaps = new ArrayList<FeatureMapLayer>();
         createFeatureMaps(mapCount, mapDimensions, kernelDimension, neuronProp);
     }
     
@@ -109,7 +109,7 @@ public abstract class FeatureMapsLayer extends Layer {
     
     public FeatureMapsLayer(Dimension2D mapDimensions, int mapCount, NeuronProperties neuronProp) {
         this.mapDimensions = mapDimensions;
-        this.featureMaps = new ArrayList<>();
+        this.featureMaps = new ArrayList<FeatureMapLayer>();
         createFeatureMaps(mapCount, mapDimensions, neuronProp);
     }    
 

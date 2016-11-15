@@ -80,7 +80,7 @@ public class SubSampling implements Sampling {
                subSetSizes[i] = singleSubSetSize;
         }
                 
-        List<DataSet> subSets = new ArrayList<>();
+        List<DataSet> subSets = new ArrayList<DataSet>();
 
         // shuffle dataset in order to randomize rows that will be used to fill subsets
         dataSet.shuffle();
