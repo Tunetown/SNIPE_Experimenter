@@ -16,11 +16,10 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * Application class for neural network experimenter.
  * 
  * - TODO 1 integrate Neuroph
- * - TODO 2 Separated Act.Fnkt. for Outputs
- * - TODO 2 RELU not working -> fix this?
- * 		-> Also check out the other behaviours
+ * - TODO 1 integrate DL4J
  * 
- * - TODO Add line in 
+ * - TODO Add line in error graph at the point of overfitting 
+ * 		-> See deep learning book
  * 
  * *******************************************************
  * 

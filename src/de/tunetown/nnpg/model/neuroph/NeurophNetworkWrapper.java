@@ -1,6 +1,8 @@
 package de.tunetown.nnpg.model.neuroph;
 
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.nnet.Perceptron;
 
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
@@ -19,8 +21,10 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
 	private NeuralNetwork net;
-/*
+	private int[] topology;
+	
 	private int behavior = 0;
+	/*
 	
 	private String[] behaviorDescriptions = { 
 			"TanH", 
@@ -55,21 +59,20 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 	
 	public NeurophNetworkWrapper(int[] topology, double initialRange, int behavior) {
-		//this.behavior = behavior;
-		//this.initialRange = initialRange;
-		//createNetwork(topology, initialRange, behavior);
+		this.behavior = behavior;
+		//this.initialRange = initialRange; // TODO
+		createNetwork(topology, initialRange, behavior);
 	}
 
-	private void createNetwork() {
-		//createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY, initialRange, behavior);
-	}
-	
 	@Override
 	public void createNetwork(int[] topology) {
-		//createNetwork(topology, initialRange, behavior);
+		createNetwork(topology, initialRange, behavior); // TODO
 	}
 		
 	private void createNetwork(int[] topology, double initialRange, int behavior) {
+		this.topology = topology;
+		net = new MultiLayerPerceptron(2,10,1); // TODO
+		
 		/*
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
 		desc.setSettingsTopologyFeedForward();
@@ -84,23 +87,25 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public int countNeurons() {
-		return 0;
+	public int countNeurons() { // TODO put to networkwrapper?
+		int ret = 0;
+		for(int i=0; i<topology.length; i++) ret += topology[i];
+		return ret;
 	}
 
 	@Override
 	public int countLayers() {
-		return 0;
+		return topology.length; // TODO put to networkwrapper?
 	}
 
 	@Override
-	public int countNeuronsInLayer(int layer) {
-		return 0;
+	public int countNeuronsInLayer(int layer) { // TODO put to networkwrapper?
+		return topology[layer];
 	}
 
 	@Override
-	public boolean isSynapseExistent(int fromNeuron, int toNeuron) {
-		return false;
+	public boolean isSynapseExistent(int fromNeuron, int toNeuron) { 
+		return ;
 	}
 
 	@Override
