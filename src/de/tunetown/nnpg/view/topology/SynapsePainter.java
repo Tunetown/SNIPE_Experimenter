@@ -101,7 +101,7 @@ public class SynapsePainter {
 	 */
 	private float getWeightThickness(double weight, int max) {
 		if (Double.isNaN(weight)) return 1; 
-		return (float)(Math.abs(properties.normalize(weight) * max));
+		return (float)(Math.abs(properties.clip(weight) * max));
 	}
 
 	/**

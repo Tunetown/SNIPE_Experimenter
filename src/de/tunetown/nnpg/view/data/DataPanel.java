@@ -81,6 +81,9 @@ public class DataPanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
+		g.setColor(ViewProperties.COMMON_BGCOLOR);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		paintGraph(g);
 		paintSamples(g);
 	}

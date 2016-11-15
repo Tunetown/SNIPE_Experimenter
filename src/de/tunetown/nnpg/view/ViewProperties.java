@@ -10,6 +10,8 @@ import java.awt.Color;
  */
 public class ViewProperties {
 
+	public static final Color COMMON_BGCOLOR = Color.LIGHT_GRAY;
+
 	// Colors for value visualizations
 	private static final Color COLOR_ZERO = Color.WHITE; //new Color(200,200,200);
 	private static final Color COLOR_POSITIVE = new Color(255,150,0);
@@ -40,18 +42,23 @@ public class ViewProperties {
 	public static final int DATAPANEL_SAMPLE_DIAMETER = 6;
 	
 	public static final int STATISTICS_AVERAGE_RANGE = 20;
-	
 
+	/**
+	 * This is the centrally used color determination method.
+	 * 
+	 * @param weight
+	 * @return
+	 */
 	public Color getDataColor(double weight) {
 		if (Double.isNaN(weight)) return COLOR_NAN;  
 		double percent;
 		Color target;
 		
 		if(weight > 0) {
-			percent = normalize(weight);
+			percent = clip(weight);
 			target = COLOR_POSITIVE;
 		} else {
-			percent = normalize(-weight);
+			percent = clip(-weight);
 			target = COLOR_NEGATIVE;
 		}
 		
@@ -63,7 +70,13 @@ public class ViewProperties {
 		return new Color(redPart, greenPart, bluePart);
 	}
 	
-	public double normalize(double weight) {
+	/**
+	 * This clips the passed value at -1 or 1.
+	 * 
+	 * @param weight
+	 * @return
+	 */
+	public double clip(double weight) {
 		if (weight > 1.0) return 1.0;
 		if (weight < -1.0) return -1.0;
 		return weight;
