@@ -34,7 +34,6 @@ public class TrainControlPanel extends JPanel {
 	private JButton trainData;
 	private JButton trainStop;
 	
-	@SuppressWarnings("rawtypes")
 	private JComboBox behaviors;
 	private JSlider etaSlider;
 	private JSlider batchSlider;
@@ -51,7 +50,6 @@ public class TrainControlPanel extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initButtons() {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.PAGE_AXIS));
