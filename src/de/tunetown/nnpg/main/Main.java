@@ -1,10 +1,8 @@
 package de.tunetown.nnpg.main;
 
 import java.io.File;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
@@ -19,29 +17,22 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * 
  * - TODO 1 integrate Neuroph
  * - TODO 1 display error topology resize
- * - TODO 1 bug after adding layer then reset training -> exception
  * 
- * - TODO 3 Multiple networks of the same topology (slider? 1 - 10) with averaging of outputs
- * 
- * - TODO 4 Adaptive eta determination
- * 		-> Read papers about that!
- * - TODO 4 Multi-Threaded training? Any idea?
- * 		-> Create global Thread Pool, containing cores-1 threads
- * 		-> train method can be multithreaded with a thread pool
- * 		-> Averaging networks can of course be multithreaded
- * 
- * - TODO 5 Graph of errors: Reduce data points somehow, so that no growing of runtime occurs
- * 		- Perhaps cumulate iterations?
  * 
  * *******************************************************
+ * 
+ * - TODO X Multi-dimensional visualization
+ * 
+ * - TODO X Graph of errors: Reduce data points somehow, so that no growing of runtime occurs
+ * 		- Perhaps cumulate iterations?
  * 
  * - TODO X New tool: Grow/Reduce. Area: radius (see slider) 
  * 		- Slider for rate, from 0.5 to 2.
  * 		- Slider for radius, from 0 to range max.
  * 
- * - TODO X Multi-dimensional visualization
- * 
  * - TODO X Adaptive adding/removing of neurons
+ * - TODO X Adaptive eta determination
+ * 		-> Read papers about that!
  * 
  * @author Thomas Weber, 2016
  * @see www.tunetown.de
@@ -124,27 +115,26 @@ public class Main {
 		double eta = 0;
 		int batchSize = 0;
 		int behavior = -1;
-		if (net != null) {
-			eta = net.getEta();
-			batchSize = net.getBatchSize();
-			behavior = net.getBehavior();
-		}
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
 		if (net == null) {
 			setNetwork(new SNIPENetworkWrapper());
 		} else {
+			eta = net.getEta();
+			batchSize = net.getBatchSize();
+			behavior = net.getBehavior();
+
 			setNetwork(new SNIPENetworkWrapper(net.getTopology()));
+
+			net.setEta(eta);
+			net.setBatchSize(batchSize);
+			net.setBehavior(behavior);
 		}
-		
-		if (eta != 0) net.setEta(eta);
-		if (batchSize != 0) net.setBatchSize(batchSize);
-		if (behavior != -1) net.setBehavior(behavior);
 		
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();
 		
-		updateView();
+		updateView(true, true, true);
 	}
 
 	/**

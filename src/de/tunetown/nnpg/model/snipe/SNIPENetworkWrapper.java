@@ -13,7 +13,6 @@ import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusAnguitaLeCun;
 import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusLeCun;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
-
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
@@ -77,10 +76,6 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		createNetwork(topology, initialRange, behavior);
 	}
 
-	private void createNetwork() {
-		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY, initialRange, behavior);
-	}
-	
 	@Override
 	public void createNetwork(int[] topology) {
 		createNetwork(topology, initialRange, behavior);
@@ -287,7 +282,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		if (i < 0 || i >= behaviors.length) return;
 		if (i == behavior) return;
 		behavior = i;
-		createNetwork();
+		createNetwork(net.getDescriptor().getNeuronsPerLayer());
 	}
 
 	@Override
