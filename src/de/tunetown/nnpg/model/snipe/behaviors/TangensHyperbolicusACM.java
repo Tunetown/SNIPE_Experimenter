@@ -1,31 +1,32 @@
-package de.tunetown.nnpg.model.snipe;
+package de.tunetown.nnpg.model.snipe.behaviors;
+
+import org.apache.commons.math3.util.FastMath;
 
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 
 
 /**
- * Implements the rectified identity and its derivative.
+ * Implements the Tangens Hyperbolicus and its derivative.
  * 
  * @author Thomas Weber
  *
  */
-public class RectifiedLinear implements NeuronBehavior{
+public class TangensHyperbolicusACM implements NeuronBehavior{
 
 	@Override
 	public double computeDerivative(double x) {
-		if(x > 0) return 1;
-		else return 0;
+		double t = FastMath.tanh(x);
+		return 1 - (t*t);
 	}
 
 	@Override
 	public double computeActivation(double x) {
-		if(x > 0) return x;
-		else return 0;
+		return FastMath.tanh(x);
 	}
 
 	@Override
 	public NeuronBehavior getDedicatedInstance() {
-		return new RectifiedLinear();
+		return new TangensHyperbolicusACM();
 	}
 
 	@Override
@@ -36,7 +37,7 @@ public class RectifiedLinear implements NeuronBehavior{
 
 	@Override
 	public double getAbsoluteMaximumLocationOfSecondDerivative() {
-		return Double.NaN;
+		return 0.66;
 	}
 	
 }

@@ -1,32 +1,31 @@
-package de.tunetown.nnpg.model.snipe;
-
-import net.jafama.FastMath;
+package de.tunetown.nnpg.model.snipe.behaviors;
 
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 
 
 /**
- * Implements the Tangens Hyperbolicus and its derivative.
+ * Implements the rectified identity and its derivative.
  * 
  * @author Thomas Weber
  *
  */
-public class TangensHyperbolicusJafama implements NeuronBehavior{
+public class RectifiedLinear implements NeuronBehavior{
 
 	@Override
 	public double computeDerivative(double x) {
-		double t = FastMath.tanh(x);
-		return 1 - (t*t);
+		if(x > 0) return 1;
+		else return 0;
 	}
 
 	@Override
 	public double computeActivation(double x) {
-		return FastMath.tanh(x);
+		if(x > 0) return x;
+		else return 0;
 	}
 
 	@Override
 	public NeuronBehavior getDedicatedInstance() {
-		return new TangensHyperbolicusJafama();
+		return new RectifiedLinear();
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class TangensHyperbolicusJafama implements NeuronBehavior{
 
 	@Override
 	public double getAbsoluteMaximumLocationOfSecondDerivative() {
-		return 0.66;
+		return Double.NaN;
 	}
 	
 }

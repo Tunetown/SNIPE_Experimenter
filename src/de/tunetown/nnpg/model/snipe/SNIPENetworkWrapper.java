@@ -17,6 +17,9 @@ import com.dkriesel.snipe.training.TrainingSampleLesson;
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
+import de.tunetown.nnpg.model.snipe.behaviors.RectifiedLinear;
+import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusACM;
+import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusJafama;
 
 /**
  * Wrapper for SNIPE network.

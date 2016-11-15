@@ -1,6 +1,6 @@
-package de.tunetown.nnpg.model.snipe;
+package de.tunetown.nnpg.model.snipe.behaviors;
 
-import org.apache.commons.math3.util.FastMath;
+import net.jafama.FastMath;
 
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 
@@ -11,7 +11,7 @@ import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
  * @author Thomas Weber
  *
  */
-public class TangensHyperbolicusACM implements NeuronBehavior{
+public class TangensHyperbolicusJafama implements NeuronBehavior{
 
 	@Override
 	public double computeDerivative(double x) {
@@ -26,7 +26,7 @@ public class TangensHyperbolicusACM implements NeuronBehavior{
 
 	@Override
 	public NeuronBehavior getDedicatedInstance() {
-		return new TangensHyperbolicusACM();
+		return new TangensHyperbolicusJafama();
 	}
 
 	@Override
