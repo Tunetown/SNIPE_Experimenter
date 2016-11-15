@@ -16,7 +16,6 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * Application class for neural network experimenter.
  * 
  * - TODO 1 integrate Neuroph
- * - TODO 1 display error topology resize
  * 
  * 
  * *******************************************************
