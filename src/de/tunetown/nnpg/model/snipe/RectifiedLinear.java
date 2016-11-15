@@ -1,7 +1,5 @@
 package de.tunetown.nnpg.model.snipe;
 
-import org.apache.commons.math3.util.FastMath;
-
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 
 
@@ -11,7 +9,7 @@ import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
  * @author Thomas Weber
  *
  */
-public class RectLin implements NeuronBehavior{
+public class RectifiedLinear implements NeuronBehavior{
 
 	@Override
 	public double computeDerivative(double x) {
@@ -27,7 +25,7 @@ public class RectLin implements NeuronBehavior{
 
 	@Override
 	public NeuronBehavior getDedicatedInstance() {
-		return new RectLin();
+		return new RectifiedLinear();
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class RectLin implements NeuronBehavior{
 
 	@Override
 	public double getAbsoluteMaximumLocationOfSecondDerivative() {
-		return 0;
+		return Double.NaN;
 	}
 	
 }

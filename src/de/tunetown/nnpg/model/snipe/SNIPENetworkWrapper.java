@@ -41,7 +41,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			"Tanh (Ang.)", 
 			"TanH (AngLeCun)", 
 			"Tanh (LeCun)", 
-			"RectLin",
+			"ReLU",
             "Fermi", 
             "Identity", 
             "LeakyInt.Lin.", 
@@ -54,11 +54,11 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			new TangensHyperbolicusAnguita(),
 			new TangensHyperbolicusAnguitaLeCun(),
 			new TangensHyperbolicusLeCun(),
-			new RectLin(),
+			new RectifiedLinear(),
 			new Fermi(),
 			new Identity(),
-			new LeakyIntegratorExponential(-1),
-			new LeakyIntegratorLinear(-1)};
+			new LeakyIntegratorExponential(0.1),
+			new LeakyIntegratorLinear(0.1)};
 
 	public SNIPENetworkWrapper() {
 		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY);

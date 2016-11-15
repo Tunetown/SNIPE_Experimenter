@@ -79,6 +79,7 @@ public class DataPanel extends JPanel {
 		repaint();
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		paintGraph(g);
 		paintSamples(g);
@@ -184,7 +185,7 @@ public class DataPanel extends JPanel {
 	 * @return
 	 */
 	private double convertToModel(int in) {
-		return (ModelProperties.DATAPANEL_SAMPLES_RANGE*2 * (double)in / (double)getDimension()) - ModelProperties.DATAPANEL_SAMPLES_RANGE;
+		return (ModelProperties.DATAPANEL_SAMPLES_RANGE*2 * in / getDimension()) - ModelProperties.DATAPANEL_SAMPLES_RANGE;
 	}
 	
 	/**

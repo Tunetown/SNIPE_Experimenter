@@ -58,6 +58,7 @@ public class NeuronPanel extends JComponent {
 	 * @param net
 	 * @param index
 	 */
+	@Override
 	public void paintComponent(Graphics g) {
 		synchronized (main.getNetworkLock()) {
 			updateCoords();

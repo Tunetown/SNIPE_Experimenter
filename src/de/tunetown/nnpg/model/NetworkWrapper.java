@@ -146,6 +146,7 @@ public abstract class NetworkWrapper {
 	 * Returns a clone of the whole network
 	 * 
 	 */
+	@Override
 	public abstract NetworkWrapper clone();
 
 	/**

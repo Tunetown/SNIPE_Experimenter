@@ -71,6 +71,7 @@ public class TopologyPanel extends JPanel {
 		return neurons;
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
