@@ -16,6 +16,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * Application class for neural network experimenter.
  * 
  * - TODO 1 integrate Neuroph
+ * - TODO 2 Separated Act.Fnkt. for Outputs
  * - TODO 2 RELU not working -> fix this?
  * 		-> Also check out the other behaviours
  * 
