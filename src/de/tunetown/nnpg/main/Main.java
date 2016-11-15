@@ -15,15 +15,14 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  * 
- * - TODO 1 integrate Neuroph
+ * - TODO 1 Graph of errors: Reduce data points somehow, so that no growing of runtime occurs
+ * 		- Perhaps cumulate iterations?
  * 
+ * - TODO 2 integrate Neuroph
  * 
  * *******************************************************
  * 
  * - TODO X Multi-dimensional visualization
- * 
- * - TODO X Graph of errors: Reduce data points somehow, so that no growing of runtime occurs
- * 		- Perhaps cumulate iterations?
  * 
  * - TODO X New tool: Grow/Reduce. Area: radius (see slider) 
  * 		- Slider for rate, from 0.5 to 2.
