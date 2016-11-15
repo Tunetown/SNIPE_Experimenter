@@ -13,10 +13,12 @@ import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusAnguitaLeCun;
 import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusLeCun;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
+
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.snipe.behaviors.RectifiedLinear;
+import de.tunetown.nnpg.model.snipe.behaviors.Softplus;
 import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusACM;
 import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusJafama;
 
@@ -44,6 +46,7 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			"TanH (AngLeCun)", 
 			"Tanh (LeCun)", 
 			"ReLU",
+			"Softplus",
             "Fermi", 
             "Identity", 
             "LeakyInt.Lin.", 
@@ -56,7 +59,8 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 			new TangensHyperbolicusAnguita(),
 			new TangensHyperbolicusAnguitaLeCun(),
 			new TangensHyperbolicusLeCun(),
-			new RectifiedLinear(),
+			new RectifiedLinear(0.1),
+			new Softplus(),
 			new Fermi(),
 			new Identity(),
 			new LeakyIntegratorExponential(0.1),

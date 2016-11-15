@@ -1,37 +1,31 @@
 package de.tunetown.nnpg.model.snipe.behaviors;
 
+import net.jafama.FastMath;
+
 import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
 
 
 /**
- * Implements the rectified identity and its derivative.
+ * Implements the softplus behavior
  * 
  * @author Thomas Weber
  *
  */
-public class RectifiedLinear implements NeuronBehavior{
-
-	private double negativeScaling;
-	
-	public RectifiedLinear(double negativeScaling) {
-		this.negativeScaling = negativeScaling;
-	}
+public class Softplus implements NeuronBehavior {
 
 	@Override
 	public double computeDerivative(double x) {
-		if(x > 0) return 1;
-		else return negativeScaling;
+		return 1.0 / ( 1.0 + FastMath.exp(-x) );
 	}
 
 	@Override
 	public double computeActivation(double x) {
-		if(x > 0) return x;
-		else return negativeScaling * x;
+		return FastMath.log(1.0 + FastMath.exp(x));
 	}
 
 	@Override
 	public NeuronBehavior getDedicatedInstance() {
-		return new RectifiedLinear(negativeScaling);
+		return new Softplus();
 	}
 
 	@Override
