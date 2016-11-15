@@ -61,15 +61,13 @@ public class ErrorGraphPanel extends JComponent {
 			double xstep = getWidth() / (double)errors.size();
 			double ystep = getHeight() / Collections.max(errors);
 			
-			for (int i=1; i<errors.size(); i++) {
+			for (int i=1; i<errors.size(); i+=1) {
 				double err = errors.get(i);
 				double errm1 = errors.get(i-1);
 				
 				g.drawLine((int)((i-1)*xstep), getHeight()-(int)(errm1*ystep),
 						(int)(i*xstep), getHeight()-(int)(err*ystep));
 			}
-		} catch (Exception e) {
-			
-		}
+		} catch (Exception e) {}
 	}
 }
