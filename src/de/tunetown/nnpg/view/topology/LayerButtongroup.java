@@ -76,7 +76,7 @@ public class LayerButtongroup extends JPanel {
 		
 		main.getNetwork().removeLayer(layer, true);
 
-		view.update();
+		main.updateView(false, true, false);
 		frame.repaint();
 	}
 
@@ -85,8 +85,7 @@ public class LayerButtongroup extends JPanel {
 		
 		main.getNetwork().addLayer(layer, main.getNetwork().countNeuronsInLayer(layer), true);
 		
-		view.update();
-		view.resetGridSize();
+		main.updateView(true, true, false);
 		frame.repaint();
 	}
 
@@ -98,7 +97,7 @@ public class LayerButtongroup extends JPanel {
 		
 		main.getNetwork().removeNeuron(layer, false);
 		
-		view.update();
+		main.updateView(false, true, false);
 		frame.repaint();
 	}
 
@@ -109,8 +108,7 @@ public class LayerButtongroup extends JPanel {
 		
 		main.getNetwork().addNeuron(layer, false);
 		
-		view.update();
-		view.resetGridSize();
+		main.updateView(true, true, false);
 		frame.repaint();
 	}
 

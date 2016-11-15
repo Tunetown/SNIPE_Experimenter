@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * UI properties (colors, constants etc.)
  * 
- * @author xwebert
+ * @author Thomas Weber
  *
  */
 public class ViewProperties {

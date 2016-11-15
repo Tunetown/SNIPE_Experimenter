@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,6 +28,7 @@ public class StatisticsPanel extends JPanel {
 	private ErrorGraphPanel errorGraph;
 	
 	private JLabel dataSize;
+	private JLabel topology;
 	private JLabel eta;
 	private JLabel batchSize;
 	private JLabel activationFunction;
@@ -51,6 +53,9 @@ public class StatisticsPanel extends JPanel {
 		dataSize = new JLabel();
 		statsR.add(dataSize);
 
+		topology = new JLabel();
+		statsR.add(topology);
+		
 		activationFunction = new JLabel();
 		statsR.add(activationFunction);
 
@@ -90,6 +95,7 @@ public class StatisticsPanel extends JPanel {
 	 */
 	public void update() {
 		synchronized (main.getNetworkLock()) {
+			setTopology(main.getNetwork().getTopology());
 			setEta(main.getNetwork().getEta());
 			setBatchSize(main.getNetwork().getBatchSize());
 			setActivationFunction(main.getNetwork().getBehaviorDescriptions()[main.getNetwork().getBehavior()]);
@@ -100,6 +106,10 @@ public class StatisticsPanel extends JPanel {
 			setProcTime(main.getTracker().getCPUUsage());
 			setSpeed(main.getTracker().getCurrentSpeed());
 		}
+	}
+
+	private void setTopology(int[] t) {
+		topology.setText("Topology: " + Arrays.toString(t));
 	}
 
 	private void setActivationFunction(String string) {
