@@ -2,8 +2,10 @@ package de.tunetown.nnpg.model.neuroph;
 
 import java.util.List;
 
+import org.neuroph.core.Connection;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.Neuron;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
 
@@ -108,19 +110,34 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public boolean isSynapseExistent(int fromNeuron, int toNeuron) {
-		List<Layer> layers = net.getLayers();
-		Layer l1 = null;
-		return false;
+		Neuron n1 = getNeuron(fromNeuron);
+		Neuron n2 = getNeuron(toNeuron);
+		Connection c = n2.getConnectionFrom(n1);
+		return c == null;
+	}
+
+	private Neuron getNeuron(int n) {
+		int layer = getLayerOfNeuron(n);
+		int index = n - getFirstNeuronInLayer(layer);
+		return net.getLayerAt(layer).getNeuronAt(index);
 	}
 
 	@Override
 	public double getWeight(int fromNeuron, int toNeuron) {
-		//if (!net.isSynapseExistent(fromNeuron + 1, toNeuron + 1)) return Double.NaN;
-		return 0; //net.getWeight(fromNeuron + 1,  toNeuron + 1);
+		Neuron n1 = getNeuron(fromNeuron);
+		Neuron n2 = getNeuron(toNeuron);
+		Connection c = n2.getConnectionFrom(n1);
+		if(c != null) return c.getWeight().getValue(); 
+		else return 0;
 	}
 
 	@Override
 	public int getLayerOfNeuron(int num) {
+		int l = 0;
+		for(int i=0; i<net.getLayersCount(); i++) {
+			l += topology[i];
+			if(l >)
+		}
 		return 0;
 	}
 
