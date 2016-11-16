@@ -2,7 +2,6 @@ package org.neuroph.nnet.learning.kmeans;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * This class represents a single cluster, with corresponding centroid and assigned vectors
@@ -92,14 +91,11 @@ public class Cluster {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.centroid);
-        hash = 97 * hash + Objects.hashCode(this.vectors);
+        hash = 97 * hash + this.centroid.hashCode();
+        hash = 97 * hash + this.vectors.hashCode();
         return hash;
     }
 
-    
-    
-    
     /**
      * Assignes vector to this cluster.
      * @param vector vector to assign

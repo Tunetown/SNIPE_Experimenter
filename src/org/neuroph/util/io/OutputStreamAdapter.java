@@ -50,6 +50,8 @@ public class OutputStreamAdapter implements OutputAdapter {
      */
     @Override
     public void writeOutput(double[] output) {
+    	System.out.println("This functionality has been deactivated to be compliant to Java 6");
+    	/*
         try {
             StringBuilder outputLine = new StringBuilder();
             for (int i = 0; i < output.length; i++) {
@@ -60,7 +62,7 @@ public class OutputStreamAdapter implements OutputAdapter {
             bufferedWriter.write(outputLine.toString());
         } catch (IOException ex) {
             throw new NeurophOutputException("Error writing output to stream!", ex);
-        }
+        }*/
     }
 
     /**

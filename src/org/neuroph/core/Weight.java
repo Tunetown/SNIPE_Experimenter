@@ -15,7 +15,7 @@
  */
 package org.neuroph.core;
 
-import java.util.Objects;
+//import java.util.Objects;
 import java.util.Random;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -182,7 +182,7 @@ public class Weight implements java.io.Serializable, Cloneable {
         if (Double.doubleToLongBits(this.weightChange) != Double.doubleToLongBits(other.weightChange)) {
             return false;
         }
-        if (!Objects.equals(this.trainingData, other.trainingData)) {
+        if (!this.trainingData.equals(other.trainingData)) {
             return false;
         }
         return true;

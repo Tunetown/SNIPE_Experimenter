@@ -16,7 +16,7 @@
 package org.neuroph.core;
 
 import java.io.Serializable;
-import java.util.Objects;
+//import java.util.Objects;
 
 /**
  * Weighted connection to another neuron.
@@ -173,9 +173,9 @@ public class Connection implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.fromNeuron);
-        hash = 67 * hash + Objects.hashCode(this.toNeuron);
-        hash = 67 * hash + Objects.hashCode(this.weight);
+        hash = 67 * hash + this.fromNeuron.hashCode();
+        hash = 67 * hash + this.toNeuron.hashCode();
+        hash = 67 * hash + this.weight.hashCode();
         return hash;
     }
 
@@ -191,13 +191,13 @@ public class Connection implements Serializable {
             return false;
         }
         final Connection other = (Connection) obj;
-        if (!Objects.equals(this.fromNeuron, other.fromNeuron)) {
+        if (!this.fromNeuron.equals(other.fromNeuron)) {
             return false;
         }
-        if (!Objects.equals(this.toNeuron, other.toNeuron)) {
+        if (!this.toNeuron.equals(other.toNeuron)) {
             return false;
         }
-        if (!Objects.equals(this.weight, other.weight)) {
+        if (!this.weight.equals(other.weight)) {
             return false;
         }
         return true;

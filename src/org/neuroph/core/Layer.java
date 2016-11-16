@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
+//import java.util.concurrent.ForkJoinPool;
 
 import org.neuroph.core.events.NeuralNetworkEvent;
 import org.neuroph.util.NeuronFactory;

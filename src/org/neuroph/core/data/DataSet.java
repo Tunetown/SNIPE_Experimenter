@@ -291,7 +291,7 @@ public class DataSet implements Serializable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Dataset Label: ").append(label).append(System.lineSeparator());
+        sb.append("Dataset Label: ").append(label).append(System.getProperty("line.separator"));
 
         if (columnNames != null) {
             sb.append("Columns: ");
@@ -299,11 +299,11 @@ public class DataSet implements Serializable {
                 sb.append(columnName).append(", ");
             }
             sb.delete(sb.length() - 2, sb.length() - 1);
-            sb.append(System.lineSeparator());
+            sb.append(System.getProperty("line.separator"));
         }
 
         for (DataSetRow row : rows) {
-            sb.append(row).append(System.lineSeparator());
+            sb.append(row).append(System.getProperty("line.separator"));
         }
 
         return sb.toString();
@@ -322,13 +322,13 @@ public class DataSet implements Serializable {
                 sb.append(columnName).append(", ");
             }
             sb.delete(sb.length() - 2, sb.length() - 1);
-            sb.append(System.lineSeparator());
+            sb.append(System.getProperty("line.separator"));
         }
 
         // promeniti
         for (DataSetRow row : rows) {
             sb.append(row.toCSV()); // nije dobro jer lepi input i desired output; treba bez toga mozda dodati u toCSV
-            sb.append(System.lineSeparator());
+            sb.append(System.getProperty("line.separator"));
         }
 
         return sb.toString();

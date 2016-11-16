@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="libext/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="lib" path="libext/jafama.jar"/>
-	<classpathentry kind="lib" path="/Users/tweber/git/SNIPE_Experimenter/libext/slf4j-api-1.7.5.jar"/>
 	<classpathentry kind="lib" path="libext/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="libext/slf4j-api-1.7.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

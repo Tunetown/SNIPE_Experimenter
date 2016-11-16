@@ -22,7 +22,6 @@ package org.neuroph.core.events;
  * 
  * @author Zoran Sevarac <sevarac@gmail.com>
  */
-@FunctionalInterface
 public interface LearningEventListener extends  java.util.EventListener {
     
     /**

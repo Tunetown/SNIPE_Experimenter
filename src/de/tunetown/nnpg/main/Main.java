@@ -19,7 +19,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO 1 integrate DL4J
  * 
  * - TODO Add line in error graph at the point of overfitting 
- * 		-> See deep learning book
+ * 		-> See deep learning book 
+ * 			-> Early stopping
  * 
  * *******************************************************
  * 
