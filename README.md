@@ -39,4 +39,4 @@ The repository contains a full, self-contained Eclipse project (created with Ecl
 
 ## Release Status
 
-Version 0.1: The program is experimental.   
+Version 0.1: The program is experimental, and currently under development. It is NOT guaranteed that the current master is without errors and runnable.   
