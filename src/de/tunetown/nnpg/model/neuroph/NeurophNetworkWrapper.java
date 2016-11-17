@@ -26,7 +26,6 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
 	private NeuralNetwork net;
-	private int[] topology;
 	
 	private int behavior = 0;
 	/*
@@ -75,7 +74,6 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 		
 	private void createNetwork(int[] topology, double initialRange, int behavior) {
-		this.topology = topology;
 		net = new MultiLayerPerceptron(2,10,1); // TODO
 		
 		/*
@@ -92,20 +90,20 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public int countNeurons() { // TODO put to networkwrapper?
+	public int countNeurons() { 
 		int ret = 0;
-		for(int i=0; i<topology.length; i++) ret += topology[i];
+		for(int i=0; i<net.getLayersCount(); i++) ret += net.getLayerAt(i).getNeuronsCount();
 		return ret;
 	}
 
 	@Override
 	public int countLayers() {
-		return topology.length; // TODO put to networkwrapper?
+		return net.getLayersCount(); 
 	}
 
 	@Override
 	public int countNeuronsInLayer(int layer) { // TODO put to networkwrapper?
-		return topology[layer];
+		return net.getLayerAt(layer).getNeuronsCount();
 	}
 
 	@Override
@@ -135,26 +133,35 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	public int getLayerOfNeuron(int num) {
 		int l = 0;
 		for(int i=0; i<net.getLayersCount(); i++) {
-			l += topology[i];
-			if(l >)
+			l += net.getLayerAt(i).getNeuronsCount();
+			if(num < l) {
+				return i;
+			}
 		}
-		return 0;
+		return -1; // Error
 	}
 
 	@Override
 	public int getFirstNeuronInLayer(int layer) {
-		return 0;
+		int l = 0;
+		for(int i=0; i<layer; i++) {
+			l += net.getLayerAt(i).getNeuronsCount();
+		}
+		return l;
 	}
 
 	@Override
 	public double[] propagate(double[] in) {
-		return new double[1]; //net.propagate(in);
+		net.setInput(in);
+		net.calculate();
+		return net.getOutput();
 	}
 
 	@Override
 	public void train(DataWrapper data) {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
+		
 		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETrainingLesson();
 		//net.trainBackpropagationOfError(lesson, batchSize, eta);
 	}
