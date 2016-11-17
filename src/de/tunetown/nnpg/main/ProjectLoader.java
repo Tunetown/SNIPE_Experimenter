@@ -45,7 +45,6 @@ public class ProjectLoader {
 	 * 
 	 */
 	public void loadFromFile(File file) {
-		if (1==1) return; // TODO
 		System.out.println("Loading network project from " + file);
 		ParamFile vars = null;
 		try {

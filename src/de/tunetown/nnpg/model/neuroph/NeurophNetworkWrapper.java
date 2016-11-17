@@ -8,6 +8,8 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.learning.IterativeLearning;
+import org.neuroph.core.learning.error.ErrorFunction;
+import org.neuroph.core.learning.error.MeanSquaredError;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
@@ -17,7 +19,7 @@ import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 
 /**
- * Wrapper for Neuroph network. (TODO: To Implement...)
+ * Wrapper for Neuroph network.
  * 
  * @author Thomas Weber
  *
@@ -79,7 +81,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		
 	@SuppressWarnings("unchecked")
 	private void createNetwork(int[] topology, double initialRange, int behavior) {
-		net = new MultiLayerPerceptron(topology); // TODO
+		net = new MultiLayerPerceptron(topology);
 		net.setLearningRule(new BackPropagation());
 		/*
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
@@ -98,7 +100,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	public int countNeurons() { 
 		int ret = 0;
 		for(int i=0; i<net.getLayersCount(); i++) {
-			ret += net.getLayerAt(i).getNeuronsCount() - getBiasNeuronsInLayer(i); 
+			ret += countNeuronsInLayer(i); 
 		}
 		return ret;
 	}
@@ -118,7 +120,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		Neuron n1 = getNeuron(fromNeuron);
 		Neuron n2 = getNeuron(toNeuron);
 		Connection c = n2.getConnectionFrom(n1);
-		return c == null;
+		return (c != null);
 	}
 
 	private Neuron getNeuron(int n) {
@@ -133,7 +135,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		Neuron n2 = getNeuron(toNeuron);
 		Connection c = n2.getConnectionFrom(n1);
 		if(c != null) return c.getWeight().getValue(); 
-		else return 0;
+		else return Double.NaN;
 	}
 
 	@Override
@@ -172,23 +174,23 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 		BackPropagation p = (BackPropagation)net.getLearningRule();
 		p.setLearningRate(eta);
-		// TODO batch size
+		// TODO batch size?
 
 		IterativeLearning rule = (IterativeLearning)net.getLearningRule();
 		rule.doLearningEpoch(trainingSet);
-
-		//net.trainBackpropagationOfError(lesson, batchSize, eta);
 	}
 
 	@Override
 	public double getTrainingError(DataWrapper data) {
-		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETrainingLesson();
-		//if (lesson == null || lesson.countSamples() == 0) return 0;
-		return 0; //ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
+		BackPropagation p = (BackPropagation)net.getLearningRule();
+		ErrorFunction f = p.getErrorFunction();
+		return f.getTotalError();
 	}
 
 	@Override
 	public double getTestError(DataWrapper data) {
+		//MeanSquaredError e = new MeanSquaredError();
+		//e.calculatePatternError(predictedOutput, targetOutput)
 		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETestLesson();
 		//if (lesson == null || lesson.countSamples() == 0) return 0;
 		return 0; //ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);

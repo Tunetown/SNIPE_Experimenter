@@ -2,11 +2,13 @@ package de.tunetown.nnpg.model.neuroph;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
-import org.neuroph.util.data.sample.SubSampling;
+
 import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.neuroph.bugfixes.SubSamplingFixed;
 
 /**
  * Wrapper for Neuroph training data (TODO: To Implement...)
@@ -51,7 +53,7 @@ public class NeurophDataWrapper extends DataWrapper{
 		}
 		
 		DataSet ds = new DataSet(2, 1);
-		for(int n=0; n<in.length; n++) {
+		for(int n=0; n<nin.length; n++) {
 			ds.addRow(nin[n], nteach[n]);
 		}
 		setLesson(ds);	
@@ -93,7 +95,7 @@ public class NeurophDataWrapper extends DataWrapper{
 		
 		if (nin.length > 0) {
 			DataSet ds = new DataSet(2, 1);
-			for(int n=0; n<in.length; n++) {
+			for(int n=0; n<nin.length; n++) {
 				ds.addRow(nin[n], nteach[n]);
 			}
 			setLesson(ds);	
@@ -128,7 +130,8 @@ public class NeurophDataWrapper extends DataWrapper{
 		}
 		
 		// More than 10 samples: Split lesson into training and test data
-		List<DataSet> split = lesson.sample(new SubSampling(2));
+		List<DataSet> split = lesson.sample(new SubSamplingFixed(2));
+		System.out.println(split.get(0).size() + " " + split.get(1).size());
 		
 		trainingLesson = split.get(0);
 		testLesson = split.get(1);

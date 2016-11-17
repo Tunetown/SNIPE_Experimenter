@@ -32,8 +32,8 @@ public class SynapsePainter {
 	public void paint(Graphics g) {
 		synchronized (main.getNetworkLock()) {
 			for(int n = 0; n<targetPanel.getNeurons().length; n++) {
-				for(int n2 = 1; n2<targetPanel.getNeurons().length; n2++) {
-					if (main.getNetwork().isSynapseExistent(n, n2)) {
+				for(int n2 = 0; n2<targetPanel.getNeurons().length; n2++) {
+					if (n != n2 && main.getNetwork().isSynapseExistent(n, n2)) {
 						paintSynapse(g, n, n2);
 					}
 				}
