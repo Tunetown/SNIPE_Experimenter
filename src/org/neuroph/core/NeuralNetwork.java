@@ -240,7 +240,7 @@ public class NeuralNetwork<L extends LearningRule> implements Serializable {
      */
     public void setInput(double... inputVector) throws VectorSizeMismatchException {
         if (inputVector.length != inputNeurons.size()) {
-            throw new VectorSizeMismatchException("Input vector size does not match network input dimension!");
+            throw new VectorSizeMismatchException("Input vector size (" + inputVector.length + ") does not match network input dimension (" + inputNeurons.size() + ")!");
         }
 
         // TODO: Make this more elegant

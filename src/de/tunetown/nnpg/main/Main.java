@@ -1,13 +1,15 @@
 package de.tunetown.nnpg.main;
 
 import java.io.File;
+
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
-import de.tunetown.nnpg.model.snipe.SNIPEDataWrapper;
-import de.tunetown.nnpg.model.snipe.SNIPENetworkWrapper;
+import de.tunetown.nnpg.model.neuroph.NeurophDataWrapper;
+import de.tunetown.nnpg.model.neuroph.NeurophNetworkWrapper;
 import de.tunetown.nnpg.view.MainFrame;
 import de.tunetown.nnpg.view.Menu;
 import de.tunetown.nnpg.view.TrainingWorker;
@@ -91,7 +93,7 @@ public class Main {
 	 */
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
-		data = new SNIPEDataWrapper();
+		data = new NeurophDataWrapper();
 		dataLoader = new ProjectLoader(this);
 		
 		// Initialize the network, tracker and data instances
@@ -120,13 +122,13 @@ public class Main {
 		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
 		if (net == null) {
-			setNetwork(new SNIPENetworkWrapper());
+			setNetwork(new NeurophNetworkWrapper());
 		} else {
 			eta = net.getEta();
 			batchSize = net.getBatchSize();
 			behavior = net.getBehavior();
 
-			setNetwork(new SNIPENetworkWrapper(net.getTopology()));
+			setNetwork(new NeurophNetworkWrapper(net.getTopology()));
 
 			net.setEta(eta);
 			net.setBatchSize(batchSize);

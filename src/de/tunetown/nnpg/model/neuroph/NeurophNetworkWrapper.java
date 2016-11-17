@@ -9,7 +9,7 @@ import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.learning.IterativeLearning;
 import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.nnet.Perceptron;
+import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
 
 import de.tunetown.nnpg.model.DataWrapper;
@@ -28,6 +28,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE;
 	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
 
+	@SuppressWarnings("rawtypes")
 	private NeuralNetwork net;
 	
 	private int behavior = 0;
@@ -96,7 +97,9 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	@Override
 	public int countNeurons() { 
 		int ret = 0;
-		for(int i=0; i<net.getLayersCount(); i++) ret += net.getLayerAt(i).getNeuronsCount();
+		for(int i=0; i<net.getLayersCount(); i++) {
+			ret += net.getLayerAt(i).getNeuronsCount() - getBiasNeuronsInLayer(i); 
+		}
 		return ret;
 	}
 
@@ -106,8 +109,8 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public int countNeuronsInLayer(int layer) { // TODO put to networkwrapper?
-		return net.getLayerAt(layer).getNeuronsCount();
+	public int countNeuronsInLayer(int layer) { 
+		return net.getLayerAt(layer).getNeuronsCount() - getBiasNeuronsInLayer(layer); 
 	}
 
 	@Override
@@ -137,7 +140,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	public int getLayerOfNeuron(int num) {
 		int l = 0;
 		for(int i=0; i<net.getLayersCount(); i++) {
-			l += net.getLayerAt(i).getNeuronsCount();
+			l += net.getLayerAt(i).getNeuronsCount() - getBiasNeuronsInLayer(i);
 			if(num < l) {
 				return i;
 			}
@@ -149,7 +152,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	public int getFirstNeuronInLayer(int layer) {
 		int l = 0;
 		for(int i=0; i<layer; i++) {
-			l += net.getLayerAt(i).getNeuronsCount();
+			l += net.getLayerAt(i).getNeuronsCount() - getBiasNeuronsInLayer(i);
 		}
 		return l;
 	}
@@ -222,9 +225,17 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		List<Layer> layers = net.getLayers();
 		int[] ret = new int[layers.size()];
 		for(int i=0; i<layers.size(); i++) {
-			ret[i] = net.getLayerAt(i).getNeuronsCount();
+			ret[i] = net.getLayerAt(i).getNeuronsCount() - getBiasNeuronsInLayer(i);
 		}
 		return ret; 
+	}
+
+	private int getBiasNeuronsInLayer(int layer) {
+		int ret = 0;
+		for(int i=0; i<net.getLayerAt(layer).getNeuronsCount(); i++) {
+			if (net.getLayerAt(layer).getNeuronAt(i) instanceof BiasNeuron) ret++;
+		}
+		return ret;
 	}
 
 	@Override
@@ -256,7 +267,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	 */
 	@Override
 	public void addLayer(int position, int neurons, boolean reset) {
-		/*
+		/* TODO
 		if (position >= net.countLayers()) return;
 		
 		int[] t = net.getDescriptor().getNeuronsPerLayer();
@@ -282,7 +293,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	 */
 	@Override
 	public void removeLayer(int layer, boolean reset) {
-		/*
+		/* TODO
 		if (layer >= net.countLayers()) return;
 		
 		int[] t = net.getDescriptor().getNeuronsPerLayer();
@@ -303,7 +314,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public void addNeuron(int layer, boolean reset) {
-		/*
+		/* TODO
 		int[] t = net.getDescriptor().getNeuronsPerLayer();
 		if (layer >= t.length || layer < 0) return;
 		t[layer]++;
@@ -313,7 +324,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public void removeNeuron(int layer, boolean reset) {
-		/*
+		/* TODO
 		int[] t = net.getDescriptor().getNeuronsPerLayer();
 		if (layer >= t.length || layer < 0) return;
 		if (t[layer] < 2) return;
@@ -324,7 +335,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public void setBehavior(int i) {
-		/*
+		/* TODO
 		if (i < 0 || i >= behaviors.length) return;
 		if (i == behavior) return;
 		behavior = i;
@@ -334,12 +345,12 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public String[] getBehaviorDescriptions() {
-		return null; //behaviorDescriptions;
+		return new String[1]; //behaviorDescriptions; TODO
 	}
 
 	@Override
 	public int getBehavior() {
-		return 0; //behavior;
+		return 0; //behavior; TODO
 	}
 
 	@Override

@@ -2,10 +2,9 @@ package de.tunetown.nnpg.model.neuroph;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.neuroph.util.data.sample.SubSampling;
-
 import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 
@@ -157,8 +156,18 @@ public class NeurophDataWrapper extends DataWrapper{
 	}
 
 	private DataContainer getContainerFromTrainingLesson(DataSet lesson) {
-		if (lesson == null) return null;
-		return new DataContainer(lesson.getInputs(), lesson.getDesiredOutputs());
+		if (lesson == null || lesson.size() == 0) return null;
+		
+		double[][] in = new double[lesson.size()][2];
+		double[][] out = new double[lesson.size()][1];
+		
+		for(int i=0; i<lesson.size(); i++) {
+			DataSetRow row = lesson.getRowAt(i);
+			in[i] = row.getInput();
+			out[i] = row.getDesiredOutput();
+		}
+		
+		return new DataContainer(in, out);
 	}
 
 	@Override
@@ -173,13 +182,26 @@ public class NeurophDataWrapper extends DataWrapper{
 			setLesson(null);
 			return;
 		}
-		setLesson(new TrainingSampleLesson(c.getInputs(), c.getDesiredOutputs()));
+		
+		DataSet ds = new DataSet(2, 1);
+		for(int n=0; n<c.size(); n++) {
+			ds.addRow(c.getInputs()[n], c.getDesiredOutputs()[n]);
+		}
+		setLesson(ds);
 	}
 
 	@Override
 	public void resplitData() {
 		if (!hasData()) return;
-		setLesson(new TrainingSampleLesson(getMergedInputs(), getMergedDesiredOutputs()));
+
+		setFromCompleteDataContainer(new DataContainer(getMergedInputs(), getMergedDesiredOutputs()));
 	}
 
+	public DataSet getNeurophTrainingLesson() {
+		return trainingLesson;
+	}
+
+	public DataSet getNeurophTestLesson() {
+		return testLesson;
+	}
 }
