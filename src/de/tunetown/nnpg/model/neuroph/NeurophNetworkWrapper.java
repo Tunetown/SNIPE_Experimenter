@@ -6,8 +6,11 @@ import org.neuroph.core.Connection;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.learning.IterativeLearning;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.Perceptron;
+import org.neuroph.nnet.learning.BackPropagation;
 
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
@@ -64,18 +67,19 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	
 	public NeurophNetworkWrapper(int[] topology, double initialRange, int behavior) {
 		this.behavior = behavior;
-		//this.initialRange = initialRange; // TODO
+		//this.initialRange = initialRange; 
 		createNetwork(topology, initialRange, behavior);
 	}
 
 	@Override
 	public void createNetwork(int[] topology) {
-		createNetwork(topology, initialRange, behavior); // TODO
+		createNetwork(topology, initialRange, behavior); 
 	}
 		
+	@SuppressWarnings("unchecked")
 	private void createNetwork(int[] topology, double initialRange, int behavior) {
-		net = new MultiLayerPerceptron(2,10,1); // TODO
-		
+		net = new MultiLayerPerceptron(topology); // TODO
+		net.setLearningRule(new BackPropagation());
 		/*
 		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
 		desc.setSettingsTopologyFeedForward();
@@ -161,8 +165,15 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	public void train(DataWrapper data) {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
-		
-		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETrainingLesson();
+		DataSet trainingSet = ((NeurophDataWrapper)data).getNeurophTrainingLesson();
+
+		BackPropagation p = (BackPropagation)net.getLearningRule();
+		p.setLearningRate(eta);
+		// TODO batch size
+
+		IterativeLearning rule = (IterativeLearning)net.getLearningRule();
+		rule.doLearningEpoch(trainingSet);
+
 		//net.trainBackpropagationOfError(lesson, batchSize, eta);
 	}
 
@@ -182,8 +193,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getBiasWeight(int num) {
-		//if (!net.isSynapseExistent(0, num + 1)) return Double.NaN;
-		return 0; //net.getWeight(0, num + 1);
+		return Double.NaN; // TODO
 	}
 
 	@Override
@@ -208,7 +218,13 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public int[] getTopology() {
-		return new int[1]; //net.getDescriptor().getNeuronsPerLayer();
+		@SuppressWarnings("unchecked")
+		List<Layer> layers = net.getLayers();
+		int[] ret = new int[layers.size()];
+		for(int i=0; i<layers.size(); i++) {
+			ret[i] = net.getLayerAt(i).getNeuronsCount();
+		}
+		return ret; 
 	}
 
 	@Override
@@ -222,10 +238,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public NetworkWrapper clone() {
-		//NeurophNetworkWrapper ret = new NeurophNetworkWrapper(net.getDescriptor().getNeuronsPerLayer(), initialRange, behavior);
-		//ret.net = net.clone();
-		//ret.setParametersFrom(this);
-		return null; //ret;
+		return this;
 	}
 
 	@Override

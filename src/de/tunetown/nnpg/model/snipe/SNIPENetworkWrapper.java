@@ -31,10 +31,9 @@ import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusJafama;
 public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private double eta = ModelProperties.NETWORK_DEFAULT_ETA;
-	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE;
-	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE;
-
-	private int behavior = 0;
+	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE; 
+	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE; // TODO remove
+	private int behavior = 0; 
 
 	private NeuralNetwork net;
 	

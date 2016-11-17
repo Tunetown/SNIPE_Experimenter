@@ -18,6 +18,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO 1 integrate Neuroph
  * - TODO 1 integrate DL4J
  * 
+ * - TODO 2 In the NN wrapper classes, use as few attributes as possible. Derive everything from the network itself!
+ * 
  * - TODO Add line in error graph at the point of overfitting 
  * 		-> See deep learning book 
  * 			-> Early stopping
