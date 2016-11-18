@@ -97,7 +97,7 @@ public class StatisticsPanel extends JPanel {
 		synchronized (main.getNetworkLock()) {
 			setTopology(main.getNetwork().getTopology());
 			setEta(main.getNetwork().getEta());
-			setBatchSize(main.getNetwork().getBatchSize());
+			setBatchSize(main.getNetwork().getOutputBatchSize());
 			setActivationFunction(main.getNetwork().getBehaviorDescriptions()[main.getNetwork().getBehavior()]);
 			setDataSize(main.getData().getNumOfSamples(false) + main.getData().getNumOfSamples(true));
 			setIteration(main.getTracker().getIterations());

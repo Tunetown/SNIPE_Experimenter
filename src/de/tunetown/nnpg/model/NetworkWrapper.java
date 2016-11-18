@@ -285,5 +285,11 @@ public abstract class NetworkWrapper {
 	 * @return
 	 */
 	public abstract double getInitialRange();
-	
+
+	/**
+	 * Returns the really used batch size
+	 * 
+	 * @return
+	 */
+	public abstract int getOutputBatchSize();
 }

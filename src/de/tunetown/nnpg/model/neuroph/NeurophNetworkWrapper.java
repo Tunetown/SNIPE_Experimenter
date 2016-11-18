@@ -12,13 +12,11 @@ import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.input.WeightedSum;
-import org.neuroph.core.learning.IterativeLearning;
 import org.neuroph.core.learning.error.ErrorFunction;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.util.NeuronProperties;
-import org.neuroph.util.TransferFunctionType;
 import org.neuroph.util.random.RangeRandomizer;
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
@@ -39,31 +37,22 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	@SuppressWarnings("rawtypes")
 	private NeuralNetwork net;
 	
+	private int realBatchSize;
+	
 	private int behavior = 0;
 
-	private String[] behaviorDescriptions = { 
-			"Linear", 
-			"Ramp",
-			"Step",
-			"Sigmoid", 
-			"Tanh", 
-			"Gaussian", 
-            "Trapezoid", 
-            "Sgn", 
-            "Sin", 
-            "Log" };
-	
-	private TransferFunctionType[] behaviors = { 
-			TransferFunctionType.LINEAR,
-			TransferFunctionType.RAMP,
-			TransferFunctionType.STEP,
-			TransferFunctionType.SIGMOID,
-			TransferFunctionType.TANH,
-			TransferFunctionType.GAUSSIAN,
-			TransferFunctionType.TRAPEZOID,
-			TransferFunctionType.SGN,
-			TransferFunctionType.SIN,
-			TransferFunctionType.LOG };
+	private TransferFunctionTypeExt[] behaviors = { 
+			TransferFunctionTypeExt.LINEAR,
+			TransferFunctionTypeExt.RAMP,
+			TransferFunctionTypeExt.STEP,
+			TransferFunctionTypeExt.SIGMOID,
+			TransferFunctionTypeExt.TANH,
+			TransferFunctionTypeExt.TANH_JAFAMA,
+			TransferFunctionTypeExt.GAUSSIAN,
+			TransferFunctionTypeExt.TRAPEZOID,
+			TransferFunctionTypeExt.SGN,
+			TransferFunctionTypeExt.SIN,
+			TransferFunctionTypeExt.LOG };
 
 	public NeurophNetworkWrapper() {
 		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY);
@@ -88,7 +77,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 		NeuronProperties neuronProperties = new NeuronProperties();
         neuronProperties.setProperty("useBias", true);
-        neuronProperties.setProperty("transferFunction", behaviors[behavior]);
+        neuronProperties.setProperty("transferFunction", behaviors[behavior].getTypeClass());
         neuronProperties.setProperty("inputFunction", WeightedSum.class);
 
         List<Integer> neuronsInLayersVector = new ArrayList<Integer>();
@@ -179,10 +168,14 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 		BackPropagation p = (BackPropagation)net.getLearningRule();
 		p.setLearningRate(eta);
-		// TODO batch size?
-
-		IterativeLearning rule = (IterativeLearning)net.getLearningRule();
-		rule.doLearningEpoch(trainingSet);
+		
+		int runs = this.batchSize / data.getNumOfSamples(true);
+		
+		realBatchSize = 0;
+		for(int run=0; run<runs; run++) {
+			p.doLearningEpoch(trainingSet);
+			realBatchSize += trainingSet.size();
+		}
 	}
 
 	@Override
@@ -203,7 +196,26 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getBiasWeight(int num) {
-		return Double.NaN; // TODO
+		Neuron n1 = getBiasNeuron(num);
+		Neuron n2 = getNeuron(num);
+		Connection c = n2.getConnectionFrom(n1);
+		if(c != null) return c.getWeight().getValue(); 
+		else return Double.NaN;
+	}
+
+	/**
+	 * Returns the bias neuron instance for the given neuron
+	 * 
+	 * @param num
+	 * @return
+	 */
+	private Neuron getBiasNeuron(int num) {
+		Neuron n = this.getNeuron(num);
+		for(int i=0; i<n.getInputConnections().size(); i++) {
+			Neuron r = n.getInputConnections().get(i).getFromNeuron();
+			if (r instanceof BiasNeuron) return r;
+		}
+		return null;
 	}
 
 	@Override
@@ -219,6 +231,11 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	@Override
 	public int getBatchSize() {
 		return batchSize;
+	}
+
+	@Override
+	public int getOutputBatchSize() {
+		return realBatchSize;
 	}
 
 	@Override
@@ -298,7 +315,11 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public String[] getBehaviorDescriptions() {
-		return behaviorDescriptions; 
+		String[] ret = new String[behaviors.length];
+		for(int i=0; i<behaviors.length; i++) {
+			ret[i] = behaviors[i].getTypeLabel();
+		}
+		return ret; 
 	}
 
 	@Override

@@ -244,5 +244,10 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	public double getInitialRange() {
 		return initialRange;
 	}
+
+	@Override
+	public int getOutputBatchSize() {
+		return batchSize;
+	}
 }
 

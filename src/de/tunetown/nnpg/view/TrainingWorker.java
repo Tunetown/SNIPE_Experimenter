@@ -52,7 +52,7 @@ public class TrainingWorker extends SwingWorker {
 							clone.getTrainingError(main.getData()), 
 							clone.getTestError(main.getData()),
 							System.nanoTime() - start,
-							clone.getBatchSize());
+							clone.getOutputBatchSize());
 				
 					// Set the trained clone "productive"
 					synchronized (main.getNetworkLock()) {
