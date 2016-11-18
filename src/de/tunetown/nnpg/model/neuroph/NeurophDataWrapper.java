@@ -131,7 +131,6 @@ public class NeurophDataWrapper extends DataWrapper{
 		
 		// More than 10 samples: Split lesson into training and test data
 		List<DataSet> split = lesson.sample(new SubSamplingFixed(2));
-		System.out.println(split.get(0).size() + " " + split.get(1).size());
 		
 		trainingLesson = split.get(0);
 		testLesson = split.get(1);
