@@ -2,16 +2,14 @@ package de.tunetown.nnpg.model.neuroph;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.data.DataSetRow;
-
 import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.neuroph.bugfixes.SubSamplingFixed;
 
 /**
- * Wrapper for Neuroph training data (TODO: To Implement...)
+ * Wrapper for Neuroph training data 
  * 
  * @author Thomas Weber
  *

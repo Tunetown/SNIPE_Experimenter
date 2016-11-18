@@ -1,19 +1,25 @@
 package de.tunetown.nnpg.model.neuroph;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
-
 import org.neuroph.core.Connection;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
+import org.neuroph.core.input.WeightedSum;
 import org.neuroph.core.learning.IterativeLearning;
 import org.neuroph.core.learning.error.ErrorFunction;
-import org.neuroph.core.learning.error.MeanSquaredError;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
-
+import org.neuroph.util.NeuronProperties;
+import org.neuroph.util.TransferFunctionType;
+import org.neuroph.util.random.RangeRandomizer;
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
@@ -34,32 +40,31 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	private NeuralNetwork net;
 	
 	private int behavior = 0;
-	/*
-	
+
 	private String[] behaviorDescriptions = { 
-			"TanH", 
-			"TanH (ACM)",
-			"TanH (Jafama)",
-			"Tanh (Ang.)", 
-			"TanH (AngLeCun)", 
-			"Tanh (LeCun)", 
-            "Fermi", 
-            "Identity", 
-            "LeakyInt.Lin.", 
-            "LeakyInt.Exp." };
+			"Linear", 
+			"Ramp",
+			"Step",
+			"Sigmoid", 
+			"Tanh", 
+			"Gaussian", 
+            "Trapezoid", 
+            "Sgn", 
+            "Sin", 
+            "Log" };
 	
-	private NeuronBehavior[] behaviors = { 
-			new TangensHyperbolicus(),
-			new TangensHyperbolicusACM(),
-			new TangensHyperbolicusJafama(),
-			new TangensHyperbolicusAnguita(),
-			new TangensHyperbolicusAnguitaLeCun(),
-			new TangensHyperbolicusLeCun(),
-			new Fermi(),
-			new Identity(),
-			new LeakyIntegratorExponential(-1),
-			new LeakyIntegratorLinear(-1)};
-*/
+	private TransferFunctionType[] behaviors = { 
+			TransferFunctionType.LINEAR,
+			TransferFunctionType.RAMP,
+			TransferFunctionType.STEP,
+			TransferFunctionType.SIGMOID,
+			TransferFunctionType.TANH,
+			TransferFunctionType.GAUSSIAN,
+			TransferFunctionType.TRAPEZOID,
+			TransferFunctionType.SGN,
+			TransferFunctionType.SIN,
+			TransferFunctionType.LOG };
+
 	public NeurophNetworkWrapper() {
 		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY);
 	}
@@ -69,31 +74,31 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 	
 	public NeurophNetworkWrapper(int[] topology, double initialRange, int behavior) {
-		this.behavior = behavior;
-		//this.initialRange = initialRange; 
 		createNetwork(topology, initialRange, behavior);
 	}
 
-	@Override
 	public void createNetwork(int[] topology) {
 		createNetwork(topology, initialRange, behavior); 
 	}
 		
 	@SuppressWarnings("unchecked")
-	private void createNetwork(int[] topology, double initialRange, int behavior) {
-		net = new MultiLayerPerceptron(topology);
-		net.setLearningRule(new BackPropagation());
-		/*
-		NeuralNetworkDescriptor desc = new NeuralNetworkDescriptor(topology);
-		desc.setSettingsTopologyFeedForward();
-		desc.setSynapseInitialRange(initialRange);
-		
-		desc.setNeuronBehaviorInputNeurons(new Identity());
-		desc.setNeuronBehaviorHiddenNeurons(behaviors[behavior]);
-		desc.setNeuronBehaviorOutputNeurons(behaviors[behavior]);
+	private void createNetwork(int[] neuronsInLayers, double initialRange, int behavior) {
+		this.behavior = behavior;
+		this.initialRange = initialRange;
 
-		net = new NeuralNetwork(desc);
-		*/
+		NeuronProperties neuronProperties = new NeuronProperties();
+        neuronProperties.setProperty("useBias", true);
+        neuronProperties.setProperty("transferFunction", behaviors[behavior]);
+        neuronProperties.setProperty("inputFunction", WeightedSum.class);
+
+        List<Integer> neuronsInLayersVector = new ArrayList<Integer>();
+        for (int i = 0; i < neuronsInLayers.length; i++) {
+            neuronsInLayersVector.add(Integer.valueOf(neuronsInLayers[i]));
+        } 
+		
+		net = new MultiLayerPerceptron(neuronsInLayersVector, neuronProperties);
+		net.setLearningRule(new BackPropagation());
+		net.randomizeWeights(new RangeRandomizer(-this.initialRange, this.initialRange));
 	}
 
 	@Override
@@ -189,7 +194,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getTestError(DataWrapper data) {
-		//MeanSquaredError e = new MeanSquaredError();
+		//MeanSquaredError e = new MeanSquaredError(); TODO
 		//e.calculatePatternError(predictedOutput, targetOutput)
 		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETestLesson();
 		//if (lesson == null || lesson.countSamples() == 0) return 0;
@@ -249,9 +254,28 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		return max;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public NetworkWrapper clone() {
-		return this;
+		NeurophNetworkWrapper ret = new NeurophNetworkWrapper(this.getTopology(), initialRange, behavior);
+
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos;
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(this.net);
+	
+			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+			ObjectInputStream ois = new ObjectInputStream(bais);
+			ret.net = (NeuralNetwork)ois.readObject();
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		ret.setParametersFrom(this);
+		return ret;
 	}
 
 	@Override
@@ -264,95 +288,22 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		setInitialRange(n.getInitialRange());
 	}
 
-	/**
-	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
-	 */
-	@Override
-	public void addLayer(int position, int neurons, boolean reset) {
-		/* TODO
-		if (position >= net.countLayers()) return;
-		
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		int[] nt = new int[t.length + 1];
-		
-		int nn = 0;
-		for(int i=0; i<position; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		nt[nn] = neurons;
-		nn++;
-		for(int i=position; i<t.length; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		createNetwork(nt);
-		*/
-	}
-
-	/**
-	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
-	 */
-	@Override
-	public void removeLayer(int layer, boolean reset) {
-		/* TODO
-		if (layer >= net.countLayers()) return;
-		
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		int[] nt = new int[t.length - 1];
-		
-		int nn = 0;
-		for(int i=0; i<layer; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		for(int i=layer+1; i<t.length; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		createNetwork(nt);
-		*/
-	}
-
-	@Override
-	public void addNeuron(int layer, boolean reset) {
-		/* TODO
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		if (layer >= t.length || layer < 0) return;
-		t[layer]++;
-		createNetwork(t);
-		*/
-	}
-
-	@Override
-	public void removeNeuron(int layer, boolean reset) {
-		/* TODO
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		if (layer >= t.length || layer < 0) return;
-		if (t[layer] < 2) return;
-		t[layer]--;
-		createNetwork(t);
-		*/
-	}
-
 	@Override
 	public void setBehavior(int i) {
-		/* TODO
 		if (i < 0 || i >= behaviors.length) return;
 		if (i == behavior) return;
 		behavior = i;
-		createNetwork();
-		*/
+		createNetwork(this.getTopology());
 	}
 
 	@Override
 	public String[] getBehaviorDescriptions() {
-		return new String[1]; //behaviorDescriptions; TODO
+		return behaviorDescriptions; 
 	}
 
 	@Override
 	public int getBehavior() {
-		return 0; //behavior; TODO
+		return behavior; 
 	}
 
 	@Override

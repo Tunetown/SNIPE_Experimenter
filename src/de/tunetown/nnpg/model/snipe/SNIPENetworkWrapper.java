@@ -217,69 +217,6 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 		setInitialRange(n.getInitialRange());
 	}
 
-	/**
-	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
-	 */
-	@Override
-	public void addLayer(int position, int neurons, boolean reset) {
-		if (position >= net.countLayers()) return;
-		
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		int[] nt = new int[t.length + 1];
-		
-		int nn = 0;
-		for(int i=0; i<position; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		nt[nn] = neurons;
-		nn++;
-		for(int i=position; i<t.length; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		createNetwork(nt);
-	}
-
-	/**
-	 * NOTE: For SNIPE, the reset flag is ignored in setTopology()!
-	 */
-	@Override
-	public void removeLayer(int layer, boolean reset) {
-		if (layer >= net.countLayers()) return;
-		
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		int[] nt = new int[t.length - 1];
-		
-		int nn = 0;
-		for(int i=0; i<layer; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		for(int i=layer+1; i<t.length; i++) {
-			nt[nn] = t[i];
-			nn++;
-		}
-		createNetwork(nt);
-	}
-
-	@Override
-	public void addNeuron(int layer, boolean reset) {
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		if (layer >= t.length || layer < 0) return;
-		t[layer]++;
-		createNetwork(t);
-	}
-
-	@Override
-	public void removeNeuron(int layer, boolean reset) {
-		int[] t = net.getDescriptor().getNeuronsPerLayer();
-		if (layer >= t.length || layer < 0) return;
-		if (t[layer] < 2) return;
-		t[layer]--;
-		createNetwork(t);
-	}
-
 	@Override
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;

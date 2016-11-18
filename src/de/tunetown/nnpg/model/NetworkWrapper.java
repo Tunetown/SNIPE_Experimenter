@@ -164,8 +164,26 @@ public abstract class NetworkWrapper {
 	 * @param neurons
 	 * @return
 	 */
-	public abstract void addLayer(int position, int neurons, boolean reset);
-	
+	public void addLayer(int position, int neurons, boolean reset) {
+		if (position >= this.countLayers()) return;
+		
+		int[] t = this.getTopology();
+		int[] nt = new int[t.length + 1];
+		
+		int nn = 0;
+		for(int i=0; i<position; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		nt[nn] = neurons;
+		nn++;
+		for(int i=position; i<t.length; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		createNetwork(nt);
+	}
+
 	/**
 	 * Remove a layer from a specific position into the network. Optional: reset network weights.
 	 * 
@@ -173,23 +191,50 @@ public abstract class NetworkWrapper {
 	 * @param neurons
 	 * @return
 	 */
-	public abstract void removeLayer(int layer, boolean reset);
-	
+	public void removeLayer(int layer, boolean reset) {
+		if (layer >= this.countLayers()) return;
+		
+		int[] t = this.getTopology();
+		int[] nt = new int[t.length - 1];
+		
+		int nn = 0;
+		for(int i=0; i<layer; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		for(int i=layer+1; i<t.length; i++) {
+			nt[nn] = t[i];
+			nn++;
+		}
+		createNetwork(nt);
+	}
+
 	/**
 	 * Add a neuron to a given layer. Optional: reset network weights.
 	 * 
 	 * @param layer
 	 * @return
 	 */
-	public abstract void addNeuron(int layer, boolean reset);
-	
+	public void addNeuron(int layer, boolean reset) {
+		int[] t = this.getTopology();
+		if (layer >= t.length || layer < 0) return;
+		t[layer]++;
+		createNetwork(t);
+	}
+
 	/**
 	 * Remove a neuron from a given layer. Optional: reset network weights.
 	 * 
 	 * @param layer
 	 * @return
 	 */
-	public abstract void removeNeuron(int layer, boolean reset);
+	public void removeNeuron(int layer, boolean reset) {
+		int[] t = this.getTopology();
+		if (layer >= t.length || layer < 0) return;
+		if (t[layer] < 2) return;
+		t[layer]--;
+		createNetwork(t);
+	}
 
 	/**
 	 * Get the neurons per layer array
