@@ -29,6 +29,7 @@ import de.tunetown.nnpg.model.snipe.behaviors.TangensHyperbolicusJafama;
  *
  */
 public class SNIPENetworkWrapper extends NetworkWrapper {
+	private static final long serialVersionUID = 1L;
 
 	private double eta = ModelProperties.NETWORK_DEFAULT_ETA;
 	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE; 

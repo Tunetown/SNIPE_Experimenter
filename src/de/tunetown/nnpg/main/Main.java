@@ -2,6 +2,7 @@ package de.tunetown.nnpg.main;
 
 import java.io.File;
 
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -17,10 +18,10 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  *
- * - TODO 1Create Menu option to change engine
+ * - TODO 1 Create Menu option to change engine
  * - TODO 2 integrate DL4J
- * 
  * - TODO 3 In the NN wrapper classes, use as few attributes as possible. Derive everything from the network itself!
+ * - TODO 5 Recreate examples
  * 
  * - TODO Add line in error graph at the point of overfitting 
  * 		-> See deep learning book 
@@ -116,25 +117,16 @@ public class Main {
 	 * 
 	 */
 	public void initNetwork() {
-		double eta = 0;
-		int batchSize = 0;
-		int behavior = -1;
-		
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
-		if (net == null) {
-			setNetwork(new NeurophNetworkWrapper());
-		} else {
-			eta = net.getEta();
-			batchSize = net.getBatchSize();
-			behavior = net.getBehavior();
-
-			setNetwork(new NeurophNetworkWrapper(net.getTopology()));
-
-			net.setEta(eta);
-			net.setBatchSize(batchSize);
-			net.setBehavior(behavior);
-		}
+		NetworkWrapper tmp = new NeurophNetworkWrapper();
 		
+		if (net != null) {
+			tmp.setParametersFrom(net);
+			tmp.createNetwork(net.getTopology());
+		}
+
+		setNetwork(tmp);
+
 		// Create training tracker. This stores information about the learning process (errors, iteration counter etc.)
 		tracker = new TrainingTracker();
 		
@@ -230,7 +222,7 @@ public class Main {
 		if (trainWorker == null) return;
 		trainWorker.kill();
 		
-		while(!trainWorker.isDone()) {
+		while(wait && !trainWorker.isDone()) {
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
@@ -264,6 +256,15 @@ public class Main {
 	 */
 	public Object getNetworkLock() {
 		return trainLock;
+	}
+
+	/**
+	 * 
+	 * @param jRadioButtonMenuItem
+	 */
+	public void setEngine(JRadioButtonMenuItem jRadioButtonMenuItem) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

@@ -14,11 +14,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.main.OS;
+import de.tunetown.nnpg.model.neuroph.NeurophNetworkWrapper;
+import de.tunetown.nnpg.model.snipe.SNIPENetworkWrapper;
 
 /**
  * Menu for the application
@@ -36,6 +39,17 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 	private JMenuItem open;
 	private JMenuItem save;
 	private JMenuItem quit;
+	
+	private JRadioButtonMenuItem[] engineItems = {
+			new JRadioButtonMenuItem("SNIPE 0.9"),
+			new JRadioButtonMenuItem("Neuroph 2.92")
+	};
+	
+	@SuppressWarnings({"rawtypes"})
+	private Class[] engines = {
+			SNIPENetworkWrapper.class,
+			NeurophNetworkWrapper.class
+	};
 	
 	public Menu(Main main, JFrame frame) {
 		this.main = main;
@@ -70,6 +84,15 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 			quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
 			file.add(quit);			
 		}
+
+		// Engine menu
+		JMenu engine = new JMenu("Engine");
+		add(engine);
+		
+		for(JRadioButtonMenuItem item : engineItems) {
+			item.addActionListener(this);
+			engine.add(item);
+		}
 		
 		frame.setJMenuBar(this);
 	}
@@ -92,10 +115,23 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 			if (source == quit) {
 				System.exit(0);
 			}
+			
+			for(int i=0; i<engineItems.length; i++) {
+				if (source == engineItems[i]) {
+					setEngine(i);
+				}
+			}
 
 		} catch (Throwable e1) {
 			e1.printStackTrace();
 		}
+	}
+
+	private void setEngine(int i) {
+		main.setEngine(engineItems[i]);
+		
+		main.updateView(true, true, true);
+		frame.repaint();		
 	}
 
 	/**

@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.neuroph.core.Connection;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
@@ -13,11 +14,13 @@ import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
 import org.neuroph.core.input.WeightedSum;
 import org.neuroph.core.learning.error.ErrorFunction;
+import org.neuroph.core.learning.error.MeanSquaredError;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
 import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.util.NeuronProperties;
 import org.neuroph.util.random.RangeRandomizer;
+
 import de.tunetown.nnpg.model.DataWrapper;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
@@ -29,6 +32,7 @@ import de.tunetown.nnpg.model.NetworkWrapper;
  *
  */
 public class NeurophNetworkWrapper extends NetworkWrapper {
+	private static final long serialVersionUID = 1L;
 
 	private double eta = ModelProperties.NETWORK_DEFAULT_ETA;
 	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE;
@@ -58,20 +62,17 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		createNetwork(ModelProperties.NETWORK_DEFAULT_TOPOLOGY);
 	}
 		
-	public NeurophNetworkWrapper(int[] topology) {
-		createNetwork(topology);
-	}
-	
 	public NeurophNetworkWrapper(int[] topology, double initialRange, int behavior) {
 		createNetwork(topology, initialRange, behavior);
 	}
 
+	@Override
 	public void createNetwork(int[] topology) {
 		createNetwork(topology, initialRange, behavior); 
 	}
 		
 	@SuppressWarnings("unchecked")
-	private void createNetwork(int[] neuronsInLayers, double initialRange, int behavior) {
+	private void createNetwork(int[] topology, double initialRange, int behavior) {
 		this.behavior = behavior;
 		this.initialRange = initialRange;
 
@@ -81,8 +82,8 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
         neuronProperties.setProperty("inputFunction", WeightedSum.class);
 
         List<Integer> neuronsInLayersVector = new ArrayList<Integer>();
-        for (int i = 0; i < neuronsInLayers.length; i++) {
-            neuronsInLayersVector.add(Integer.valueOf(neuronsInLayers[i]));
+        for (int i = 0; i < topology.length; i++) {
+            neuronsInLayersVector.add(Integer.valueOf(topology[i]));
         } 
 		
 		net = new MultiLayerPerceptron(neuronsInLayersVector, neuronProperties);
@@ -180,6 +181,8 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getTrainingError(DataWrapper data) {
+		if (data == null || data.getNumOfSamples(true) == 0) return 0;
+		
 		BackPropagation p = (BackPropagation)net.getLearningRule();
 		ErrorFunction f = p.getErrorFunction();
 		return f.getTotalError();
@@ -187,11 +190,17 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public double getTestError(DataWrapper data) {
-		//MeanSquaredError e = new MeanSquaredError(); TODO
-		//e.calculatePatternError(predictedOutput, targetOutput)
-		//TrainingSampleLesson lesson = ((NeurophDataWrapper)data).getSNIPETestLesson();
-		//if (lesson == null || lesson.countSamples() == 0) return 0;
-		return 0; //ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
+		if (data == null || data.getNumOfSamples(false) == 0) return 0;
+		
+		MeanSquaredError e = new MeanSquaredError();
+		for(int i=0; i<data.getNumOfSamples(false); i++) {
+			double[] in = data.getTestLesson().getInputs()[i];
+			double[] out = data.getTestLesson().getDesiredOutputs()[i];
+			double[] pred = this.propagate(in);
+			e.calculatePatternError(pred, out);
+		}
+		
+		return e.getTotalError();
 	}
 
 	@Override
@@ -301,8 +310,8 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		
 		setEta(n.getEta());
 		setBatchSize(n.getBatchSize());
-		setBehavior(n.getBehavior());
 		setInitialRange(n.getInitialRange());
+		setBehavior(n.getBehavior());
 	}
 
 	@Override

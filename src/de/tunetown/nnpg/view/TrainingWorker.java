@@ -58,7 +58,6 @@ public class TrainingWorker extends SwingWorker {
 					synchronized (main.getNetworkLock()) {
 						clone.setParametersFrom(main.getNetwork());
 						main.setNetwork(clone);
-					
 					}
 					
 					// Update statistics in the UI

@@ -3,6 +3,7 @@ package de.tunetown.nnpg.main;
 import java.io.File;
 
 import de.tunetown.nnpg.model.DataContainer;
+import de.tunetown.nnpg.model.NetworkWrapper;
 
 /**
  * Loads the application specific last used data from the temp file
@@ -28,7 +29,7 @@ public class ProjectLoader {
 			ParamFile var = new ParamFile(file);
 
 			var.set("data", main.getData().getCompleteDataContainer());
-			var.set("network", main.getNetwork().getTopology());
+			var.set("network", main.getNetwork());
 			var.set("behavior", main.getNetwork().getBehavior());
 			var.set("eta", main.getNetwork().getEta());
 			var.set("batchsize", main.getNetwork().getBatchSize());
@@ -66,7 +67,8 @@ public class ProjectLoader {
 
 		try {
 			if (vars.get("network") != null) 
-				main.getNetwork().createNetwork((int[])vars.get("network"));
+				main.setNetwork((NetworkWrapper)vars.get("network"));
+				//main.getNetwork().createNetwork((int[])vars.get("network")); TODO
 			
 		} catch (Throwable e) {
 			System.out.println("Error loading network definition");

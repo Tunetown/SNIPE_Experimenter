@@ -1,5 +1,7 @@
 package de.tunetown.nnpg.model;
 
+import java.io.Serializable;
+
 /**
  * Facade wrapper to integrate a neural network implementation.
  * 
@@ -9,7 +11,8 @@ package de.tunetown.nnpg.model;
  * @author Thomas Weber
  *
  */
-public abstract class NetworkWrapper {
+public abstract class NetworkWrapper implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Returns the number of neurons in the network.
