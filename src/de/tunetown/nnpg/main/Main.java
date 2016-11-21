@@ -4,8 +4,6 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataModel;
 import de.tunetown.nnpg.model.NetworkManager;
 import de.tunetown.nnpg.model.NetworkWrapper;
