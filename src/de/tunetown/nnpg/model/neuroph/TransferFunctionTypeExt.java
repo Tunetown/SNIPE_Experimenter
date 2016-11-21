@@ -11,9 +11,8 @@ import org.neuroph.core.transfer.Step;
 import org.neuroph.core.transfer.Tanh;
 import org.neuroph.core.transfer.Trapezoid;
 
-import de.tunetown.nnpg.model.neuroph.bugfixes.TanhJafama;
-
 public enum TransferFunctionTypeExt {
+	RELU("ReLU"),
 	LINEAR("Linear"),
 	RAMP("Ramp"),
 	STEP("Step"),
@@ -39,6 +38,8 @@ public enum TransferFunctionTypeExt {
     @SuppressWarnings("rawtypes")
 	public Class getTypeClass() {
         switch (this) {
+        case RELU:
+           	return RectifiedLinear.class;
         case LINEAR:
            	return Linear.class;
 		case STEP:

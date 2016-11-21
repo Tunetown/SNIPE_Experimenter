@@ -49,6 +49,7 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	private int behavior = 0;
 
 	private TransferFunctionTypeExt[] behaviors = { 
+			TransferFunctionTypeExt.RELU,
 			TransferFunctionTypeExt.LINEAR,
 			TransferFunctionTypeExt.RAMP,
 			TransferFunctionTypeExt.STEP,

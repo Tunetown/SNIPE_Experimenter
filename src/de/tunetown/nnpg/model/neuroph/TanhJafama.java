@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.tunetown.nnpg.model.neuroph.bugfixes;
+package de.tunetown.nnpg.model.neuroph;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ import org.neuroph.util.Properties;
  * output = ( e^(2*input)-1) / ( e^(2*input)+1 )
  * </pre>
  *
- * @author Zoran Sevarac <sevarac@gmail.com>
+ * @author Thomas Weber
  */
 public class TanhJafama extends TransferFunction implements Serializable {
 
