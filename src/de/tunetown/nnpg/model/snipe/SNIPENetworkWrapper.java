@@ -13,8 +13,8 @@ import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusAnguitaLeCun;
 import com.dkriesel.snipe.neuronbehavior.TangensHyperbolicusLeCun;
 import com.dkriesel.snipe.training.ErrorMeasurement;
 import com.dkriesel.snipe.training.TrainingSampleLesson;
-
-import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.DataContainer;
+import de.tunetown.nnpg.model.DataModel;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.snipe.behaviors.RectifiedLinear;
@@ -33,8 +33,6 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	private double eta = ModelProperties.NETWORK_DEFAULT_ETA;
 	private int batchSize = ModelProperties.NETWORK_DEFAULT_BATCHSIZE; 
-	private double initialRange = ModelProperties.NETWORK_INITIAL_RANGE; // TODO remove
-	private int behavior = 0; 
 
 	private NeuralNetwork net;
 	
@@ -75,14 +73,12 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 	
 	public SNIPENetworkWrapper(int[] topology, double initialRange, int behavior) {
-		this.behavior = behavior;
-		this.initialRange = initialRange;
 		createNetwork(topology, initialRange, behavior);
 	}
 
 	@Override
 	public void createNetwork(int[] topology) {
-		createNetwork(topology, initialRange, behavior);
+		createNetwork(topology, getInitialRange(), getBehavior());
 	}
 		
 	private void createNetwork(int[] topology, double initialRange, int behavior) {
@@ -139,25 +135,32 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public void train(DataWrapper data) {
+	public void train(DataModel data) {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
-		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
+		TrainingSampleLesson lesson = convertToInternal(data.getTrainingLesson());
 		net.trainBackpropagationOfError(lesson, batchSize, eta);
 	}
 
 	@Override
-	public double getTrainingError(DataWrapper data) {
-		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETrainingLesson();
+	public double getTrainingError(DataModel data) {
+		TrainingSampleLesson lesson = convertToInternal(data.getTrainingLesson());
 		if (lesson == null || lesson.countSamples() == 0) return 0;
 		return ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
 	}
 
 	@Override
-	public double getTestError(DataWrapper data) {
-		TrainingSampleLesson lesson = ((SNIPEDataWrapper)data).getSNIPETestLesson();
+	public double getTestError(DataModel data) {
+		TrainingSampleLesson lesson = convertToInternal(data.getTestLesson());
 		if (lesson == null || lesson.countSamples() == 0) return 0;
 		return ErrorMeasurement.getErrorSquaredPercentagePrechelt(net, lesson) / 100; //.getErrorRootMeanSquareSum(net, lesson);
+	}
+
+	private TrainingSampleLesson convertToInternal(DataContainer lesson) {
+		if (lesson == null) return null;
+		double[][] in = lesson.getInputsArray();
+		double[][] out = lesson.getDesiredOutputsArray();
+		return new TrainingSampleLesson(in, out);
 	}
 
 	@Override
@@ -202,28 +205,17 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public NetworkWrapper clone() {
-		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(net.getDescriptor().getNeuronsPerLayer(), initialRange, behavior);
+		SNIPENetworkWrapper ret = new SNIPENetworkWrapper(net.getDescriptor().getNeuronsPerLayer(), getInitialRange(), getBehavior());
 		ret.net = net.clone();
 		ret.setParametersFrom(this);
 		return ret;
 	}
 
 	@Override
-	public void setParametersFrom(NetworkWrapper network) {
-		SNIPENetworkWrapper n = (SNIPENetworkWrapper)network;
-		
-		setEta(n.getEta());
-		setBatchSize(n.getBatchSize());
-		setBehavior(n.getBehavior());
-		setInitialRange(n.getInitialRange());
-	}
-
-	@Override
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;
-		if (i == behavior) return;
-		behavior = i;
-		createNetwork(net.getDescriptor().getNeuronsPerLayer());
+		if (i == getBehavior()) return;
+		createNetwork(net.getDescriptor().getNeuronsPerLayer(), getInitialRange(), i);
 	}
 
 	@Override
@@ -233,22 +225,35 @@ public class SNIPENetworkWrapper extends NetworkWrapper {
 
 	@Override
 	public int getBehavior() {
-		return behavior;
+		if (net == null) return 0;
+		for(int i=0; i<behaviors.length; i++) {
+			if (net.getDescriptor().getNeuronBehaviorHiddenNeurons().getClass().equals(behaviors[i].getClass())) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public void setInitialRange(double range) {
-		initialRange = range;
+		if (range == net.getDescriptor().getSynapseInitialRange()) return;
+		createNetwork(getTopology(), range, getBehavior());
 	}
 
 	@Override
 	public double getInitialRange() {
-		return initialRange;
+		if (net == null) return ModelProperties.NETWORK_INITIAL_RANGE;
+		return net.getDescriptor().getSynapseInitialRange();
 	}
 
 	@Override
 	public int getOutputBatchSize() {
 		return batchSize;
+	}
+
+	@Override
+	public String getEngineName() {
+		return "SNIPE v0.9";
 	}
 }
 

@@ -1,5 +1,7 @@
 package com.dkriesel.snipe.neuronbehavior;
 
+import java.io.Serializable;
+
 /**
  * 
  * Defines the interface for a neuron behavior, which denotes the generalization
@@ -16,7 +18,7 @@ package com.dkriesel.snipe.neuronbehavior;
  * @author David Kriesel / dkriesel.com
  * 
  */
-public interface NeuronBehavior{
+public interface NeuronBehavior extends Serializable {
 	/**
 	 * @param x
 	 *            usually the net input

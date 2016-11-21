@@ -8,7 +8,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -17,11 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
-
 import de.tunetown.nnpg.main.Main;
 import de.tunetown.nnpg.main.OS;
-import de.tunetown.nnpg.model.neuroph.NeurophNetworkWrapper;
-import de.tunetown.nnpg.model.snipe.SNIPENetworkWrapper;
 
 /**
  * Menu for the application
@@ -40,16 +36,7 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 	private JMenuItem save;
 	private JMenuItem quit;
 	
-	private JRadioButtonMenuItem[] engineItems = {
-			new JRadioButtonMenuItem("SNIPE 0.9"),
-			new JRadioButtonMenuItem("Neuroph 2.92")
-	};
-	
-	@SuppressWarnings({"rawtypes"})
-	private Class[] engines = {
-			SNIPENetworkWrapper.class,
-			NeurophNetworkWrapper.class
-	};
+	private JRadioButtonMenuItem[] engineItems;
 	
 	public Menu(Main main, JFrame frame) {
 		this.main = main;
@@ -89,10 +76,13 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 		JMenu engine = new JMenu("Engine");
 		add(engine);
 		
-		for(JRadioButtonMenuItem item : engineItems) {
-			item.addActionListener(this);
-			engine.add(item);
+		engineItems = new JRadioButtonMenuItem[main.getNetworkManager().getNumOfEngines()];
+		for(int i=0; i<main.getNetworkManager().getNumOfEngines(); i++) {
+			engineItems[i] = new JRadioButtonMenuItem(main.getNetworkManager().getEngineName(i));
+			engineItems[i].addActionListener(this);
+			engine.add(engineItems[i]);
 		}
+		setEngine(main.getNetworkManager().determineEngine(main.getNetwork()));
 		
 		frame.setJMenuBar(this);
 	}
@@ -118,20 +108,13 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 			
 			for(int i=0; i<engineItems.length; i++) {
 				if (source == engineItems[i]) {
-					setEngine(i);
+					main.setEngine(i);
 				}
 			}
 
 		} catch (Throwable e1) {
 			e1.printStackTrace();
 		}
-	}
-
-	private void setEngine(int i) {
-		main.setEngine(engineItems[i]);
-		
-		main.updateView(true, true, true);
-		frame.repaint();		
 	}
 
 	/**
@@ -175,4 +158,18 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 	 */
 	@Override
 	public void itemStateChanged(ItemEvent e) {}
+
+	/**
+	 * Set the engine in the menu radio button selection
+	 * 
+	 * @param engine
+	 */
+	public void setEngine(int engine) {
+		for(int i=0; i<main.getNetworkManager().getNumOfEngines(); i++) {
+			if (i == engine) 
+				engineItems[i].setSelected(true);
+			else 
+				engineItems[i].setSelected(false);
+		}
+	}
 }

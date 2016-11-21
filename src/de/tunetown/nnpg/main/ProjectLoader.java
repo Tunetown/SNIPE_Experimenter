@@ -28,7 +28,7 @@ public class ProjectLoader {
 		try {
 			ParamFile var = new ParamFile(file);
 
-			var.set("data", main.getData().getCompleteDataContainer());
+			var.set("data", main.getData().getMergedDataContainer());
 			var.set("network", main.getNetwork());
 			var.set("behavior", main.getNetwork().getBehavior());
 			var.set("eta", main.getNetwork().getEta());
@@ -59,7 +59,7 @@ public class ProjectLoader {
 
 		try {
 			main.getData().initialize();
-			main.getData().setFromCompleteDataContainer((DataContainer)vars.get("data"));
+			main.getData().set((DataContainer)vars.get("data"));
 			
 		} catch (Throwable e) {
 			System.out.println("Error loading data container");
@@ -68,10 +68,9 @@ public class ProjectLoader {
 		try {
 			if (vars.get("network") != null) 
 				main.setNetwork((NetworkWrapper)vars.get("network"));
-				//main.getNetwork().createNetwork((int[])vars.get("network")); TODO
 			
 		} catch (Throwable e) {
-			System.out.println("Error loading network definition");
+			System.out.println("Error loading network instance");
 		}
 
 		try {

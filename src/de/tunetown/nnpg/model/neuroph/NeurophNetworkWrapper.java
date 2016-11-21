@@ -7,11 +7,13 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.neuroph.core.Connection;
 import org.neuroph.core.Layer;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.Neuron;
 import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.neuroph.core.input.WeightedSum;
 import org.neuroph.core.learning.error.ErrorFunction;
 import org.neuroph.core.learning.error.MeanSquaredError;
@@ -21,7 +23,8 @@ import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.util.NeuronProperties;
 import org.neuroph.util.random.RangeRandomizer;
 
-import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.DataContainer;
+import de.tunetown.nnpg.model.DataModel;
 import de.tunetown.nnpg.model.ModelProperties;
 import de.tunetown.nnpg.model.NetworkWrapper;
 
@@ -162,10 +165,10 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public void train(DataWrapper data) {
+	public void train(DataModel data) {
 		if (data.getTrainingLesson() == null || data.getTrainingLesson().size() == 0) return;
 
-		DataSet trainingSet = ((NeurophDataWrapper)data).getNeurophTrainingLesson();
+		DataSet trainingSet = convertToInternal(data.getTrainingLesson());
 
 		BackPropagation p = (BackPropagation)net.getLearningRule();
 		p.setLearningRate(eta);
@@ -179,8 +182,20 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 		}
 	}
 
+	private DataSet convertToInternal(DataContainer lesson) {
+		if (lesson == null) return null;
+		
+		DataSet ret = new DataSet(2, 1);
+		List<Double[]> in = lesson.getInputs();
+		List<Double[]> out = lesson.getDesiredOutputs();
+		for(int i=0; i<in.size(); i++) {
+			ret.addRow(new DataSetRow(ArrayUtils.toPrimitive(in.get(i)), ArrayUtils.toPrimitive(out.get(i))));
+		}
+		return ret;
+	}
+
 	@Override
-	public double getTrainingError(DataWrapper data) {
+	public double getTrainingError(DataModel data) {
 		if (data == null || data.getNumOfSamples(true) == 0) return 0;
 		
 		BackPropagation p = (BackPropagation)net.getLearningRule();
@@ -189,13 +204,13 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public double getTestError(DataWrapper data) {
+	public double getTestError(DataModel data) {
 		if (data == null || data.getNumOfSamples(false) == 0) return 0;
 		
 		MeanSquaredError e = new MeanSquaredError();
 		for(int i=0; i<data.getNumOfSamples(false); i++) {
-			double[] in = data.getTestLesson().getInputs()[i];
-			double[] out = data.getTestLesson().getDesiredOutputs()[i];
+			double[] in = ArrayUtils.toPrimitive(data.getTestLesson().getInputs().get(i));
+			double[] out = ArrayUtils.toPrimitive(data.getTestLesson().getDesiredOutputs().get(i));
 			double[] pred = this.propagate(in);
 			e.calculatePatternError(pred, out);
 		}
@@ -305,16 +320,6 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	}
 
 	@Override
-	public void setParametersFrom(NetworkWrapper network) {
-		NeurophNetworkWrapper n = (NeurophNetworkWrapper)network;
-		
-		setEta(n.getEta());
-		setBatchSize(n.getBatchSize());
-		setInitialRange(n.getInitialRange());
-		setBehavior(n.getBehavior());
-	}
-
-	@Override
 	public void setBehavior(int i) {
 		if (i < 0 || i >= behaviors.length) return;
 		if (i == behavior) return;
@@ -344,6 +349,11 @@ public class NeurophNetworkWrapper extends NetworkWrapper {
 	@Override
 	public double getInitialRange() {
 		return initialRange;
+	}
+
+	@Override
+	public String getEngineName() {
+		return "Neuroph v2.92";
 	}
 }
 

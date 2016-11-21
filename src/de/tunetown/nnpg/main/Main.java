@@ -2,15 +2,12 @@ package de.tunetown.nnpg.main;
 
 import java.io.File;
 
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-
-import de.tunetown.nnpg.model.DataWrapper;
+import de.tunetown.nnpg.model.DataModel;
+import de.tunetown.nnpg.model.NetworkManager;
 import de.tunetown.nnpg.model.NetworkWrapper;
 import de.tunetown.nnpg.model.TrainingTracker;
-import de.tunetown.nnpg.model.neuroph.NeurophDataWrapper;
-import de.tunetown.nnpg.model.neuroph.NeurophNetworkWrapper;
 import de.tunetown.nnpg.view.MainFrame;
 import de.tunetown.nnpg.view.Menu;
 import de.tunetown.nnpg.view.TrainingWorker;
@@ -18,14 +15,19 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  *
- * - TODO 1 Create Menu option to change engine
  * - TODO 2 integrate DL4J
- * - TODO 3 In the NN wrapper classes, use as few attributes as possible. Derive everything from the network itself!
  * - TODO 5 Recreate examples
  * 
  * - TODO Add line in error graph at the point of overfitting 
  * 		-> See deep learning book 
  * 			-> Early stopping
+ * 
+ * - TODO 7 Document changes to network code:
+ *  	- SNIPE: 
+ *  		- NeuronBehavior is not serializable -> changed in NeuronBehavior.java, 
+ *  		  also added def. ser. ID to all behavior classes
+ *  	- Neuroph:
+ *  		- no changes
  * 
  * *******************************************************
  * 
@@ -51,8 +53,10 @@ public class Main {
 	 */
 	private static final File TEMP_FILE = new File(System.getProperty("user.home") + File.separator + "SE.tmp");
 	
+	private NetworkManager networkManager = new NetworkManager();
+	
 	private NetworkWrapper net;
-	private DataWrapper data;
+	private DataModel data;
 	private TrainingTracker tracker;
 	private ProjectLoader dataLoader;
 	
@@ -94,7 +98,7 @@ public class Main {
 	 */
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
-		data = new NeurophDataWrapper();
+		data = new DataModel();
 		dataLoader = new ProjectLoader(this);
 		
 		// Initialize the network, tracker and data instances
@@ -113,12 +117,21 @@ public class Main {
 	}
 
 	/**
-	 * Sets up the network
+	 * Sets up the network, according to the existing engine, if any.
 	 * 
 	 */
 	public void initNetwork() {
+		int e = net != null ? networkManager.determineEngine(net) : 0;
+		initNetwork(e);
+	}
+	
+	/**
+	 * Sets up the network, given a specific engine
+	 * 
+	 */
+	public void initNetwork(int engine) {
 		// Create network instance wrapper. Here it is possible to invoke also different network implementations.
-		NetworkWrapper tmp = new NeurophNetworkWrapper();
+		NetworkWrapper tmp = networkManager.getEngineInstance(engine);
 		
 		if (net != null) {
 			tmp.setParametersFrom(net);
@@ -156,7 +169,7 @@ public class Main {
 	 * 
 	 * @return
 	 */
-	public DataWrapper getData() {
+	public DataModel getData() {
 		return data;
 	}
 	
@@ -262,9 +275,19 @@ public class Main {
 	 * 
 	 * @param jRadioButtonMenuItem
 	 */
-	public void setEngine(JRadioButtonMenuItem jRadioButtonMenuItem) {
-		// TODO Auto-generated method stub
+	public void setEngine(int engine) {
+		stopTraining(true);
 		
+		initNetwork(engine);
+		
+		menu.setEngine(engine);
+		
+		updateView(true, true, true);
+		frame.repaint();
+	}
+	
+	public NetworkManager getNetworkManager() {
+		return networkManager;
 	}
 }
 

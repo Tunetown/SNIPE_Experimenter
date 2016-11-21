@@ -34,7 +34,6 @@ public class TrainControlPanel extends JPanel {
 	private JButton trainData;
 	private JButton trainStop;
 	
-	@SuppressWarnings("rawtypes")
 	private JComboBox behaviors;
 	private JSlider etaSlider;
 	private JSlider batchSlider;
@@ -51,7 +50,6 @@ public class TrainControlPanel extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void initButtons() {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.PAGE_AXIS));
@@ -185,7 +183,13 @@ public class TrainControlPanel extends JPanel {
 	public void update() {
 		setEtaSlider(main.getNetwork().getEta());
 		batchSlider.setValue(main.getNetwork().getBatchSize());
+		
+		ActionListener[] a = behaviors.getActionListeners();
+		behaviors.removeActionListener(a[0]);
+		behaviors.removeAllItems();
+		for(int i=0; i<main.getNetwork().getBehaviorDescriptions().length; i++) behaviors.addItem(main.getNetwork().getBehaviorDescriptions()[i]);
 		behaviors.setSelectedIndex(main.getNetwork().getBehavior());
+		behaviors.addActionListener(a[0]);
 	}
 
 	/**

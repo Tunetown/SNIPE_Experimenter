@@ -10,7 +10,8 @@ import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
  *
  */
 public class RectifiedLinear implements NeuronBehavior{
-
+	private static final long serialVersionUID = 1L;
+	
 	private double negativeScaling;
 	
 	public RectifiedLinear(double negativeScaling) {

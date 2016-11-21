@@ -12,7 +12,8 @@ import com.dkriesel.snipe.neuronbehavior.NeuronBehavior;
  *
  */
 public class TangensHyperbolicusACM implements NeuronBehavior{
-
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public double computeDerivative(double x) {
 		double t = FastMath.tanh(x);

@@ -9,7 +9,8 @@ package com.dkriesel.snipe.neuronbehavior;
  * 
  */
 public class Identity implements NeuronBehavior{
-
+	private static final long serialVersionUID = 1L;
+	
 	@Override
 	public double computeDerivative(double x) {
 		return 1;

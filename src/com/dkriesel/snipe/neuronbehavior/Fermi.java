@@ -11,6 +11,8 @@ package com.dkriesel.snipe.neuronbehavior;
  */
 public class Fermi implements NeuronBehavior{
 	
+	private static final long serialVersionUID = 1L;
+
 
 	@Override
 	public double computeDerivative(double x) {

@@ -34,6 +34,7 @@ package com.dkriesel.snipe.neuronbehavior;
  * 
  */
 public class TangensHyperbolicusAnguita implements NeuronBehavior {
+	private static final long serialVersionUID = 1L;
 
 	// a = 0.26037
 	// b = 1.92033

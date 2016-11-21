@@ -90,7 +90,7 @@ public abstract class NetworkWrapper implements Serializable {
 	 * 
 	 * @param data Training data
 	 */
-	public abstract void train(DataWrapper data);
+	public abstract void train(DataModel data);
 
 	/**
 	 * Get the current error of the network, regarding the given training data.
@@ -98,7 +98,7 @@ public abstract class NetworkWrapper implements Serializable {
 	 * @param data
 	 * @return
 	 */
-	public abstract double getTrainingError(DataWrapper data);
+	public abstract double getTrainingError(DataModel data);
 	
 	/**
 	 * Get the current error of the network, regarding the given test data.
@@ -106,7 +106,7 @@ public abstract class NetworkWrapper implements Serializable {
 	 * @param data
 	 * @return
 	 */
-	public abstract double getTestError(DataWrapper data);
+	public abstract double getTestError(DataModel data);
 
 	/**
 	 * Returns the bias weight for a neuron, or NaN if there is no bias neuron connected 
@@ -158,8 +158,13 @@ public abstract class NetworkWrapper implements Serializable {
 	 * @param network
 	 * @return
 	 */
-	public abstract void setParametersFrom(NetworkWrapper network);
-
+	public void setParametersFrom(NetworkWrapper network) {
+		setEta(network.getEta());
+		setBatchSize(network.getBatchSize());
+		setBehavior(network.getBehavior());
+		setInitialRange(network.getInitialRange());
+	}
+	
 	/**
 	 * Add a layer at a specific position into the network. Optional: reset network weights.
 	 * 
@@ -295,4 +300,11 @@ public abstract class NetworkWrapper implements Serializable {
 	 * @return
 	 */
 	public abstract int getOutputBatchSize();
+	
+	/**
+	 * Returns the name of the network engine
+	 * 
+	 * @return
+	 */
+	public abstract String getEngineName();
 }

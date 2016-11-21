@@ -48,7 +48,7 @@ public class StatisticsPanel extends JPanel {
 
 		JPanel statsR = new JPanel();
 		statsR.setLayout(new BoxLayout(statsR, BoxLayout.PAGE_AXIS));
-		add(statsR,BorderLayout.EAST);
+		add(statsR, BorderLayout.EAST);
 		
 		dataSize = new JLabel();
 		statsR.add(dataSize);

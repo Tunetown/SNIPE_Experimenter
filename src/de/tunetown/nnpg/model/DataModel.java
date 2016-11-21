@@ -3,16 +3,11 @@ package de.tunetown.nnpg.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import org.neuroph.core.data.DataSet;
-import org.neuroph.core.data.DataSetRow;
-
 import de.tunetown.nnpg.model.DataContainer;
-import de.tunetown.nnpg.model.DataWrapper;
-import de.tunetown.nnpg.model.neuroph.bugfixes.SubSamplingFixed;
 
 /**
- * Data model for all engines
+ * Data model for all engines. This holds training and test data lesson containers, and 
+ * manages the splitting of them.
  * 
  * @author Thomas Weber
  *
@@ -24,48 +19,40 @@ public class DataModel {
 	
 	private Random rand = new Random();
 
+	/**
+	 * Add a new sample. This merges all samples (training and test), add the sample, 
+	 * and re-split the data then.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param value
+	 */
 	public void addSample(double x, double y, double value) {
-		double[][] in = getMergedInputs();
-		double[][] teach = getMergedDesiredOutputs();
+		List<Double[]> in = getMergedInputs();
+		List<Double[]> teach = getMergedDesiredOutputs();
 
-		double[][] nin;
-		double[][] nteach;
-
-		if (in == null) {
-			nin = new double[1][2];
-			nteach = new double[1][1];
-			
-			nin[0][0] = x;
-			nin[0][1] = y;
-			nteach[0][0] = value;
-		} else {
-			nin = new double[in.length + 1][2];
-			nteach = new double[in.length + 1][1];
-			
-			for(int n=0; n<in.length; n++) {
-				nin[n] = in[n];
-				nteach[n] = teach[n];
-				
-			}
-			
-			double[] ninl = {x, y};
-			nin[in.length] = ninl;
-			double[] ntl = {value};
-			nteach[in.length] = ntl;
-		}
+		Double[] nin = {x, y};
+		Double[] nteach = {value};
 		
-		DataSet ds = new DataSet(2, 1);
-		for(int n=0; n<nin.length; n++) {
-			ds.addRow(nin[n], nteach[n]);
-		}
-		setLesson(ds);	
+		in.add(nin);
+		teach.add(nteach);
+		
+		set(new DataContainer(in, teach));
 	}
 	
+	/**
+	 * Delete samples around a given coordinate. This merges all samples (training and test), 
+	 * add the sample, and re-split the data then.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param eraseRadius
+	 */
 	public void deleteSamplesAroundPoint(double x, double y, double radius) {
 		if(!hasData()) return;
 		
-		double[][] in = getMergedInputs();
-		double[][] teach = getMergedDesiredOutputs();
+		List<Double[]> in = getMergedInputs();
+		List<Double[]> teach = getMergedDesiredOutputs();
 
 		List<Integer> toErase = new ArrayList<Integer>();
 		
@@ -73,47 +60,59 @@ public class DataModel {
 		// not add them to the new arrays.
 		// NOTE: For simplicity, the radius is NOT evaluated as a circle, but as a square. This is
 		//       sufficient for this application for now.
-		for(int n=0; n<in.length; n++) {
-			if (in[n][0] >= x - radius && in[n][0] <= x + radius &&
-					in[n][1] >= y - radius && in[n][1] <= y + radius) {
+		for(int n=0; n<in.size(); n++) {
+			if (in.get(n)[0] >= x - radius && in.get(n)[0] <= x + radius &&
+					in.get(n)[1] >= y - radius && in.get(n)[1] <= y + radius) {
 				// Erase point (here, we just mark the index to be erased)
 				toErase.add(n);
 			}
 		}
 		
 		// Now, compose the new arrays and use them
-		double[][] nin = new double[in.length - toErase.size()][2];
-		double[][] nteach = new double[in.length - toErase.size()][1];
+		List<Double[]> nin = new ArrayList<Double[]>();
+		List<Double[]> nteach = new ArrayList<Double[]>();
 		
-		int nn = 0;
-		for(int n=0; n<in.length; n++) {
+		for(int n=0; n<in.size(); n++) {
 			if (!toErase.contains(n)) {
-				nin[nn] = in[n];
-				nteach[nn] = teach[n];
-				nn++;
+				nin.add(in.get(n));
+				nteach.add(teach.get(n));
 			}
 		}
 		
-		if (nin.length > 0) {
-			DataSet ds = new DataSet(2, 1);
-			for(int n=0; n<nin.length; n++) {
-				ds.addRow(nin[n], nteach[n]);
-			}
-			setLesson(ds);	
+		if (nin.size() > 0) {
+			set(new DataContainer(nin, nteach));
 		} else {
-			setLesson(null);
+			set(null);
 		}
 	}
 
+	/**
+	 * Returns true if there are some training or test data.
+	 * 
+	 * @return
+	 */
 	public boolean hasData() {
-		return (trainingLesson != null || testLesson != null);
+		if (trainingLesson == null && testLesson == null) return false;
+		int s = 0;
+		if (trainingLesson != null) s+=trainingLesson.size();
+		if (testLesson != null) s+=testLesson.size();
+		return (s != 0);
 	}
 
+	/**
+	 * Reset all data.
+	 * 
+	 */
 	public void initialize() {
-		setLesson(null);
+		set(null);
 	}
 
-	private void setLesson(DataContainer lesson) {
+	/**
+	 * Set the data (complete, including split into training and test data)
+	 * 
+	 * @param lesson
+	 */
+	public void set(DataContainer lesson) {
 		trainingLesson = null;
 		testLesson = null;
 
@@ -129,20 +128,36 @@ public class DataModel {
 		}
 		
 		// More than 10 samples: Split lesson into training and test data
-		DataContainer[] split = lesson.split(2, 0.5);
+		DataContainer[] split = lesson.split(0.5);
 		
-		trainingLesson = split.get(0);
-		testLesson = split.get(1);
+		trainingLesson = split[0];
+		testLesson = split[1];
 	}
 
+	/**
+	 * Returns the training lesson
+	 * 
+	 * @return
+	 */
 	public DataContainer getTrainingLesson() {
-		return getContainerFromTrainingLesson(trainingLesson);
+		return trainingLesson;
 	}
 
+	/**
+	 * Returns the test lesson
+	 * 
+	 * @return
+	 */
 	public DataContainer getTestLesson() {
-		return getContainerFromTrainingLesson(testLesson);
+		return testLesson;
 	}
 
+	/**
+	 * Returns the number of samples in the container
+	 * 
+	 * @param training
+	 * @return
+	 */
 	public int getNumOfSamples(boolean training) {
 		if (training) {
 			if (trainingLesson == null) return 0;
@@ -153,53 +168,25 @@ public class DataModel {
 		}
 	}
 
-	private DataContainer getContainerFromTrainingLesson(DataSet lesson) {
-		if (lesson == null || lesson.size() == 0) return null;
-		
-		double[][] in = new double[lesson.size()][2];
-		double[][] out = new double[lesson.size()][1];
-		
-		for(int i=0; i<lesson.size(); i++) {
-			DataSetRow row = lesson.getRowAt(i);
-			in[i] = row.getInput();
-			out[i] = row.getDesiredOutput();
-		}
-		
-		return new DataContainer(in, out);
-	}
-
-	public DataContainer getCompleteDataContainer() {
+	/**
+	 * Returns a container holding all samples (training AND test)
+	 * 
+	 * @return
+	 */
+	public DataContainer getMergedDataContainer() {
 		if (!hasData()) return null;
 		return new DataContainer(getMergedInputs(), getMergedDesiredOutputs());
 	}
 
-	public void setFromCompleteDataContainer(DataContainer c) {
-		if (c == null) {
-			setLesson(null);
-			return;
-		}
-		
-		DataSet ds = new DataSet(2, 1);
-		for(int n=0; n<c.size(); n++) {
-			ds.addRow(c.getInputs()[n], c.getDesiredOutputs()[n]);
-		}
-		setLesson(ds);
-	}
-
+	/**
+	 * Re-splits the data into training and test lessons
+	 * 
+	 */
 	public void resplitData() {
 		if (!hasData()) return;
-
-		setFromCompleteDataContainer(new DataContainer(getMergedInputs(), getMergedDesiredOutputs()));
+		set(new DataContainer(getMergedInputs(), getMergedDesiredOutputs()));
 	}
 
-	public DataSet getNeurophTrainingLesson() {
-		return trainingLesson;
-	}
-
-	public DataSet getNeurophTestLesson() {
-		return testLesson;
-	}
-	
 	/**
 	 * The amount of samples is scaled by the factor given (rate). If rate is 1, nothing happens. If it is > 1, new samples 
 	 * are added randomly around the given radius around randomly chosen existing samples. If < 1, random samples are taken
@@ -211,43 +198,43 @@ public class DataModel {
 	public void growData(double rate, double radius) {
 		if (!hasData()) return;
 		
-		double[][] in = this.getMergedInputs();
-		double[][] out = this.getMergedDesiredOutputs();
+		List<Double[]> in = this.getMergedInputs();
+		List<Double[]> out = this.getMergedDesiredOutputs();
 
-		int tar = (int)(in.length * rate);
+		int tar = (int)(in.size() * rate);
 		
 		if (tar == 0) {
-			setFromCompleteDataContainer(null);
+			set(null);
 			return;
 		}
 		
-		double[][] nin = new double[tar][2];
-		double[][] nout = new double[tar][1];
+		List<Double[]> nin = new ArrayList<Double[]>();
+		List<Double[]> nout = new ArrayList<Double[]>();
 
-		if (tar < in.length) {
+		if (tar < in.size()) {
 			// Reduce
 			for(int nn=0; nn<tar; nn++) {
-				int n = rand.nextInt(in.length);
-				nin[nn][0] = getRandomValue(in[n][0], radius);
-				nin[nn][1] = getRandomValue(in[n][1], radius); 
-				nout[nn][0] = out[n][0];
+				int n = rand.nextInt(in.size());
+				Double[] nextIn = {getRandomValue(in.get(n)[0], radius), getRandomValue(in.get(n)[1], radius)};
+				nin.add(nextIn);
+				Double[] nextOut = out.get(n);
+				nout.add(nextOut);
 			}
 		} else {
 			// Grow
-			for(int n=0; n<in.length; n++) {
-				nin[n] = in[n];
-				nout[n] = out[n];
-			}
-			
-			for(int nn=in.length; nn<tar; nn++) {
-				int n = rand.nextInt(in.length);
-				nin[nn][0] = getRandomValue(in[n][0], radius);
-				nin[nn][1] = getRandomValue(in[n][1], radius); 
-				nout[nn][0] = out[n][0];
+			nin.addAll(in);
+			nout.addAll(out);
+
+			for(int nn=in.size(); nn<tar; nn++) {
+				int n = rand.nextInt(in.size());
+				Double[] nextIn = {getRandomValue(in.get(n)[0], radius), getRandomValue(in.get(n)[1], radius)};
+				nin.add(nextIn);
+				Double[] nextOut = out.get(n);
+				nout.add(nextOut);
 			}
 		}
 		
-		setFromCompleteDataContainer(new DataContainer(nin, nout));
+		set(new DataContainer(nin, nout));
 	}
 
 	/**
@@ -266,41 +253,13 @@ public class DataModel {
 	 * 
 	 * @return
 	 */
-	protected double[][] getMergedDesiredOutputs() {
-		if (!hasData()) return null;
+	protected List<Double[]> getMergedDesiredOutputs() {
+		if (!hasData()) return new ArrayList<Double[]>();
 		
-		int num = 0;
-		if (getTrainingLesson() != null) num += getTrainingLesson().size();
-		if (getTestLesson() != null) num += getTestLesson().size();
-		
-		int outDim = 0;
-		if (getTrainingLesson() != null) {
-			outDim = getTrainingLesson().getDimensionalityDesiredOutputs();
-		} else if (getTestLesson() != null) {
-			outDim = getTestLesson().getDimensionalityDesiredOutputs();
-		}
-		
-		double[][] nout = new double[num][outDim];
-		
-		int n = 0;
-		if (getTrainingLesson() != null) {
-			double[][] out = getTrainingLesson().getDesiredOutputs();
-			
-			for(int i=0; i<getTrainingLesson().size(); i++) {
-				nout[n] = out[i];
-				n++;
-			}
-		}
-		if (getTestLesson() != null) {
-			double[][] out = getTestLesson().getDesiredOutputs();
-			
-			for(int i=0; i<getTestLesson().size(); i++) {
-				nout[n] = out[i];
-				n++;
-			}
-		}
-		
-		return nout;
+		List<Double[]> ret = new ArrayList<Double[]>();
+		if (trainingLesson != null) ret.addAll(trainingLesson.getDesiredOutputs());
+		if (testLesson != null) ret.addAll(testLesson.getDesiredOutputs());
+		return ret;		
 	}
 
 	/**
@@ -308,40 +267,12 @@ public class DataModel {
 	 * 
 	 * @return
 	 */
-	protected double[][] getMergedInputs() {
-		if (!hasData()) return null;
+	protected List<Double[]> getMergedInputs() {
+		if (!hasData()) return new ArrayList<Double[]>();
 
-		int num = 0;
-		if (getTrainingLesson() != null) num += getTrainingLesson().size();
-		if (getTestLesson() != null) num += getTestLesson().size();
-		
-		int inDim = 0;
-		if (getTrainingLesson() != null) {
-			inDim = getTrainingLesson().getDimensionalityInputs();
-		} else if (getTestLesson() != null) {
-			inDim = getTestLesson().getDimensionalityInputs();
-		}
-		
-		double[][] nin = new double[num][inDim];
-		
-		int n = 0;
-		if (getTrainingLesson() != null) {
-			double[][] in = getTrainingLesson().getInputs();
-			
-			for(int i=0; i<getTrainingLesson().size(); i++) {
-				nin[n] = in[i];
-				n++;
-			}
-		}
-		if (getTestLesson() != null) {
-			double[][] in = getTestLesson().getInputs();
-			
-			for(int i=0; i<getTestLesson().size(); i++) {
-				nin[n] = in[i];
-				n++;
-			}
-		}
-		
-		return nin;
+		List<Double[]> ret = new ArrayList<Double[]>();
+		if (trainingLesson != null) ret.addAll(trainingLesson.getInputs());
+		if (testLesson != null) ret.addAll(testLesson.getInputs());
+		return ret;		
 	}
 }

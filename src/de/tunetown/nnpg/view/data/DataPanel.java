@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -102,10 +103,10 @@ public class DataPanel extends JPanel {
 	}
 
 	private void paintSamples(Graphics g, DataContainer data, boolean training) {
-		for(int n=0; n<data.getInputs().length; n++) {
-			double[][] in = data.getInputs();
-			double[][] out = data.getDesiredOutputs();
-			paintSample(g, convertToView(in[n][0]), convertToView(in[n][1]), properties.getDataColor(out[n][0]), training);
+		for(int n=0; n<data.getInputs().size(); n++) {
+			List<Double[]> in = data.getInputs();
+			List<Double[]> out = data.getDesiredOutputs();
+			paintSample(g, convertToView(in.get(n)[0]), convertToView(in.get(n)[1]), properties.getDataColor(out.get(n)[0]), training);
 		}
 	}
 

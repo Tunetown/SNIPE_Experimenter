@@ -42,6 +42,7 @@ public class MainPanel extends JPanel {
 		outView = new DataPanel(main);
 		add(outView, BorderLayout.EAST);
 		
+		// Controls and statistics
 		controlView = new ControlPanel(main, frame);
 		add(controlView, BorderLayout.SOUTH);
 	}

@@ -2,9 +2,10 @@ package de.tunetown.nnpg.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.neuroph.core.data.DataSet;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Data container used for loading and saving training/test data. This is used to
@@ -51,30 +52,52 @@ public class DataContainer implements Serializable {
 		return inputs.get(0).length;
 	}
 
-	public DataContainer[] split(int num) {
-    	shuffle();
+	public DataContainer[] split(double dist) {
+		if (size() == 0) return null;
 
-    	DataContainer[] subSets = new DataContainer[num];
+    	DataContainer[] subSets = new DataContainer[2];
+        subSets[0] = new DataContainer();
+        subSets[1] = new DataContainer();
 
-        int samples = size() / num;
+        if (size() == 1) {
+        	subSets[0] = this;
+			return subSets;
+		}
+		
+		List<Integer> indices = new ArrayList<Integer>();
+		for(int i=0; i<inputs.size(); i++) indices.add(i);
+		Collections.shuffle(indices);
+
         
-        for(int i=0; i<num; i++) {
-        	subSets[i] = new DataContainer();
-        }
+        int samples = inputs.size() / 2;
         
-        int c = 0;
-        int f = 0;
-        for(int i=0; i<size(); i++) {
-        	DataContainer s = get(c);
-        	s.addRow(dataSet.getRowAt(i));
-
-        	f++;
-        	if (f >= samples && c < subSets.size() -1) {
-        		f=0;
-        		c++;
-        	}
-        }
+        for (int i=0; i<samples; i++) subSets[0].add(inputs.get(indices.get(i)), desiredOutputs.get(indices.get(i)));
+        for (int i=samples; i<size(); i++) subSets[1].add(inputs.get(indices.get(i)), desiredOutputs.get(indices.get(i)));
         
         return subSets;
 	}
+
+	private void add(Double[] input, Double[] desiredOutput) {
+		inputs.add(input);
+		desiredOutputs.add(desiredOutput);
+	}
+
+	public double[][] getInputsArray() {
+		return convertToArray(inputs);
+	}
+
+	public double[][] getDesiredOutputsArray() {
+		return convertToArray(desiredOutputs);
+	}
+	
+	private double[][] convertToArray(List<Double[]> list) {
+		if (list == null || list.size() == 0) return null;
+		
+		double[][] ret = new double[list.size()][list.get(0).length];
+		for(int i=0; i<list.size(); i++) {
+			ret[i] = ArrayUtils.toPrimitive(list.get(i));
+		}
+		return ret;
+	}
+
 }
