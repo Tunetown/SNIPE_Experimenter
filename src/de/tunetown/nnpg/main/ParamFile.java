@@ -31,7 +31,6 @@ public class ParamFile implements Serializable {
  
 	public ParamFile(File file) throws Throwable {
 		this.paramFile = file;
-		load();
 	}
 	
 	/**

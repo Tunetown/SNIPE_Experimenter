@@ -50,6 +50,7 @@ public class ProjectLoader {
 		ParamFile vars = null;
 		try {
 			vars = new ParamFile(file);
+			vars.load();
 
 		} catch (Throwable e) {
 			System.out.println("Error loading project file:");
