@@ -18,6 +18,8 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO 1 3D visual ?
  * - TODO 2 integrate DL4J
  * - TODO 5 Recreate examples
+ *
+ * - TODO 6 Change project name to NN Playground
  * 
  * - TODO Add line in error graph at the point of overfitting 
  * 		-> See deep learning book 
