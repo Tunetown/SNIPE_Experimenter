@@ -52,12 +52,12 @@ public class Menu extends JMenuBar implements ActionListener, ItemListener {
 		JMenu file = new JMenu("File");
 		add(file);
 		
-		open = new JMenuItem("Open Training Data");
+		open = new JMenuItem("Open Project");
 		open.addActionListener(this);
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(open);
 
-		save = new JMenuItem("Save Training Data");
+		save = new JMenuItem("Save Project");
 		save.addActionListener(this);
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 		file.add(save);

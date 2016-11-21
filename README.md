@@ -6,6 +6,8 @@ implemented engines can be switched to compare the performance. Currently the fo
 - SNIPE by David Kriesel (www.dkriesel.com), Version 0.9; The source code is included in the project, because some minor adjustments have been necessary (in particular, the NeuronBehavior interface was not serializable).
 - Neuroph Version 2.92
 
+Also, some extra activation functions have been implemented for the given engines, in particular ReLU, and TahH using the fast math library JaFaMa. 
+
 The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, being able to create any training and test data you need. Also, in this program, you can change the code like desired to do any experiment you want.
 
 ## Usage
