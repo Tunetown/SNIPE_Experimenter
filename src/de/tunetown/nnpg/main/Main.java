@@ -15,6 +15,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
 /**
  * Application class for neural network experimenter.
  *
+ * - TODO 1 3D visual ?
  * - TODO 2 integrate DL4J
  * - TODO 5 Recreate examples
  * 
