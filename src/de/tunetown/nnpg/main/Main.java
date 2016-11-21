@@ -17,6 +17,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
  *
  * - TODO 1 3D visual ?
  * - TODO 2 integrate DL4J
+ * - TODO 4 Try to change SNIPE bugfixes without changing original classes?
  * - TODO 5 Recreate examples
  *
  * - TODO 6 Change project name to NN Playground
@@ -29,8 +30,9 @@ import de.tunetown.nnpg.view.TrainingWorker;
  *  	- SNIPE: 
  *  		- NeuronBehavior is not serializable -> changed in NeuronBehavior.java, 
  *  		  also added def. ser. ID to all behavior classes
+ *  		- Changed for 1.6 compatibility
  *  	- Neuroph:
- *  		- no changes
+ *  		- Changed for 1.6 compatibility (some ArrayList<> statements, one lambda expression)
  * 
  * *******************************************************
  * 
