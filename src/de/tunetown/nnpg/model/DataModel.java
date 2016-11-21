@@ -1,8 +1,10 @@
 package de.tunetown.nnpg.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import de.tunetown.nnpg.model.DataContainer;
 
 /**
@@ -12,8 +14,9 @@ import de.tunetown.nnpg.model.DataContainer;
  * @author Thomas Weber
  *
  */
-public class DataModel {
-
+public class DataModel implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private DataContainer trainingLesson;
 	private DataContainer testLesson;
 	

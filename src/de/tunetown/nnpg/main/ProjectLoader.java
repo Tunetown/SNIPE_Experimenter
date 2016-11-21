@@ -2,7 +2,7 @@ package de.tunetown.nnpg.main;
 
 import java.io.File;
 
-import de.tunetown.nnpg.model.DataContainer;
+import de.tunetown.nnpg.model.DataModel;
 import de.tunetown.nnpg.model.NetworkWrapper;
 
 /**
@@ -28,7 +28,7 @@ public class ProjectLoader {
 		try {
 			ParamFile var = new ParamFile(file);
 
-			var.set("data", main.getData().getMergedDataContainer());
+			var.set("data", main.getData());
 			var.set("network", main.getNetwork());
 			var.set("behavior", main.getNetwork().getBehavior());
 			var.set("eta", main.getNetwork().getEta());
@@ -58,8 +58,7 @@ public class ProjectLoader {
 		}
 
 		try {
-			main.getData().initialize();
-			main.getData().set((DataContainer)vars.get("data"));
+			main.setData((DataModel)vars.get("data"));
 			
 		} catch (Throwable e) {
 			System.out.println("Error loading data container");

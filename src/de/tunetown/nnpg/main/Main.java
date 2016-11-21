@@ -4,6 +4,8 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import de.tunetown.nnpg.model.DataContainer;
 import de.tunetown.nnpg.model.DataModel;
 import de.tunetown.nnpg.model.NetworkManager;
 import de.tunetown.nnpg.model.NetworkWrapper;
@@ -99,7 +101,7 @@ public class Main {
 	 */
 	private void init() {
 		// Create training data wrapper. Here it is possible to invoke also different network implementations.
-		data = new DataModel();
+		setData(new DataModel());
 		dataLoader = new ProjectLoader(this);
 		
 		// Initialize the network, tracker and data instances
@@ -174,6 +176,15 @@ public class Main {
 		return data;
 	}
 	
+	/**
+	 * Set the data model
+	 * 
+	 * @param data
+	 */
+	public void setData(DataModel data) {
+		this.data = data;
+	}
+
 	/**
 	 * Returns the tracker instance
 	 * 
