@@ -1,8 +1,10 @@
 # Playground for Neural Networks
 
-This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. The network implementation used is SNIPE by David Kriesel (www.dkriesel.com), however, also other network implementations could be integrated easily by creating corresponding wrapper classes (see the wrapper classes in package de.tunetown.nnpg.model).
+This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. It provides the possibility to integrate every Java neural network engine by implementing the NetworkWrapper class. The
+implemented engines can be switched to compare the performance. Currently the following engines are implemented and integrated:
 
-The SNIPE version 0.9 classes are included in the source (unchanged), so there are no dependencies, also this makes it possible to run the application also with Java versions lower than 7, which is the version the SNIPE jar is compiled with.
+- SNIPE by David Kriesel (www.dkriesel.com), Version 0.9; The source code is included in the project, because some minor adjustments have been necessary (in particular, the NeuronBehavior interface was not serializable).
+- Neuroph Version 2.92
 
 The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, being able to create any training and test data you need. Also, in this program, you can change the code like desired to do any experiment you want.
 
@@ -35,7 +37,7 @@ For details about the theory behind this, see David Kriesel´s excellent book "A
 
 The application has been developed using Java 1.8, but should also run without problems with Java 1.6. 
 
-The repository contains a full, self-contained Eclipse project (created with Eclipse Luna) with no external dependencies. If you do not want to use Eclipse, just compile the application with the main method in class de.tunetown.nnpg.main.Main.
+The repository contains a full, self-contained Eclipse project (created with Eclipse Luna). If you do not want to use Eclipse, just compile the application calling the main method in class de.tunetown.nnpg.main.Main.
 
 ## Release Status
 
