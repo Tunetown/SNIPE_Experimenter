@@ -17,14 +17,13 @@ import de.tunetown.nnpg.view.TrainingWorker;
  *
  * - TODO 1 3D visual ?
  * - TODO 2 integrate DL4J
+ * - TODO 3 Add line in error graph at the point of overfitting 
+ * 		-> See deep learning book 
+ * 			-> Early stopping
  * - TODO 4 Try to change SNIPE bugfixes without changing original classes?
  * - TODO 5 Recreate examples
  *
  * - TODO 6 Change project name to NN Playground
- * 
- * - TODO Add line in error graph at the point of overfitting 
- * 		-> See deep learning book 
- * 			-> Early stopping
  * 
  * - TODO 7 Document changes to network code:
  *  	- SNIPE: 
