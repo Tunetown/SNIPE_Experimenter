@@ -25,15 +25,7 @@ import de.tunetown.nnpg.view.TrainingWorker;
  *
  * - TODO 6 Change project name to NN Playground
  * 
- * - TODO 7 Document changes to network code:
- *  	- SNIPE: 
- *  		- NeuronBehavior is not serializable -> changed in NeuronBehavior.java, 
- *  		  also added def. ser. ID to all behavior classes
- *  		- Changed for 1.6 compatibility
- *  	- Neuroph:
- *  		- Changed for 1.6 compatibility (some ArrayList<> statements, one lambda expression)
- * 
- * *******************************************************
+ *  * *******************************************************
  * 
  * - TODO X Multi-dimensional visualization
  * 
@@ -44,6 +36,17 @@ import de.tunetown.nnpg.view.TrainingWorker;
  * - TODO X Adaptive adding/removing of neurons
  * - TODO X Adaptive eta determination
  * 		-> Read papers about that!
+ * 
+ *  * *******************************************************
+ * 
+ * These are the changes to network engine code:
+ *  	- SNIPE: 
+ *  		- NeuronBehavior is not serializable -> changed in NeuronBehavior.java, 
+ *  		  also added def. ser. ID to all behavior classes
+ *  		- Changed minor stuff for 1.6 compatibility
+ *  	- Neuroph:
+ *  		- Changed minor stuff for 1.6 compatibility (some ArrayList<> statements, one lambda expression)
+ * 
  * 
  * @author Thomas Weber, 2016
  * @see www.tunetown.de
