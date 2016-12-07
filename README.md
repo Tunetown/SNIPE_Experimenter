@@ -45,4 +45,4 @@ The repository contains a full, self-contained Eclipse project (created with Ecl
 
 ## Release Status
 
-Version 0.1: The program is experimental, but should be pretty bug free at the moment. If you encounter any difficulties, please contact me.
+Version 0.1: The program is experimental, but functional. Development and testing has been done by myself only, so i cannot guarantee that there aren't any bugs which i did not catch. If you encounter any difficulties, please contact me.
