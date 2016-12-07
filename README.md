@@ -5,10 +5,10 @@
 This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. It provides the possibility to integrate every Java neural network engine by implementing the NetworkWrapper class. The
 implemented engines can be switched to compare the performance. Currently the following engines are implemented and integrated:
 
-- SNIPE by David Kriesel (www.dkriesel.com), Version 0.9; The source code is included in the project, because some minor adjustments have been necessary (in particular, the NeuronBehavior interface was not serializable).
-- Neuroph Version 2.92
+- SNIPE by David Kriesel (www.dkriesel.com), Version 0.9; The source code is included in the project, because some minor adjustments have been necessary to make the engine compatible to Java 1.6 with a few small changes, also some minor bugs have been fixed.
+- Neuroph Version 2.92; This is also included in the project to make it compatible to Java 1.6, which was no great effort, too. 
 
-Also, some extra activation functions have been implemented for the given engines, in particular ReLU, and TahH using the fast math library JaFaMa. 
+Also, some extra activation functions have been implemented for both engines, in particular ReLU, and a TahH variant using the fast math library JaFaMa, which made the TanH processing about 3 times faster than the standard Java Math API. 
 
 The program has been created by inspiration of http://playground.tensorflow.org which is very cool but lacks some flexibility, most of all, being able to create any training and test data you need. Also, in this program, you can change the code like desired to do any experiment you want.
 
