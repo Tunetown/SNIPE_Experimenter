@@ -14,7 +14,9 @@ The program has been created by inspiration of http://playground.tensorflow.org 
 
 ## Usage
 
-Just start the program, paint some test data with the different mouse buttons into the area on the right, click on the "Train" button and watch the network learn. The data entered will automatically be split 1:1 into training and testing data, indicated if the data point is shown as a circle or as a square. 
+Currently, there is no binary delivered for this program. You have to build the program yourself, either using Eclipse or anything else. The program has very few dependencies (see the *libext* folder), so this should be easily achieved for anyone who is not totally new to Java development. 
+
+So, after building, just start the program, and paint some test data with the different mouse buttons into the area on the right, click on the "Train" button and watch the network learn. The data entered will automatically be split 1:1 into training and testing data, indicated if the data point is shown as a circle or as a square. 
 
 The values are color-encoded throughout the program (data points, network training visualization, synapse weights, neuron bias weights etc.). The coding is shown in a small legend, also indicating the mouse buttons to create different data values. 
 
