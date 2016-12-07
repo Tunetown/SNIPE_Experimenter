@@ -1,5 +1,7 @@
 # Playground for Neural Networks
 
+![MainShot](Tunetown.github.com/SNIPE_Experimenter/images/MainImg.png)
+
 This program is a GUI-driven framework for experimenting with feed forward neural networks, written in Java/Swing. It provides the possibility to integrate every Java neural network engine by implementing the NetworkWrapper class. The
 implemented engines can be switched to compare the performance. Currently the following engines are implemented and integrated:
 
