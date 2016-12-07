@@ -39,10 +39,10 @@ For details about the theory behind this, see David Kriesel´s excellent book "A
 
 ## Compatibility
 
-The application has been developed using Java 1.8, but should also run without problems with Java 1.6. 
+The application has been developed using Java 1.8, and Java 1.6 in parallel, and runs with both versions. It should also work with Java 1.7, but this has not been tested.  
 
-The repository contains a full, self-contained Eclipse project (created with Eclipse Luna). If you do not want to use Eclipse, just compile the application calling the main method in class de.tunetown.nnpg.main.Main.
+The repository contains a full, self-contained Eclipse project (created with Eclipse Luna). If you do not want to use Eclipse, just compile the application using the main method in class de.tunetown.nnpg.main.Main.
 
 ## Release Status
 
-Version 0.1: The program is experimental, and currently under development. It is NOT guaranteed that the current master is without errors and runnable.   
+Version 0.1: The program is experimental, but should be pretty bug free at the moment. If you encounter any difficulties, please contact me.
